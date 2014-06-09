@@ -1,5 +1,3 @@
-<?php 
- ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -16,12 +14,14 @@
 		<!-- Custom styles for this template -->
     	<link href="http://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
 
-		<title>Equipment</title>
+		<link rel="stylesheet" href="docs.css">
+
+		<title>Sign in</title>
 	</head>
 
 	<body>
 		<div class="container">
-			
+
 			<!-- Static Navbar -->
 			<div class="navbar navbar-default" role = "navigation">
 				<div class="container-fluid">
@@ -32,79 +32,43 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a href="#" class="navbar-brand">Home</a>
-					</div>
-					<div class="navbar-collapse collapse">
-						<ul class="nav navbar-nav">
-							<li><a href="#">Forms</a></li>
-							<li><a href="#">Reports</a></li>
-							<li><a href="#">Administration</a></li>
-						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#">Login</a></li>
+						<a class="navbar-brand" href="index.html">Home</a>
+					</div> <!--/.navbar-header -->
 
+					<div class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li><a href="login.html">Login</a></li>
 						</ul>
-					</div><!--/.nav-collapse -->
-				</div><!--/.container-fluid -->
-			</div><!--/.navbar -->
-		
-			<div class="jumbotron">
-				<div class="row">
-					<div class="col-md-8">
+					</div> <!--/.navbar-collapse -->
+				</div> <!--/.container-fluid -->
+			</div> <!--/.navbar -->
+
+			<div class="row">
+				<div class="col-md-3">
+				</div>
+				<div class="col-md-6">
+					<div class="jumbotron">
 						<form method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
-								<label for="inputBarcode">Barcode Number</label>
-								<input type="text" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" maxlength="10" size="10">
+								<label for="userNameOrEmail">Username or Email</label>
+								<input type="text" class="form-control" id="userNameOrEmail" maxlength="30" size="30">
 							</div>
 							<div class="form-group">
-								<label for="inputVendorID">Vendor ID</label>
-								<input type="text" class="form-control" id="inputVendorID" placeholder="Enter Vendor ID" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputModel">Model</label>
-								<input type="text" class="form-control" id="inputModel" placeholder="Enter Model" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputSerialNum">Serial Number</label>
-								<input type="text" class="form-control" id="inputSerialNum" placeholder="Enter Serial Number" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputGFEID">GFE ID</label>
-								<input type="text" class="form-control" id="inputGFEID" placeholder="Enter GFE ID" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputAffiliated">Affiliated</label>
-								<input type="text" class="form-control" id="inputAffiliated" placeholder="Enter Affiliation (R/E)" maxlength="1" size ="1">
-							</div>
-							<div class="form-group">
-								<label for="inputParentRackID">Parent Rack ID</label>
-								<input type="text" class="form-control" id="inputParentRackID" placeholder="Enter Parent Rack ID" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputElevation">Elevation</label>
-								<input type="text" class="form-control" id="inputElevation" placeholder="Enter Elevation" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputParentEquipmentID">Parent Equipment ID</label>
-								<input type="text" class="form-control" id="inputParentEquipmentID" placeholder="Enter Parent Equipment ID" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
+								<label for="password">Password</label>
+								<input type="text" class="form-control" id="password" maxlength="30" size ="30">
 							</div>
 						</form>
 					</div>
 					<div class="col-md-4"></div>
 				</div>
-				
 			</div>
-
 		</div> <!-- /container -->
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<!-- Latest compiled and minified JavaScript 
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> -->
+		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+		<script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
 	</body>
 </html>
