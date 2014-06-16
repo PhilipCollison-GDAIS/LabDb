@@ -11,4 +11,4 @@
 		<!-- Custom styles for this template -->
 		<link href="http://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">	
 
-		<link rel="stylesheet" href="docs.css">
+		<link rel="stylesheet" href="/LabDB/Html/docs.css">

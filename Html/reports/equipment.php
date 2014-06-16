@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "header.php" ?>
+		<?php include "../header.php" ?>
 
-		<title>Reports</title>
+		<title>Equipment</title>
 	</head>
 
 	<body>
 		<div class="container">
 
-			<?php include "navbar.php" ?>
+			<?php include "../navbar.php" ?>
 
 			<div class="row">
 
-				<?php include "sidebar.php" ?>
+				<?php include "../sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
-						<h1>Reports</h1>
-						<p><a href="./reports/equipment.php">Equipment</a></p>
+						<h1>Equipment</h1>
+						<p><a href="#" action= "<?php echo $_SERVER["PHP_SELF"] ?>" ></a>List all</p>
 					</div>
 				</div>
 			</div> <!--row-->
 
-			<?php include "footer.php" ?>
+			<?php include "../footer.php" ?>
 
 		</div> <!-- /container -->
 
