@@ -1,12 +1,24 @@
 <?php 
 	include "../connect.php";
-	function get_equipment_location ($equipment_resource) {
+	function get_equipment_location ($equipment_object) {
 		global $pdo;
 
-		$query_racks = "SELECT * FROM racks WHERE id=$equipment_resource[parent_rack_id]";
+		$query_affiliation = "$equipment_object->affiliated";
+		$affiliation = $pdo->query($query_affiliation);
 
-		$equipment_resource = $pdo->query($query_racks);
-		$rack_row = $equipment_resource->fetchObject();
+		if($equipment_object->affiliated == 'E'){
+			$query_parent_equipment = "SELECT * FROM equipment WHERE id=$equipment_object->parent_equipment_id";
+
+			$parent_equipment_resource = $pdo->query($query_parent_equipment);
+			$parent_equipment_object = $parent_equipment_resource->fetchObject();
+
+			return get_equipment_location($parent_equipment_object);
+		}
+
+		$query_racks = "SELECT * FROM racks WHERE id=$equipment_object->parent_rack_id";
+
+		$rack_resource = $pdo->query($query_racks);
+		$rack_row = $rack_resource->fetchObject();
 
 		$room_query = "SELECT floor_location FROM rooms WHERE id=$rack_row->room_id";
 
@@ -16,13 +28,13 @@
 		return $room_row->floor_location;
 	}
 
-	function get_equipment_vendor ($equipment_resource) {
+	function get_equipment_vendor ($equipment_object) {
 		global $pdo;
 
-		$query_vendors = "SELECT * FROM vendors WHERE id=$equipment_resource[vendor_id]";
+		$query_vendors = "SELECT * FROM vendors WHERE id=$equipment_object->vendor_id";
 
-		$equipment_resource = $pdo->query($query_vendors);
-		$vendor_row = $equipment_resource->fetchObject();
+		$equipment_object = $pdo->query($query_vendors);
+		$vendor_row = $equipment_object->fetchObject();
 
 		return $vendor_row->vendor;
 	}
@@ -68,9 +80,9 @@
 
 									$row_resource = $pdo->query($query);
 
-									foreach ($row_resource as $row) {
+									while ($row = $row_resource->fetchObject()) {
 										echo "<tr>";
-										echo "	<td>" . $row[model] . "</td>";
+										echo "	<td>" . $row->model . "</td>";
 										echo "	<td>" . get_equipment_location($row) . "</td>";
 										echo "	<td>" . get_equipment_vendor($row) . "</td>";
 										echo "</tr>";
