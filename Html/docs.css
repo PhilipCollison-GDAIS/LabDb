@@ -42,11 +42,13 @@
 #footer h1{
 	text-align: center;
 	font-size: 16px;
-	width: 960px;
+	width: 1139px;
 	background: url('pics/footertitlelines.png');
 	background-repeat: no-repeat;
 	background-position: center center;
 	text-transform: uppercase;
-	margin: 0px auto;
+	margin: 30px auto;
+	position: absolute;
+	bottom: 0px;
 
 }

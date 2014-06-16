@@ -3,7 +3,7 @@
 	<head>
 		<?php include "header.php" ?>
 
-		<title>Main</title>
+		<title>Reports</title>
 	</head>
 
 	<body>
@@ -12,12 +12,13 @@
 			<?php include "navbar.php" ?>
 
 			<div class="row">
+
 				<?php include "sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
-						<h1>Home Page</h1>
-						<p>This is a interactive web application for server room management.</p>
+						<h1>Reports</h1>
+						<p>In Progress. Nothing much to see here yet.</p>
 					</div>
 				</div>
 			</div> <!--row-->
