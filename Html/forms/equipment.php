@@ -1,20 +1,36 @@
 <?php 
+	include "../connect.php";
+	
+
+	$barcode = $_POST['inputBarcode'];
+	$vendor_id = $_POST['inputVendorID'];
+	$model = $_POST['inputModel'];
+	$serial_num = $_POST['inputSerialNum'];
+	$GFE_id = $_POST['inputGFEID'];
+	$affiliated = $_POST['inputAffiliated'];
+	$parent_rack_id = $_POST['inputParentRackID'];
+	$elevation = $_POST['inputElevation'];
+	$parent_equipment_id = $_POST['inputParentEquipmentID'];
+	$comment = $_POST['inputComment'];
+
+	$isempty = 0;
+
+	
+
+	if(isset($_POST[insert]))
+	{
+		$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values ('$barcode', $vendorI_id, '$model', $serial_num, '$GFE_id', '$affiliated', $parent_rack_id, $elevation, $parent_equipment_id, '$comment')";
+		$q = $pdo->query($query);
+
+
+	}
+
+
  ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
-	    <meta name="description" content="">
-    	<meta name="author" content="">
-
-    	<link rel="shortcut icon" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
-		
-		<!-- Custom styles for this template -->
-    	<link href="http://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
+	    <?php include "../header.php" ?>
 
 		<title>Equipment</title>
 	</head>
@@ -22,41 +38,18 @@
 	<body>
 		<div class="container">
 			
-			<!-- Static Navbar -->
-			<div class="navbar navbar-default" role = "navigation">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a href="#" class="navbar-brand">Home</a>
-					</div>
-					<div class="navbar-collapse collapse">
-						<ul class="nav navbar-nav">
-							<li><a href="#">Forms</a></li>
-							<li><a href="#">Reports</a></li>
-							<li><a href="#">Administration</a></li>
-						</ul>
-						<ul class="nav navbar-nav navbar-right">
-							<li><a href="#">Login</a></li>
-
-						</ul>
-					</div> <!--/.nav-collapse -->
-				</div> <!--/.container-fluid -->
-			</div> <!--/.navbar -->
+			<?php include "../navbar.php" ?>
 		
 			
 			<div class="row">
+				<?php include "../sidebar.php" ?>
 
-				<div class="col-md-8">
+				<div class="col-md-10">
 					<div class="jumbotron">
-						<form method="post" action="<?php echo $PHP_SELF; ?>">
+						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputBarcode">Barcode Number</label>
-								<input type="text" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" maxlength="10" size="10">
+								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" maxlength="10" size="10">
 							</div>
 							<div class="form-group">
 								<label for="inputVendorID">Vendor ID</label>
@@ -95,19 +88,21 @@
 								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
 								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
 							</div>
+							<button type="submit" name="insert" class="btn btn-default">Insert</button>
 						</form>
 					</div> <!--jumbotron-->
 				</div>
 				<div class="col-md-4"></div>
 			</div>
-				
+			
 			
 
 		</div> <!-- /container -->
-		<div></div>
+
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"> </script>
 	</body>
 </html>

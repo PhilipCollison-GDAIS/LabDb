@@ -16,7 +16,7 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 						<h1>Forms</h1>
-						<p>In Progress. Nothing much to see here yet.</p>
+						<p><a href="./forms/equipment.php">Equipment</a></p>
 					</div>
 				</div>
 			</div> <!--row-->
