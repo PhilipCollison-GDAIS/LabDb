@@ -8,6 +8,7 @@
 	error_reporting (E_ALL & ~E_NOTICE);
 	//Define the rep number php variable name
 
+	Global $pdo;
 	$pdo = new PDO ('mysql:host=localhost;dbname=lab_database_schema;charset=utf8', 'root', 'password');
 
 
