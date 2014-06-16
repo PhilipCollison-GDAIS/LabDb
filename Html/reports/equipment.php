@@ -1,3 +1,32 @@
+<?php 
+	include "../connect.php";
+	function get_equipment_location ($equipment_resource) {
+		global $pdo;
+
+		$query_racks = "SELECT * FROM racks WHERE id=$equipment_resource[parent_rack_id]";
+
+		$equipment_resource = $pdo->query($query_racks);
+		$rack_row = $equipment_resource->fetchObject();
+
+		$room_query = "SELECT floor_location FROM rooms WHERE id=$rack_row->room_id";
+
+		$room_resource = $pdo->query($room_query);
+		$room_row = $room_resource->fetchObject();
+
+		return $room_row->floor_location;
+	}
+
+	function get_equipment_vendor ($equipment_resource) {
+		global $pdo;
+
+		$query_vendors = "SELECT * FROM vendors WHERE id=$equipment_resource[vendor_id]";
+
+		$equipment_resource = $pdo->query($query_vendors);
+		$vendor_row = $equipment_resource->fetchObject();
+
+		return $vendor_row->vendor;
+	}
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -18,7 +47,39 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 						<h1>Equipment</h1>
-						<p><a href="#" action= "<?php echo $_SERVER["PHP_SELF"] ?>" ></a>List all</p>
+						<!--<form type="submit" method="post" action= "<?php echo $_SERVER["PHP_SELF"] ?>">-->
+
+							<p><a value="listall" name="listall" href="equipment.php?link=listall" >List all</a></p>
+
+						<!--</form>-->	
+						
+						<table class="table">
+							
+							<?php 
+								
+								if($_GET['link'] == 'listall'){
+									$query = "SELECT * FROM `equipment`";
+
+									echo "<tr>";
+									echo "	<th>Model</th>";
+									echo "	<th>Location</th>";
+									echo "	<th>Vendor</th>";
+									echo "</tr>";
+
+									$row_resource = $pdo->query($query);
+
+									foreach ($row_resource as $row) {
+										echo "<tr>";
+										echo "	<td>" . $row[model] . "</td>";
+										echo "	<td>" . get_equipment_location($row) . "</td>";
+										echo "	<td>" . get_equipment_vendor($row) . "</td>";
+										echo "</tr>";
+									}
+
+								}
+								
+							 ?>	
+						</table>
 					</div>
 				</div>
 			</div> <!--row-->
