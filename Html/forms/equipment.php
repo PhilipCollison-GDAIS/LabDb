@@ -1,6 +1,6 @@
 <?php 
 	include "../connect.php";
-	
+	global $pdo;
 
 	$barcode = $_POST['inputBarcode'];
 	$vendor_id = $_POST['inputVendorID'];
@@ -14,7 +14,7 @@
 	$comment = $_POST['inputComment'];
 
 	$isempty = 0;
-
+	/*
 	echo "barcode: $barcode";
 	echo "vendor id: $vendor_id";
 	echo "model: $model";
@@ -25,13 +25,27 @@
 	echo "elevation: $elevation";
 	echo "parent_equipment_id: $parent_equipment_id";
 	echo "comment: $comment";
+	*/
+
 
 	if(isset($_POST[insert]))
 	{
-		$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values ('$barcode', $vendorI_id, '$model', $serial_num, '$GFE_id', '$affiliated', $parent_rack_id, $elevation, $parent_equipment_id, '$comment')";
-		$q = $pdo->query($query);
+		
 
+		$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values
+		 (:barcode, :vendor_id, :model, :serial_num, :GFE_id, :affiliated, :parent_rack_id, :elevation, :parent_equipment_id, :comment)";
 
+		$q = $pdo->prepare($query);
+		$q->execute(array(':barcode'=>$barcode,
+						  ':vendor_id'=>$vendor_id,
+						  ':model'=>$model,
+						  ':serial_num'=>$serial_num,
+						  ':GFE_id'=>$GFE_id,
+						  ':affiliated'=>$affiliated,
+						  ':parent_rack_id'=>$parent_rack_id,
+						  ':elevation'=>$elevation,
+						  ':parent_equipment_id'=>$parent_equipment_id,
+						  ':comment'=>$comment));
 	}
 
 
