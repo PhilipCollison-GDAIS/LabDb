@@ -19,6 +19,7 @@
 					<div class="jumbotron">
 						<h1>Reports</h1>
 						<p><a href="./reports/equipment.php">Equipment</a></p>
+						<p><a href="./reports/rooms.php">Rooms</a></p>
 					</div>
 				</div>
 			</div> <!--row-->

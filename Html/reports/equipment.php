@@ -59,39 +59,36 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 						<h1>Equipment</h1>
-						<!--<form type="submit" method="post" action= "<?php echo $_SERVER["PHP_SELF"] ?>">-->
 
-							<p><a value="listall" name="listall" href="equipment.php?link=listall" >List all</a></p>
-
-						<!--</form>-->	
-						
 						<table class="table">
-							
+
 							<?php 
-								
-								if($_GET['link'] == 'listall'){
-									$query = "SELECT * FROM `equipment`";
 
+								$query = "SELECT * FROM `equipment`";
+
+								echo "<tr>";
+								echo "	<th>Model</th>";
+								echo "	<th>Location</th>";
+								echo "	<th>Vendor</th>";
+								echo "</tr>";
+
+								$row_resource = $pdo->query($query);
+
+								while ($row = $row_resource->fetchObject()) {
 									echo "<tr>";
-									echo "	<th>Model</th>";
-									echo "	<th>Location</th>";
-									echo "	<th>Vendor</th>";
+									echo "	<td>" . $row->model . "</td>";
+									echo "	<td>" . get_equipment_location($row) . "</td>";
+									echo "	<td>" . get_equipment_vendor($row) . "</td>";
+									echo "  <td><a href='#'>Button to edit equipment</a></td>";
+									echo "  <td><a href='#'>Button to create copy</a></td>";
 									echo "</tr>";
-
-									$row_resource = $pdo->query($query);
-
-									while ($row = $row_resource->fetchObject()) {
-										echo "<tr>";
-										echo "	<td>" . $row->model . "</td>";
-										echo "	<td>" . get_equipment_location($row) . "</td>";
-										echo "	<td>" . get_equipment_vendor($row) . "</td>";
-										echo "</tr>";
-									}
-
 								}
-								
+
 							 ?>	
 						</table>
+
+						<p><a href="./../forms/equipment.php">Button to add equipment</a></p>
+
 					</div>
 				</div>
 			</div> <!--row-->

@@ -1,3 +1,6 @@
+<?php
+	include "../connect.php";
+ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -18,28 +21,28 @@
 					<div class="jumbotron">
 						<h1>Rooms</h1>
 
-						<p><a value="listall" name="listall" href="equipment.php?link=listall" >List all</a></p>
-
 						<table class="table">
 
-							<tr>
-								<th>Building</th>
-								<th>Room Number</th>
-							</tr>
+							<?php
 
-							<tr>
-								<td>building 1</td>
-								<td>room number 01</td>
+								$query = "SELECT * FROM `rooms`";
 
-								<td>Button to edit 01</td>
-							</tr>
+								echo "<tr>";
+								echo "	<th>Room Number</th>";
+								echo "	<th>Comment</th>";
+								echo "</tr>";
 
-							<tr>
-								<td>building 1</td>
-								<td>room number 02</td>
+								$row_resource = $pdo->query($query);
 
-								<td>Button to edit 02</td>
-							</tr>
+								while ($row = $row_resource->fetchObject()) {
+									echo "<tr>";
+									echo "	<td>" . $row->room_number . "</td>";
+									echo "	<td>" . $row->comment . "</td>";
+									echo "  <td><a href='#'>Button to edit</a></td>";
+									echo "</tr>";
+								}
+
+							 ?>
 
 						</table>
 

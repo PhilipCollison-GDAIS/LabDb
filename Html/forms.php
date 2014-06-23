@@ -17,6 +17,7 @@
 					<div class="jumbotron">
 						<h1>Forms</h1>
 						<p><a href="./forms/equipment.php">Equipment</a></p>
+						<p><a href="./forms/rooms.php">Rooms</a></p>
 					</div>
 				</div>
 			</div> <!--row-->
