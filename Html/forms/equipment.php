@@ -8,12 +8,101 @@
 	$serial_num = $_POST['inputSerialNum'];
 	$GFE_id = $_POST['inputGFEID'];
 	$affiliated = $_POST['inputAffiliation'];
-	$parent_rack_id = $_POST['inputParentRackID'];
-	$elevation = $_POST['inputElevation'];
-	$parent_equipment_id = $_POST['inputParentEquipmentID'];
+	$parent_rack_id = NULL;
+	$elevation = NULL;
+	$parent_equipment_id = NULL;
 	$comment = $_POST['inputComment'];
 
-	$isempty = 0;
+	function isValid() {
+		global $barcode, $vendor_id, $model, $serial_num, $GFE_id, $affiliated, $parent_rack_id, $elevation, $parent_equipment_id, $error_message;
+
+		if (!isShortAlNum($barcode)) {
+			$error_message = "barcode was invalid";
+			return false;
+		}
+
+		if (!isNumericInt($vendor_id)) {
+			$error_message = "vendor_id was invalid";
+			return false;
+		}
+
+		if (!isShortAlNum($model)) {
+			$error_message = "model was invalid";
+			return false;
+		}
+
+		if (!isNumericInt($serial_num)) {
+			$error_message = "serial_num was invalid";
+			return false;
+		}
+
+		if (!isShortAlNum($GFE_id)) {
+			$error_message = "GFE_id was invalid";
+			return false;
+		}
+
+		if ($affiliated === "R") {
+			if (isNumericInt($parent_rack_id) && isNumericInt($elevation)) {
+				return true;
+			} else {
+				$error_message = "Affiliation was invalid in Racks";
+				return false;
+			}
+		} else if ($affiliated === "E") {
+			if (isNumericInt($parent_equipment_id)) {
+				return true;
+			} else {
+				$error_message = "Affiliation was invalid in Equipment";
+				return false;
+			}
+		} else {
+			$error_message = "Affiliation was " . $affiliated;
+			return false;		
+		}
+	}
+
+	function isNumericInt($x) {
+		global $specific_error;
+
+		if (empty($x)) {
+			$specific_error = "was empty!\n";
+			return false;
+		}
+
+		if (!is_numeric($x)) {
+			$specific_error = "was not numeric!\n";
+			return false;
+		}
+
+		if (!($x > 0 && $x == round($x))) {
+			$specific_error = "was not a positive int!\n";
+			return false;
+		}
+
+		return true;
+	}
+
+	function isShortAlNum($x) {
+		global $specific_error;
+
+		if (empty($x)) {
+			$specific_error = "was empty!\n";
+			return false;
+		}
+
+		if (strlen($x) > 10) {
+			$specific_error = "was too long!\n";
+			return false;
+		}
+
+		if (!ctype_alnum($x)) {
+			$specific_error = "was not alpha-numeric!\n";
+			return false;
+		}
+
+		return true;
+	}
+	
 	/*
 	echo "barcode: $barcode";
 	echo "vendor id: $vendor_id";
@@ -27,25 +116,48 @@
 	echo "comment: $comment";
 	*/
 
-
-	if(isset($_POST[insert]))
+	if (isset($_POST[insert]) && isValid())
 	{
-		
 
-		$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values
-		 (:barcode, :vendor_id, :model, :serial_num, :GFE_id, :affiliated, :parent_rack_id, :elevation, :parent_equipment_id, :comment)";
+		if ($affiliated === "E") {
+			$parent_rack_id = $_POST['inputParentRackID'];
+			$elevation = $_POST['inputElevation'];
 
-		$q = $pdo->prepare($query);
-		$q->execute(array(':barcode'=>$barcode,
-						  ':vendor_id'=>$vendor_id,
-						  ':model'=>$model,
-						  ':serial_num'=>$serial_num,
-						  ':GFE_id'=>$GFE_id,
-						  ':affiliated'=>$affiliated,
-						  ':parent_rack_id'=>$parent_rack_id,
-						  ':elevation'=>$elevation,
-						  ':parent_equipment_id'=>$parent_equipment_id,
-						  ':comment'=>$comment));
+			$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values
+			(:barcode, :vendor_id, :model, :serial_num, :GFE_id, :affiliated, :parent_rack_id, :elevation, :parent_equipment_id, :comment)";
+
+			$q = $pdo->prepare($query);
+			$q->execute(array(':barcode'=>$barcode,
+							  ':vendor_id'=>$vendor_id,
+							  ':model'=>$model,
+							  ':serial_num'=>$serial_num,
+							  ':GFE_id'=>$GFE_id,
+							  ':affiliated'=>$affiliated,
+							  ':parent_rack_id'=>$parent_rack_id,
+							  ':elevation'=>$elevation,
+							  ':parent_equipment_id'=>NULL,
+							  ':comment'=>$comment));
+
+		} else if ($affiliated === "R") {
+			$parent_equipment_id = $_POST['inputParentEquipmentID'];
+
+			$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, model, serial_num, GFE_id, affiliated, parent_rack_id, elevation, parent_equipment_id, comment) Values
+			(:barcode, :vendor_id, :model, :serial_num, :GFE_id, :affiliated, :parent_rack_id, :elevation, :parent_equipment_id, :comment)";
+
+			$q = $pdo->prepare($query);
+			$q->execute(array(':barcode'=>$barcode,
+							  ':vendor_id'=>$vendor_id,
+							  ':model'=>$model,
+							  ':serial_num'=>$serial_num,
+							  ':GFE_id'=>$GFE_id,
+							  ':affiliated'=>$affiliated,
+							  ':parent_rack_id'=>NULL,
+							  ':elevation'=>NULL,
+							  ':parent_equipment_id'=>$parent_equipment_id,
+							  ':comment'=>$comment));
+
+		}
+
 	}
 
 
@@ -112,7 +224,7 @@
 							</div>
 							<div class="form-group" style="visibility:hidden">
 								<label id="inputParentEquipmentIDLabel" for="inputParentEquipmentID">Parent Equipment ID</label>
-								<input type="text" name="inputParentEquipmentId" class="form-control" id="inputParentEquipmentID" placeholder="Enter Parent Equipment ID" maxlength="10" size ="10">
+								<input type="text" name="inputParentEquipmentID" class="form-control" id="inputParentEquipmentID" placeholder="Enter Parent Equipment ID" maxlength="10" size ="10">
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
@@ -137,23 +249,19 @@
 		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"> </script>
 		<script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
 		<script>
-			function hideBoth(){
+			function hideBoth() {
 				document.getElementById("inputParentRackID").style.visibility="hidden";
 				document.getElementById("inputParentRackIDLabel").style.visibility="hidden";
 				document.getElementById("inputElevation").style.visibility="hidden";
 				document.getElementById("inputElevationLabel").style.visibility="hidden";
 				document.getElementById("inputParentEquipmentID").style.visibility="hidden";
 				document.getElementById("inputParentEquipmentIDLabel").style.visibility="hidden";
-
-				document.getElementById("inputParentRackID").value = '';
-				document.getElementById("inputElevation").value = '';
-				document.getElementById("inputParentEquipmentID").value = '';
 			}
 
-			function hola(x){
+			function hola(x) {
 				hideBoth();
 
-				if(x==1)
+				if (x==1)
 				{
 					<?php $affiliated = "R"; ?>
 					document.getElementById("inputParentRackID").style.visibility="visible";
@@ -161,7 +269,7 @@
 					document.getElementById("inputElevation").style.visibility="visible";
 					document.getElementById("inputElevationLabel").style.visibility="visible";
 				}
-				else if(x==2)
+				else if (x==2)
 				{
 					<?php $affiliated = "E"; ?>
 					$affiliated = "F";
