@@ -38,7 +38,7 @@
 									echo "<tr>";
 									echo "	<td>" . $row->room_number . "</td>";
 									echo "	<td>" . $row->comment . "</td>";
-									echo "  <td><a href='#'>Edit</a></td>";
+									echo "	<td><a href='#'>Edit</a></td>";
 									echo "</tr>";
 								}
 

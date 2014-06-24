@@ -79,8 +79,8 @@
 									echo "	<td>" . $row->model . "</td>";
 									echo "	<td>" . get_equipment_location($row) . "</td>";
 									echo "	<td>" . get_equipment_vendor($row) . "</td>";
-									echo "  <td><a href='#'>Edit equipment</a></td>";
-									echo "  <td><a href='#'>Create copy</a></td>";
+									echo "	<td><a href='#'>Edit equipment</a></td>";
+									echo "	<td><a href='#'>Create copy</a></td>";
 									echo "</tr>";
 								}
 

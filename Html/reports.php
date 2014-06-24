@@ -21,6 +21,7 @@
 						<p><a href="reports/equipment.php">Equipment</a></p>
 						<p><a href="reports/rooms.php">Rooms</a></p>
 						<p><a href="reports/projects.php">Projects</a></p>
+						<p><a href="reports/vendors.php">Vendors</a></p>
 					</div>
 				</div>
 			</div> <!--row-->

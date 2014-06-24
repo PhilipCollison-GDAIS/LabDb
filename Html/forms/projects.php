@@ -31,7 +31,7 @@
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputProjectName">Project Name</label>
-								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" maxlength="45" size ="45">
+								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" maxlength="45" size ="45" autofocus="autofocus">
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>

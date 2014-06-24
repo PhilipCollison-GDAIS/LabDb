@@ -19,6 +19,7 @@
 						<p><a href="forms/equipment.php">Equipment</a></p>
 						<p><a href="forms/rooms.php">Rooms</a></p>
 						<p><a href="forms/projects.php">Projects</a></p>
+						<p><a href="forms/vendors.php">Vendors</a></p>
 					</div>
 				</div>
 			</div> <!--row-->

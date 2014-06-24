@@ -7,7 +7,7 @@
 	<head>
 	    <?php include "../inc/header.php" ?>
 
-		<title>Projects</title>
+		<title>Vendors</title>
 	</head>
 
 	<body>
@@ -21,16 +21,16 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 
-						<h1>Projects</h1>
+						<h1>Vendors</h1>
 
 						<table class="table">
 
 							<?php
 
-								$query = "SELECT * FROM `Projects`";
+								$query = "SELECT * FROM `Vendors`";
 
 								echo "<tr>";
-								echo "	<th>Project Name</th>";
+								echo "	<th>Vendor</th>";
 								echo "	<th>Comments</th>";
 								echo "</tr>";
 
@@ -38,9 +38,9 @@
 
 								while ($row = $row_resource->fetchObject()) {
 									echo "<tr>";
-									echo "	<td><a href='#'>" . $row->name . "</a></td>";
+									echo "	<td><a href='#'>" . $row->vendor . "</a></td>";
 									echo "	<td>" . $row->comment . "</td>";
-									echo "	<td><a href='#'>Edit this project</a></td>";
+									echo "	<td><a href='#'>Edit</a></td>";
 									echo "</tr>";
 								}
 
@@ -48,7 +48,7 @@
 
 						</table>
 
-						<p><a href="../forms/projects.php">Add Project</a></p>
+						<p><a href="../forms/vendors.php">Add Vendor</a></p>
 
 					</div> <!--jumbotron-->
 				</div>

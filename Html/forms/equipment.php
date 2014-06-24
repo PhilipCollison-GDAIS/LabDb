@@ -184,7 +184,7 @@
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputBarcode">Barcode Number</label>
-								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" maxlength="10" size="10">
+								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" maxlength="10" size="10" autofocus="autofocus">
 							</div>
 							<div class="form-group">
 								<label for="inputVendorID">Vendor ID</label>
