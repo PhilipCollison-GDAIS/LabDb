@@ -18,6 +18,7 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 						<h1>Reports</h1>
+						<p><a href="reports/racks.php">Racks</a></p>
 						<p><a href="reports/equipment.php">Equipment</a></p>
 						<p><a href="reports/rooms.php">Rooms</a></p>
 						<p><a href="reports/projects.php">Projects</a></p>

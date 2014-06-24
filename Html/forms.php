@@ -16,6 +16,7 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 						<h1>Forms</h1>
+						<p><a href="forms/racks.php">Racks</a></p>
 						<p><a href="forms/equipment.php">Equipment</a></p>
 						<p><a href="forms/rooms.php">Rooms</a></p>
 						<p><a href="forms/projects.php">Projects</a></p>

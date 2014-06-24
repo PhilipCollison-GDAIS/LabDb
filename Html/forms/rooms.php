@@ -1,5 +1,5 @@
 <?php
-	include "../inc/connect.php";
+	include "/LabDB/Html/inc/connect.php";
 	global $pdo;
 
 	$room_number = $_POST['inputRoomNumber'];
@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "../inc/header.php" ?>
+		<?php include "/LabDB/Html/inc/header.php" ?>
 
 		<title>Rooms</title>
 	</head>
@@ -21,10 +21,10 @@
 	<body>
 		<div class="container">
 
-			<?php include "../inc/navbar.php" ?>
+			<?php include "/LabDB/Html/inc/navbar.php" ?>
 
 			<div class="row">
-				<?php include "../inc/sidebar.php" ?>
+				<?php include "/LabDB/Html/inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
