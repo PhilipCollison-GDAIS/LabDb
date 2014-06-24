@@ -1,10 +1,10 @@
 <?php
-	include "../connect.php";
+	include "../inc/connect.php";
  ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "../header.php" ?>
+		<?php include "../inc/header.php" ?>
 
 		<title>Rooms</title>
 	</head>
@@ -12,10 +12,10 @@
 	<body>
 		<div class="container">
 
-			<?php include "../navbar.php" ?>
+			<?php include "../inc/navbar.php" ?>
 
 			<div class="row">
-				<?php include "../sidebar.php" ?>
+				<?php include "../inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
@@ -38,7 +38,7 @@
 									echo "<tr>";
 									echo "	<td>" . $row->room_number . "</td>";
 									echo "	<td>" . $row->comment . "</td>";
-									echo "  <td><a href='#'>Button to edit</a></td>";
+									echo "  <td><a href='#'>Edit</a></td>";
 									echo "</tr>";
 								}
 
@@ -46,7 +46,7 @@
 
 						</table>
 
-						<p><a href="./../forms/rooms.php">Button to add room</a></p>
+						<p><a href="../forms/rooms.php">Add room</a></p>
 
 					</div> <!--jumbotron-->
 				</div>

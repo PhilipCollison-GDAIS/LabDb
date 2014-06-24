@@ -1,11 +1,11 @@
 <?php
-	include "../connect.php";
+	include "../inc/connect.php";
 	global $pdo;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "../header.php" ?>
+	    <?php include "../inc/header.php" ?>
 
 		<title>Projects</title>
 	</head>
@@ -13,10 +13,10 @@
 	<body>
 		<div class="container">
 
-			<?php include "../navbar.php" ?>
+			<?php include "../inc/navbar.php" ?>
 
 			<div class="row">
-				<?php include "../sidebar.php" ?>
+				<?php include "../inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
@@ -48,7 +48,7 @@
 
 						</table>
 
-						<p><a href="./../forms/projects.php">Add Project</a></p>
+						<p><a href="../forms/projects.php">Add Project</a></p>
 
 					</div> <!--jumbotron-->
 				</div>

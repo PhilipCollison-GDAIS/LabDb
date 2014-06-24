@@ -1,5 +1,5 @@
 <?php 
-	include "../connect.php";
+	include "../inc/connect.php";
 	function get_equipment_location ($equipment_object) {
 		global $pdo;
 
@@ -42,7 +42,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "../header.php" ?>
+		<?php include "../inc/header.php" ?>
 
 		<title>Equipment</title>
 	</head>
@@ -50,11 +50,11 @@
 	<body>
 		<div class="container">
 
-			<?php include "../navbar.php" ?>
+			<?php include "../inc/navbar.php" ?>
 
 			<div class="row">
 
-				<?php include "../sidebar.php" ?>
+				<?php include "../inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
@@ -79,15 +79,15 @@
 									echo "	<td>" . $row->model . "</td>";
 									echo "	<td>" . get_equipment_location($row) . "</td>";
 									echo "	<td>" . get_equipment_vendor($row) . "</td>";
-									echo "  <td><a href='#'>Button to edit equipment</a></td>";
-									echo "  <td><a href='#'>Button to create copy</a></td>";
+									echo "  <td><a href='#'>Edit equipment</a></td>";
+									echo "  <td><a href='#'>Create copy</a></td>";
 									echo "</tr>";
 								}
 
 							 ?>	
 						</table>
 
-						<p><a href="./../forms/equipment.php">Button to add equipment</a></p>
+						<p><a href="../forms/equipment.php">Button to add equipment</a></p>
 
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "header.php" ?>
+	    <?php include "inc/header.php" ?>
 
 		<title>Password Reset</title>
 	</head>
@@ -9,7 +9,7 @@
 	<body>
 		<div class="container">
 
-			<?php include "navbar.php" ?>
+			<?php include "inc/navbar.php" ?>
 
 			<div class="row">
 				<div class="col-md-3">
@@ -34,7 +34,7 @@
 				</div>
 			</div>
 
-			<?php include "footer.php" ?>
+			<?php include "inc/footer.php" ?>
 
 		</div> <!-- /container -->
 
