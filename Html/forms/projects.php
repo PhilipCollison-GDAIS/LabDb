@@ -2,20 +2,20 @@
 	include "../inc/connect.php";
 	global $pdo;
 
-	$room_number = $_POST['inputRoomNumber'];
+	$name = $_POST['inputProjectName'];
 	$comment = $_POST['inputComment'];
 
-	$query = "INSERT INTO Rooms (room_number, comment) Values (:room_number, :comment)";
+	$query = "INSERT INTO Projects (name, comment) Values (:name, :comment)";
 
-	$pdo->prepare($query)->execute(array(':room_number'=>$room_number, ':comment'=>$comment));
+	$pdo->prepare($query)->execute(array(':name'=>$name, ':comment'=>$comment));
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "../inc/header.php" ?>
+	    <?php include "../inc/header.php" ?>
 
-		<title>Rooms</title>
+		<title>Projects</title>
 	</head>
 
 	<body>
@@ -30,12 +30,11 @@
 					<div class="jumbotron">
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
-								<label for="inputRoomNumber">Room Number</label>
-								<input type="text" name="inputRoomNumber" class="form-control" id="inputRoomNumber" placeholder="Enter Room Number" maxlength="10" size ="10">
+								<label for="inputProjectName">Project Name</label>
+								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" maxlength="45" size ="45">
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
-								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
 								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
 							</div>
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>

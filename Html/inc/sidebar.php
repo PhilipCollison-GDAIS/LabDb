@@ -4,7 +4,7 @@
 							<li><a href="#">Maintanence</a></li>
 							<li><a href="#">Query</a></li>
 							<li><a href="#">Backups</a></li>
-							<li><a href="/LabDB/Html/projects.php">Projects</a></li>
+							<li><a href="/LabDB/Html/reports/projects.php">Projects</a></li>
 							<li><a href="/LabDB/Html/forms.php">Forms</a></li>
 							<li><a href="/LabDB/Html/reports.php">Reports</a></li>
 						</ul>

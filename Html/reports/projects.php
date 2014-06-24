@@ -1,12 +1,13 @@
 <?php
 	include "../inc/connect.php";
- ?>
+	global $pdo;
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "../inc/header.php" ?>
+	    <?php include "../inc/header.php" ?>
 
-		<title>Rooms</title>
+		<title>Projects</title>
 	</head>
 
 	<body>
@@ -19,26 +20,27 @@
 
 				<div class="col-md-10">
 					<div class="jumbotron">
-						<h1>Rooms</h1>
+
+						<h1>Projects</h1>
 
 						<table class="table">
 
 							<?php
 
-								$query = "SELECT * FROM `rooms`";
+								$query = "SELECT * FROM `Projects`";
 
 								echo "<tr>";
-								echo "	<th>Room Number</th>";
-								echo "	<th>Comment</th>";
+								echo "	<th>Project Name</th>";
+								echo "	<th>Comments</th>";
 								echo "</tr>";
 
 								$row_resource = $pdo->query($query);
 
 								while ($row = $row_resource->fetchObject()) {
 									echo "<tr>";
-									echo "	<td>" . $row->room_number . "</td>";
+									echo "	<td><a href='#'>" . $row->name . "</a></td>";
 									echo "	<td>" . $row->comment . "</td>";
-									echo "  <td><a href='#'>Edit</a></td>";
+									echo "  <td><a href='#'>Edit this project</a></td>";
 									echo "</tr>";
 								}
 
@@ -46,13 +48,12 @@
 
 						</table>
 
-						<p><a href="../forms/rooms.php">Add room</a></p>
+						<p><a href="../forms/projects.php">Add Project</a></p>
 
 					</div> <!--jumbotron-->
 				</div>
 				<div class="col-md-4"></div>
 			</div>
-
 
 		</div> <!-- /container -->
 

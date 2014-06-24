@@ -1,5 +1,5 @@
 <?php 
-	include "../connect.php";
+	include "../inc/connect.php";
 	global $pdo;
 
 	$barcode = $_POST['inputBarcode'];
@@ -165,7 +165,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "../header.php" ?>
+	    <?php include "../inc/header.php" ?>
 
 		<title>Equipment</title>
 	</head>
@@ -173,11 +173,11 @@
 	<body onload='hideBoth()'>
 		<div class="container">
 			
-			<?php include "../navbar.php" ?>
+			<?php include "../inc/navbar.php" ?>
 		
 			
 			<div class="row">
-				<?php include "../sidebar.php" ?>
+				<?php include "../inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
