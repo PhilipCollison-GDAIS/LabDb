@@ -2,3 +2,5 @@ LabDb is a project for administrating a server room.
 
 There is a Webapp and a Server Database.
 
+If you wish to host LabDb with XAMPP, then you must add
+"C:\repo_path\LabDb\Html" to XAMPP's php.ini file in C:\xampp\php.
