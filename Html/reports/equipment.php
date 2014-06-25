@@ -1,5 +1,5 @@
 <?php 
-	include "/LabDB/Html/inc/connect.php";
+	include "/inc/connect.php";
 	function get_equipment_location ($equipment_object) {
 		global $pdo;
 
@@ -42,7 +42,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<?php include "/LabDB/Html/inc/header.php" ?>
+		<?php include "/inc/header.php" ?>
 
 		<title>Equipment</title>
 	</head>
@@ -50,11 +50,11 @@
 	<body>
 		<div class="container">
 
-			<?php include "/LabDB/Html/inc/navbar.php" ?>
+			<?php include "/inc/navbar.php" ?>
 
 			<div class="row">
 
-				<?php include "/LabDB/Html/inc/sidebar.php" ?>
+				<?php include "/inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">
@@ -93,7 +93,7 @@
 				</div>
 			</div> <!--row-->
 
-			<?php include "/LabDB/Html/inc/footer.php" ?>
+			<?php include "/inc/footer.php" ?>
 
 		</div> <!-- /container -->
 

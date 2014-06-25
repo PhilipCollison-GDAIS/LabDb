@@ -1,5 +1,5 @@
 <?php
-	include "/LabDB/Html/inc/connect.php";
+	include "/inc/connect.php";
 	global $pdo;
 
 	$name = $_POST['inputProjectName'];
@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "/LabDB/Html/inc/header.php" ?>
+	    <?php include "/inc/header.php" ?>
 
 		<title>Projects</title>
 	</head>
@@ -21,10 +21,10 @@
 	<body>
 		<div class="container">
 
-			<?php include "/LabDB/Html/inc/navbar.php" ?>
+			<?php include "/inc/navbar.php" ?>
 
 			<div class="row">
-				<?php include "/LabDB/Html/inc/sidebar.php" ?>
+				<?php include "/inc/sidebar.php" ?>
 
 				<div class="col-md-10">
 					<div class="jumbotron">

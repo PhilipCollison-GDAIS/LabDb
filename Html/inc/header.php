@@ -6,9 +6,9 @@
 
 		<link rel="shortcut icon" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
 		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="/LabDB/Html/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
 
 		<!-- Custom styles for this template -->
 		<link href="http://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">	
 
-		<link rel="stylesheet" href="/LabDB/Html/docs.css">
+		<link rel="stylesheet" href="/docs.css">

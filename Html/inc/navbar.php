@@ -8,12 +8,12 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="/LabDB/Html/index.php">Home</a>
+						<a class="navbar-brand" href="/index.php">Home</a>
 					</div> <!--/.navbar-header -->
 
 					<div class="collapse navbar-collapse">
 						<div class="nav navbar-nav navbar-right">
-							<a href="/LabDB/Html/login.php" class="btn btn-default navbar-btn" type="button">Login</a>
+							<a href="/login.php" class="btn btn-default navbar-btn" type="button">Login</a>
 						</div>
 					</div> <!--/.navbar-collapse -->
 				</div> <!--/.container-fluid -->
