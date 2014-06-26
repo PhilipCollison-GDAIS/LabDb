@@ -1,8 +1,43 @@
 LabDb is a project for administrating a server room.
 
-There is a Webapp and a Server Database.
 
-If you wish to host LabDb with XAMPP, then you must add
-"C:\repo_path\LabDb\Html" as the document root. To do this, go to
-C:\xampp\apache\conf\httpd.conf and set the DocumentRoot variable
-to be your repository's Html folder.
+If you wish to host LabDb with XAMPP, then you must:
+
+add
+
+<VirtualHost *:80>
+    ServerAdmin localhost
+    ServerName localhost
+    DocumentRoot "C:/xampp/htdocs"
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName lab.domain
+    ServerAlias www.lab.domain
+    DocumentRoot "C:/Git/LabDb/Html"
+    <Directory "C:/Git/LabDb/Html">
+        Options Indexes FollowSymLinks ExecCGI Includes
+        Order allow,deny
+        Allow from all
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+to
+
+C:\xampp\apache\conf\extra\httpd-vhosts.conf
+
+add
+
+127.0.0.1      lab.domain
+
+to
+
+C:\Windows\System32\drivers\etc\hosts.file
+
+and add
+
+C:\Git\LabDb\Html
+
+to the include_path variable in C:\xampp\php\php.ini

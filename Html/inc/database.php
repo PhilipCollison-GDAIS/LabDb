@@ -168,7 +168,7 @@ function tableStringForProjects(){
 function tableStringForEquipment(){
 	global $pdo;
 
-	$string = '<table class='table'>';
+	$string = '<table class="table">';
 
 	$string .= '<tr>';
 	$string .= '<th>Model</th>';
