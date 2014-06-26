@@ -40,14 +40,6 @@
 					  ':max_power'=>$max_power,
 					  ':comment'=>$comment));
 
-
-
-	
-
-
-	
-
-
  ?>
 <!DOCTYPE html>
 <html lang="en">

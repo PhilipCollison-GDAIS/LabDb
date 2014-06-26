@@ -28,4 +28,4 @@
 		die('<p>Cound not select the winner project2 database because: <b>'.mysql_error(). '</b></p>');
 	}
 	*/
-?>
+ ?>
