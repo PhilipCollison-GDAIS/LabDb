@@ -26,7 +26,7 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Comments</th>';
 		$string .= '</tr>';
 
-		$query = 'SELECT name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment 
+		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment 
 					FROM racks, rooms, widths, depths
 					WHERE racks.room_id = rooms.id
 					AND racks.width_id = widths.id
@@ -44,6 +44,7 @@ class RacksReport implements reportsInterface{
 			$string .= '<td>' . $row->max_power . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
+			$string .= '<td><a href="/forms/racks.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
