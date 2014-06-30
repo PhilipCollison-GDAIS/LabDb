@@ -1,11 +1,11 @@
 <?php
-	include "/inc/connect.php";
+	require_once "/inc/connect.php";
 	global $pdo;
 
 	$name = $_POST['inputProjectName'];
 	$comment = $_POST['inputComment'];
 
-	$query = "INSERT INTO Projects (name, comment) Values (:name, :comment)";
+	$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
 
 	$pdo->prepare($query)->execute(array(':name'=>$name, ':comment'=>$comment));
 

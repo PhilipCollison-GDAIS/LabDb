@@ -5,7 +5,7 @@
 	$vendor = $_POST['inputVendor'];
 	$comment = $_POST['inputComment'];
 
-	$query = "INSERT INTO Vendors (vendor, comment) Values (:vendor, :comment)";
+	$query = "INSERT INTO vendors (vendor, comment) Values (:vendor, :comment)";
 
 	$pdo->prepare($query)->execute(array(':vendor'=>$vendor, ':comment'=>$comment));
 

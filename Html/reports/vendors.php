@@ -1,40 +1,49 @@
 <?php
-	include "/inc/database.php";
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-	    <?php include "/inc/header.php" ?>
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-		<title>Vendors</title>
-	</head>
+class VendorsReport implements reportsInterface{
+	public function getTitle(){
+		return 'Vendors';
+	}
 
-	<body>
-		<div class="container">
+	public function getHeading(){
+		return 'Vendors';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getTableString(){
+		global $pdo;
 
-			<div class="row">
+		$string = '<table class="table">';
 
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<tr>';
+		$string .= '<th>Vendor</th>';
+		$string .= '<th>Comments</th>';
+		$string .= '</tr>';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$query = 'SELECT vendor, comment FROM vendors';
 
-						<h1>Vendors</h1>
+		$row_resource = $pdo->query($query);
 
-						<?php echo tableStringForVendors(); ?>
+		while ($row = $row_resource->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td><a href="#">' . $row->vendor . '</a></td>';
+			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="#">Edit</a></td>';
+			$string .= '</tr>';
+		}
 
-						<p><a href="/forms/vendors.php">Add Vendor</a></p>
+		$string .= '</table>';
 
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+		return $string;
+	}
 
-		</div> <!-- /container -->
+	public function getAddButton(){
+		return '<a href="/forms/vendors.php">Add Vendor</a>';
+	}
+}
 
-		<?php include "/inc/footer.php" ?>
+$report = new VendorsReport();
 
-	</body>
-</html>
+include "/inc/reports.php";
+?>

@@ -26,7 +26,7 @@
 	echo "comment: $comment";
 	*/
 
-	$query = "INSERT INTO Racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
+	$query = "INSERT INTO racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
 	(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
 
 	$q = $pdo->prepare($query);
@@ -104,17 +104,10 @@
 				</div>
 				<div class="col-md-4"></div>
 			</div>
-			
-			
 
 		</div> <!-- /container -->
 
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<!-- Latest compiled and minified JavaScript 
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
-		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"> </script>
-		<script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
-		
+		<?php include "inc/footer.php" ?>
+
 	</body>
 </html>

@@ -5,7 +5,7 @@
 	$room_number = $_POST['inputRoomNumber'];
 	$comment = $_POST['inputComment'];
 
-	$query = "INSERT INTO Rooms (room_number, comment) Values (:room_number, :comment)";
+	$query = "INSERT INTO rooms (room_number, comment) Values (:room_number, :comment)";
 
 	$pdo->prepare($query)->execute(array(':room_number'=>$room_number, ':comment'=>$comment));
 
@@ -35,7 +35,6 @@
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
-								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
 								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
 							</div>
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>

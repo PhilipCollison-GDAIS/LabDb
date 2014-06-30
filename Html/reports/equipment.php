@@ -1,40 +1,106 @@
-<?php 
-	include "/inc/database.php";
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<?php include "/inc/header.php" ?>
+<?php
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-		<title>Equipment</title>
-	</head>
+// function queryEquipmentForVendor ($equipment_object) {
+// 	global $pdo;
 
-	<body>
-		<div class="container">
+// 	$query_vendors = "SELECT * FROM vendors WHERE id=$equipment_object->vendor_id";
 
-			<?php include "/inc/navbar.php" ?>
+// 	$equipment_object = $pdo->query($query_vendors);
+// 	$vendor_row = $equipment_object->fetchObject();
 
-			<div class="row">
+// 	return $vendor_row->vendor;
+// }
 
-				<?php include "/inc/sidebar.php" ?>
+// TODO: rewrite
+// function queryEquipmentForLocation ($equipment_object) {
+	// global $pdo;
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+	// $query_affiliation = "$equipment_object->affiliated";
+	// $affiliation = $pdo->query($query_affiliation);
 
-						<h1>Equipment</h1>
+	// if($equipment_object->affiliated == 'E'){
+	// 	$query_parent_equipment = "SELECT * FROM equipment WHERE id=$equipment_object->parent_equipment_id";
 
-						<?php echo tableStringForEquipment(); ?>
+	// 	$parent_equipment_resource = $pdo->query($query_parent_equipment);
+	// 	$parent_equipment_object = $parent_equipment_resource->fetchObject();
 
-						<p><a href="/forms/equipment.php">Add Equipment</a></p>
+	// 	return get_equipment_location($parent_equipment_object);
+	// }
 
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+	// $query_racks = "SELECT * FROM racks WHERE id=$equipment_object->parent_rack_id";
 
-		</div> <!-- /container -->
+	// $rack_resource = $pdo->query($query_racks);
+	// $rack_row = $rack_resource->fetchObject();
 
-		<?php include "/inc/footer.php" ?>
+	// $room_query = "SELECT floor_location FROM rooms WHERE id=$rack_row->room_id";
 
-	</body>
-</html>
+	// $room_resource = $pdo->query($room_query);
+	// $room_row = $room_resource->fetchObject();
+
+	// return $room_row->floor_location;
+
+// 	return "";
+// }
+
+// function tableStringForEquipments(){
+// 	global $pdo;
+
+// 	$string = '<table class="table">';
+
+// 	$string .= '<tr>';
+// 	$string .= '<th>Model</th>';
+// 	$string .= '<th>Location</th>';
+// 	$string .= '<th>Vendor</th>';
+// 	$string .= '</tr>';
+
+// 	$query = "SELECT * FROM equipment";
+
+// 	$row_resource = $pdo->query($query);
+
+// 	while ($row = $row_resource->fetchObject()) {
+// 		$string .= '<tr>';
+// 		$string .= '<td>' . $row->model . '</td>';
+// 		$string .= '<td>' . queryEquipmentForLocation($row) . '</td>';
+// 		$string .= '<td>' . queryEquipmentForVendor($row) . '</td>';
+// 		$string .= '<td><a href="#">Edit</a></td>';
+// 		$string .= '</tr>';
+// 	}
+
+// 	$string .= '</table>';
+
+// 	return $string;
+// }
+
+
+class EquipmentReport implements reportsInterface{
+	public function getTitle(){
+		return 'Equipment';
+	}
+
+	public function getHeading(){
+		return 'Equipment';
+	}
+
+	public function getTableString(){
+		global $pdo;
+
+		$string = '<table class="table">';
+
+		$string .= 'Not Yet Implemented';
+
+		$string .= '</table>';
+
+		return $string;
+	}
+
+	public function getAddButton(){
+		return '<a href="/forms/equipment.php">Add Equipment</a>';
+	}
+}
+
+$report = new EquipmentReport();
+
+include "/inc/reports.php";
+?>

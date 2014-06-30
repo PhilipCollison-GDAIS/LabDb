@@ -1,40 +1,49 @@
 <?php
-	include "/inc/database.php";
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<?php include "/inc/header.php" ?>
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-		<title>Rooms</title>
-	</head>
+class RoomsReport implements reportsInterface{
+	public function getTitle(){
+		return 'Rooms';
+	}
 
-	<body>
-		<div class="container">
+	public function getHeading(){
+		return 'Rooms';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getTableString(){
+		global $pdo;
 
-			<div class="row">
+		$string = '<table class="table">';
 
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<tr>';
+		$string .= '<th>Room Number</th>';
+		$string .= '<th>Comment</th>';
+		$string .= '</tr>';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$query = 'SELECT room_number, comment FROM rooms';
 
-						<h1>Rooms</h1>
+		$row_resource = $pdo->query($query);
 
-						<?php echo tableStringForRooms(); ?>
+		while ($row = $row_resource->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td><a href="#">' . $row->room_number . '</td>';
+			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="#">Edit</a></td>';
+			$string .= '</tr>';
+		}
 
-						<p><a href="/forms/rooms.php">Add Room</a></p>
+		$string .= '</table>';
 
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+		return $string;
+	}
 
-		</div> <!-- /container -->
+	public function getAddButton(){
+		return '<a href="/forms/rooms.php">Add Room</a>';
+	}
+}
 
-		<?php include "/inc/footer.php" ?>
+$report = new RoomsReport();
 
-	</body>
-</html>
+include "/inc/reports.php";
+?>

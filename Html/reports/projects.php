@@ -1,40 +1,49 @@
 <?php
-	include "/inc/database.php";
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-	    <?php include "/inc/header.php" ?>
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-		<title>Projects</title>
-	</head>
+class ProjectsReport implements reportsInterface{
+	public function getTitle(){
+		return 'Projects';
+	}
 
-	<body>
-		<div class="container">
+	public function getHeading(){
+		return 'Projects';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getTableString(){
+		global $pdo;
 
-			<div class="row">
+		$string = '<table class="table">';
 
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<tr>';
+		$string .= '<th>Project Name</th>';
+		$string .= '<th>Comments</th>';
+		$string .= '</tr>';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$query = 'SELECT name, comment FROM projects';
 
-						<h1>Projects</h1>
+		$row_resource = $pdo->query($query);
 
-						<?php echo tableStringForProjects(); ?>
+		while ($row = $row_resource->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td><a href="#">' . $row->name . '</a></td>';
+			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="#">Edit</a></td>';
+			$string .= '</tr>';
+		}
 
-						<p><a href="/forms/projects.php">Add Project</a></p>
+		$string .= '</table>';
 
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+		return $string;
+	}
 
-		</div> <!-- /container -->
+	public function getAddButton(){
+		return '<a href="/forms/projects.php">Add Project</a>';
+	}
+}
 
-		<?php include "/inc/footer.php" ?>
+$report = new ProjectsReport();
 
-	</body>
-</html>
+include "/inc/reports.php";
+?>

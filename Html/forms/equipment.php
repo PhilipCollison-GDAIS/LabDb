@@ -237,17 +237,11 @@
 				</div>
 				<div class="col-md-4"></div>
 			</div>
-			
-			
 
 		</div> <!-- /container -->
 
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<!-- Latest compiled and minified JavaScript 
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
-		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"> </script>
-		<script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+		<?php include "inc/footer.php" ?>
+
 		<script>
 			function hideBoth() {
 				document.getElementById("inputParentRackID").style.visibility="hidden";
