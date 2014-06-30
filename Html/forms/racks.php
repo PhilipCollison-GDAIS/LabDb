@@ -1,5 +1,6 @@
 <?php 
-	include "/inc/connect.php";
+	require_once "/inc/connect.php";
+	include "/inc/database.php";
 	global $pdo;
 
 	$name = $_POST['inputName'];
@@ -79,7 +80,7 @@
 
 				<div class="col-md-10">
 					<div class="jumbotron">
-						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
+						<form role="form" method="post" action="/forms/racks.php">
 							<div class="form-group">
 								<label for="inputName">Name</label>
 								<input type="text" name="inputName" class="form-control" id="inputName" placeholder="Enter Name" value="<?php if(isset($name)){ echo htmlspecialchars($name);} ?>" maxlength="15" size="15" autofocus="autofocus">
@@ -89,8 +90,10 @@
 								<input type="text" name="inputOldName" class="form-control" id="inputOldName" placeholder="Enter Old Name" value="<?php if(isset($old_name)){ echo htmlspecialchars($old_name);} ?>" maxlength="15" size ="15">
 							</div>
 							<div class="form-group">
-								<label for="inputRoomID">Room ID</label>
-								<input type="text" name="inputRoomID" class="form-control" id="inputRoomID" placeholder="Enter Room ID" value="<?php if(isset($room_id)){ echo htmlspecialchars($room_id);} ?>" maxlength="10" size ="10">
+								<label for="inputRoomID">Room Number</label>
+								<select name="inputRoomID" class="form-control">
+									<?php echo getRoomOptions($room_id); ?>
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="inputFloorLocation">Floor Location</label>
@@ -101,12 +104,16 @@
 								<input type="text" name="inputHeight" class="form-control" id="inputHeight" placeholder="Enter Height" value="<?php if(isset($height_ru)){ echo htmlspecialchars($height_ru);} ?>" maxlength="10" size ="10">
 							</div>
 							<div class="form-group">
-								<label for="inputWidthID">Width ID</label>
-								<input type="text" name="inputWidthID" class="form-control" id="inputWidthID" placeholder="Enter Width ID" value="<?php if(isset($width_id)){ echo htmlspecialchars($width_id);} ?>" maxlength="10" size ="10">
+								<label for="inputWidthID">Width</label>
+								<select name="inputWidthID" class="form-control">
+									<?php echo getWidthOptions($width_id); ?>
+								</select>
 							</div>
 							<div class="form-group">
-								<label for="inputDepthID">Depth ID</label>
-								<input type="text" name="inputDepthID" class="form-control" id="inputDepthID" placeholder="Enter Depth ID" value="<?php if(isset($depth_id)){ echo htmlspecialchars($depth_id);} ?>" maxlength="10" size ="10">
+								<label for="inputDepthID">Depth</label>
+								<select name="inputDepthID" class="form-control">
+									<?php echo getDepthOptions($depth_id); ?>
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="inputmax_power">max_power</label>
@@ -115,7 +122,7 @@
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
 								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" value="<?php if(isset($comment)){ echo htmlspecialchars($comment);} ?>" cols="60" rows="4"></textarea>
+								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
 							</div>
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>
 						</form>

@@ -36,7 +36,7 @@ class RacksReport implements reportsInterface{
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="#">' . $row->name . '</a></td>';
+			$strin g .= '<td><a href="#">' . $row->name . '</a></td>';
 			$string .= '<td>' . $row->old_name . '</td>';
 			$string .= '<td>' . $row->room_number . '</td>';
 			$string .= '<td>' . $row->floor_location . '</td>';
