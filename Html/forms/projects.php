@@ -31,11 +31,11 @@
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputProjectName">Project Name</label>
-								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" maxlength="45" size ="45" autofocus="autofocus">
+								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" value="<?php if(isset($name)){ echo htmlspecialchars($name);} ?>" maxlength="45" size ="45" autofocus="autofocus">
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
+								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments"  cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
 							</div>
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>
 						</form>

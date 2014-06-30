@@ -31,11 +31,11 @@
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputRoomNumber">Room Number</label>
-								<input type="text" name="inputRoomNumber" class="form-control" id="inputRoomNumber" placeholder="Enter Room Number" maxlength="10" size ="10" autofocus="autofocus">
+								<input type="text" name="inputRoomNumber" class="form-control" id="inputRoomNumber" placeholder="Enter Room Number" value="<?php if(isset($room_number)){ echo htmlspecialchars($room_number);} ?>" maxlength="10" size ="10" autofocus="autofocus">
 							</div>
 							<div class="form-group">
 								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"></textarea>
+								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
 							</div>
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>
 						</form>
