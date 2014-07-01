@@ -28,6 +28,9 @@
 
 				<div class="col-md-10">
 					<div class="jumbotron">
+
+						<h1>Vendors</h1>
+
 						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
 							<div class="form-group">
 								<label for="inputVendor">Vendor</label>

@@ -80,6 +80,9 @@
 
 				<div class="col-md-10">
 					<div class="jumbotron">
+
+						<h1>Racks</h1>
+
 						<form role="form" method="post" action="/forms/racks.php">
 							<div class="form-group">
 								<label for="inputName">Name</label>

@@ -30,13 +30,16 @@ class RacksReport implements reportsInterface{
 					FROM racks, rooms, widths, depths
 					WHERE racks.room_id = rooms.id
 					AND racks.width_id = widths.id
-					AND racks.depth_id = depths.id';
+					AND racks.depth_id = depths.id
+					ORDER BY room_number, name';
+					// TODO: How is is that the ORDER BY clauses should be ordered.
+					//       This decision depends on the conventions for floor_location and name.
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$strin g .= '<td><a href="#">' . $row->name . '</a></td>';
+			$string .= '<td><a href="#">' . $row->name . '</a></td>';
 			$string .= '<td>' . $row->old_name . '</td>';
 			$string .= '<td>' . $row->room_number . '</td>';
 			$string .= '<td>' . $row->floor_location . '</td>';
