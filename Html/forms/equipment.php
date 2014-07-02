@@ -1,5 +1,6 @@
 <?php 
-	include "/inc/connect.php";
+	require_once "/inc/connect.php";
+	include "/inc/database.php";
 	global $pdo;
 
 	$barcode = $_POST['inputBarcode'];
@@ -7,100 +8,65 @@
 	$model = $_POST['inputModel'];
 	$serial_num = $_POST['inputSerialNum'];
 	$GFE_id = $_POST['inputGFEID'];
-	// $affiliated = $_POST['inputAffiliation'];
-	// $parent_rack_id = NULL;
-	// $elevation = NULL;
-	// $parent_equipment_id = NULL;
 	$comment = $_POST['inputComment'];
 
-	function isValid() {
-		global $barcode, $vendor_id, $model, $serial_num, $GFE_id, $error_message;
+	$affiliationChar = $_POST['affiliationChar'];
+	$parent_equipment_id = $_POST['parent_equipment_id'];
+	$parent_rack_id = $_POST['parent_rack_id'];
+	$elevation = $_POST['elevation'];
 
-		if (!isShortAlNum($barcode)) {
-			$error_message = "barcode was invalid";
-			return false;
-		}
+	function isEquipmentValid() {
+		// global $barcode, $vendor_id, $model, $serial_num, $GFE_id;
 
-		if (!isNumericInt($vendor_id)) {
-			$error_message = "vendor_id was invalid";
-			return false;
-		}
+		// if (!isShortAlNum($barcode)) {
+		// 	$error_message = "barcode was invalid";
+		// 	return false;
+		// }
 
-		if (!isShortAlNum($model)) {
-			$error_message = "model was invalid";
-			return false;
-		}
+		// if (!isNumericInt($vendor_id)) {
+		// 	$error_message = "vendor_id was invalid";
+		// 	return false;
+		// }
 
-		if (!isNumericInt($serial_num)) {
-			$error_message = "serial_num was invalid";
-			return false;
-		}
+		// if (!isShortAlNum($model)) {
+		// 	$error_message = "model was invalid";
+		// 	return false;
+		// }
 
-		if (!isShortAlNum($GFE_id)) {
-			$error_message = "GFE_id was invalid";
-			return false;
-		}
+		// if (!isNumericInt($serial_num)) {
+		// 	$error_message = "serial_num was invalid";
+		// 	return false;
+		// }
 
-		if ($affiliated === "R") {
-			if (isNumericInt($parent_rack_id) && isNumericInt($elevation)) {
-				return true;
-			} else {
-				$error_message = "Affiliation was invalid in Racks";
-				return false;
-			}
-		} else if ($affiliated === "E") {
-			if (isNumericInt($parent_equipment_id)) {
-				return true;
-			} else {
-				$error_message = "Affiliation was invalid in Equipment";
-				return false;
-			}
-		} else {
-			$error_message = "Affiliation was " . $affiliated;
-			return false;		
-		}
+		// if (!isShortAlNum($GFE_id)) {
+		// 	$error_message = "GFE_id was invalid";
+		// 	return false;
+		// }
+
+		// if ($affiliated === "R") {
+		// 	if (isNumericInt($parent_rack_id) && isNumericInt($elevation)) {
+		// 		return true;
+		// 	} else {
+		// 		$error_message = "Affiliation was invalid in Racks";
+		// 		return false;
+		// 	}
+		// } else if ($affiliated === "E") {
+		// 	if (isNumericInt($parent_equipment_id)) {
+		// 		return true;
+		// 	} else {
+		// 		$error_message = "Affiliation was invalid in Equipment";
+		// 		return false;
+		// 	}
+		// } else {
+		// 	$error_message = "Affiliation was " . $affiliated;
+		// 	return false;
+		// }
+
+		return false;
 	}
 
-	function isNumericInt($x) {
-		global $specific_error;
-
-		if (empty($x)) {
-			$specific_error = "was empty!\n";
-			return false;
-		}
-
-		if (!is_numeric($x)) {
-			$specific_error = "was not numeric!\n";
-			return false;
-		}
-
-		if (!($x > 0 && $x == round($x))) {
-			$specific_error = "was not a positive int!\n";
-			return false;
-		}
-
-		return true;
-	}
-
-	function isShortAlNum($x) {
-		global $specific_error;
-
-		if (empty($x)) {
-			$specific_error = "was empty!\n";
-			return false;
-		}
-
-		if (strlen($x) > 10) {
-			$specific_error = "was too long!\n";
-			return false;
-		}
-
-		if (!ctype_alnum($x)) {
-			$specific_error = "was not alpha-numeric!\n";
-			return false;
-		}
-
-		return true;
+	function isAffiliationValid() {
+		return false;
 	}
 
 	/*
@@ -116,29 +82,31 @@
 	echo "comment: $comment";
 	*/
 
-	if (isset($_POST[insert]))
+	if (isset($_POST['submit']) && isEquipmentValid() && isAffiliationValid())
 	{
 
-		$parent_rack_id = $_POST['inputParentRackID'];
-		$elevation = $_POST['inputElevation'];
+		/* TODO: Insert both Equipment and its corresponding affiliation into the database.	*/
 
-		$query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, affiliation_id, model, serial_num, GFE_id, comment) Values
-		(:barcode, :vendor_id, :affiliation_id, :model, :serial_num, :GFE_id, :comment)";
+		// $parent_rack_id = $_POST['inputParentRackID'];
+		// $elevation = $_POST['inputElevation'];
 
-		$q = $pdo->prepare($query);
-		$q->execute(array(':barcode'=>$barcode,
-						  ':vendor_id'=>$vendor_id,
-						  ':model'=>$model,
-						  ':serial_num'=>$serial_num,
-						  ':GFE_id'=>$GFE_id,
-						  ':comment'=>$comment));
+		// $query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, affiliation_id, model, serial_num, GFE_id, comment) Values
+		// (:barcode, :vendor_id, :affiliation_id, :model, :serial_num, :GFE_id, :comment)";
+
+		// $q = $pdo->prepare($query);
+		// $q->execute(array(':barcode'=>$barcode,
+		// 				  ':vendor_id'=>$vendor_id,
+		// 				  ':model'=>$model,
+		// 				  ':serial_num'=>$serial_num,
+		// 				  ':GFE_id'=>$GFE_id,
+		// 				  ':comment'=>$comment));
 	}
 
  ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "/inc/header.php" ?>
+		<?php include "/inc/header.php" ?>
 
 		<title>Equipment</title>
 	</head>
@@ -147,8 +115,7 @@
 		<div class="container">
 			
 			<?php include "/inc/navbar.php" ?>
-		
-			
+
 			<div class="row">
 				<?php include "/inc/sidebar.php" ?>
 
@@ -158,13 +125,68 @@
 					<h1>Equipment</h1>
 
 					<?php
-						if (!isset($_GET["affiliation"])) {
+						if (!isset($_GET["affiliation"]) /* TODO: && !isEquipmentValid() */) {
 							include "/inc/forms/equipment.php";
 						} else { ?>
 
-
+						<form role="form" method="post" action="/forms/equipment.php?affiliation">
+							<div class="form-group">
+								<label for="affiliationChar">Parent Affiliation:  </label>
+								<select name="affiliationChar" onchange="this.form.submit();" <?php if(!isset($affiliationChar)) echo 'id="DropdownInitiallyBlank"' ?>>
+									<option value="E" <?php if(isset($affiliationChar) && $affiliationChar == "E"){print "selected=\"selected\"";} ?>>Equipment</option>
+									<option value="R" <?php if(isset($affiliationChar) && $affiliationChar == "R"){print "selected=\"selected\"";} ?>>Racks</option>
+								</select>
+							</div>
+						</form>
 
 					<?php } ?>
+
+
+					<?php if(isset($affiliationChar) && ($affiliationChar === "R" || $affiliationChar === "E")){ ?>
+
+						<form role="form" method="post" action="/forms/equipment.php?affiliation">
+
+							<?php if($affiliationChar === "R"){ ?>
+
+							<div class="form-group">
+								<label for="parent_rack_id">Parent Rack</label>
+								<select name="parent_rack_id" class="form-control">
+									<?php echo getRackOptions(); ?>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="elevation">Elevation</label>
+								<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php if(isset($elevation)){ echo htmlspecialchars($elevation);} ?>"  maxlength="10" size="10">
+							</div>
+
+
+
+
+							<?php } else if ($affiliationChar === "E"){ ?>
+
+
+							<div class="form-group">
+								<label for="parent_equipment_id">Parent Equipment ID</label>
+								<input type="text" name="parent_equipment_id" class="form-control" id="parent_equipment_id" placeholder="Enter Parent's Equipment ID" value="<?php if(isset($parent_equipment_id)){ echo htmlspecialchars($parent_equipment_id);} ?>"  maxlength="10" size="10">
+							</div>
+
+
+
+							<?php } else { ?>
+								<?php echo '<p>$affiliationChar is invalid. It is currently "' . $affiliationChar . '" I am very confused.</p>' ?>
+							<?php } ?>
+
+							<div class="form-group">
+								<label for="inputComment">Comments</label>
+								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
+							</div>
+
+							<button type="submit" name="submit" class="btn btn-default">Submit</button>
+
+						</form>
+
+					<?php } ?>
+
 					</div> <!--jumbotron-->
 				</div>
 				<div class="col-md-4"></div>
@@ -173,6 +195,8 @@
 		</div> <!-- /container -->
 
 		<?php include "inc/footer.php" ?>
+
+		<script type="text/javascript">document.getElementById("DropdownInitiallyBlank").selectedIndex = -1;</script>
 
 	</body>
 </html>

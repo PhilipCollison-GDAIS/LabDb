@@ -2,7 +2,7 @@
 					<div class="single-element">
 						<ul class="nav nav-stacked" align="left">
 							<li><a href="#">Maintanence</a></li>
-							<li><a href="#">Query</a></li>
+							<li><a href="/search.php">Search</a></li>
 							<li><a href="#">Backups</a></li>
 							<li><a href="/reports/projects.php">Projects</a></li>
 							<li><a href="/forms.php">Forms</a></li>
