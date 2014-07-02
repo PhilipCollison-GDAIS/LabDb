@@ -4,8 +4,10 @@
 								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" value="<?php if(isset($barcode)){ echo htmlspecialchars($barcode);} ?>"  maxlength="10" size="10" autofocus="autofocus">
 							</div>
 							<div class="form-group">
-								<label for="inputVendorID">Vendor ID</label>
-								<input type="text" name="inputVendorID" class="form-control" id="inputVendorID" placeholder="Enter Vendor ID" value="<?php if(isset($vendor_id)){ echo htmlspecialchars($vendor_id);} ?>"  maxlength="10" size ="10">
+								<label for="inputVendorID">Vendor</label>
+								<select name="inputVendorID" class="form-control">
+									<?php echo getVendorOptions(); ?>
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="inputModel">Model</label>

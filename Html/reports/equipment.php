@@ -88,7 +88,35 @@ class EquipmentReport implements reportsInterface{
 
 		$string = '<table class="table">';
 
-		$string .= 'Not Yet Implemented';
+		$string .= '<tr>';
+		$string .= '<th>Barcode</th>';
+		$string .= '<th>Vendor</th>';
+		$string .= '<th>Model</th>';
+		$string .= '<th>Serial Number</th>';
+		$string .= '<th>GFE ID</th>';
+		$string .= '<th>Comments</th>';
+		$string .= '</tr>';
+
+		$query = 'SELECT equipment.id, barcode_number, vendor, model, serial_num, GFE_id, equipment.comment
+					FROM equipment, vendors
+					WHERE equipment.vendor_id = vendors.id
+					ORDER BY barcode_number, model';
+					// TODO: How is is that the ORDER BY clauses should be ordered?
+
+		$row_resource = $pdo->query($query);
+
+		while ($row = $row_resource->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->barcode_number . '</a></td>';
+			$string .= '<td>' . $row->vendor . '</td>';
+			$string .= '<td>' . $row->model . '</td>';
+			$string .= '<td>' . $row->serial_num . '</td>';
+			$string .= '<td>' . $row->GFE_id . '</td>';
+			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="/forms/equipment.php?edit_id=' . $row->id . '">Edit</a></td>';
+			$string .= '<td><a href="/forms/equipment.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '</tr>';
+		}
 
 		$string .= '</table>';
 

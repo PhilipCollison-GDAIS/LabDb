@@ -32,21 +32,21 @@ class RacksReport implements reportsInterface{
 					AND racks.width_id = widths.id
 					AND racks.depth_id = depths.id
 					ORDER BY room_number, name';
-					// TODO: How is is that the ORDER BY clauses should be ordered.
+					// TODO: How is is that the ORDER BY clauses should be ordered?
 					//       This decision depends on the conventions for floor_location and name.
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="#">' . $row->name . '</a></td>';
+			$string .= '<td><a href="/reports/racks.php?id=' . $row->id . '">' . $row->name . '</a></td>';
 			$string .= '<td>' . $row->old_name . '</td>';
 			$string .= '<td>' . $row->room_number . '</td>';
 			$string .= '<td>' . $row->floor_location . '</td>';
 			$string .= '<td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td>';
 			$string .= '<td>' . $row->max_power . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="#">Edit</a></td>';
+			$string .= '<td><a href="/forms/racks.php?edit_id=' . $row->id . '">Edit</a></td>';
 			$string .= '<td><a href="/forms/racks.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}

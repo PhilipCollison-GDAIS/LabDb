@@ -97,6 +97,30 @@ function getRackOptions($id){
 	return $string;
 }
 
+function getVendorOptions($id){
+	global $pdo;
+
+	$string .= '<option></option>';
+
+	$query = 'SELECT id, vendor FROM vendors';
+
+	$row_resource = $pdo->query($query);
+
+	while ($row = $row_resource->fetchObject()) {
+		$string .= '<option value="';
+		$string .=  $row->id;
+		$string .= '"';
+		if(isset($id) && $id == $row->id){
+			$string .= ' selected="selected"';
+		}
+		$string .= '>';
+		$string .= $row->vendor;
+		$string .= '</option>';
+	}
+
+	return $string;
+}
+
 function isNaturalNumber($x) {
 	return !empty($x) && is_numeric($x) && $x > 0 && $x == round($x);
 }

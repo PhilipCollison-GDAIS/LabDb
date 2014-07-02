@@ -10,7 +10,7 @@
 
 	Global $pdo;
 	$pdo = new PDO ('mysql:host=localhost;dbname=lab_database_schema;charset=utf8', 'root', 'password');
-
+	$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 	/*Attempt to Connect
 

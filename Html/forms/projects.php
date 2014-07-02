@@ -2,13 +2,22 @@
 	require_once "/inc/connect.php";
 	global $pdo;
 
-	$name = $_POST['inputProjectName'];
-	$comment = $_POST['inputComment'];
+	if(isset($_POST['insert'])){
+		$name = $_POST['inputProjectName'];
+		$comment = $_POST['inputComment'];
 
-	$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
+		$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
 
-	$pdo->prepare($query)->execute(array(':name'=>$name, ':comment'=>$comment));
+		$q = $pdo->prepare($query);
 
+		$wasSuccessful = $q->execute(array(':name'=>$name, ':comment'=>$comment));
+
+		if($wasSuccessful){
+			header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
+		} else {
+			//TODO: Let the user fix input
+		}
+	}
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +40,7 @@
 
 						<h1>Projects</h1>
 
-						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
+						<form role="form" method="post" action="/forms/projects.php?submit">
 							<div class="form-group">
 								<label for="inputProjectName">Project Name</label>
 								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" value="<?php if(isset($name)){ echo htmlspecialchars($name);} ?>" maxlength="45" size ="45" autofocus="autofocus">

@@ -1,19 +1,7 @@
-<?php 
+<?php
 	require_once "/inc/connect.php";
 	include "/inc/database.php";
 	global $pdo;
-
-	$barcode = $_POST['inputBarcode'];
-	$vendor_id = $_POST['inputVendorID'];
-	$model = $_POST['inputModel'];
-	$serial_num = $_POST['inputSerialNum'];
-	$GFE_id = $_POST['inputGFEID'];
-	$comment = $_POST['inputComment'];
-
-	$affiliationChar = $_POST['affiliationChar'];
-	$parent_equipment_id = $_POST['parent_equipment_id'];
-	$parent_rack_id = $_POST['parent_rack_id'];
-	$elevation = $_POST['elevation'];
 
 	function isEquipmentValid() {
 		// global $barcode, $vendor_id, $model, $serial_num, $GFE_id;
@@ -69,38 +57,131 @@
 		return false;
 	}
 
-	/*
-	echo "barcode: $barcode";
-	echo "vendor id: $vendor_id";
-	echo "model: $model";
-	echo "serial_num: $serial_num";
-	echo "GFE_id: $GFE_id";
-	echo "affiliated: $affiliated";
-	echo "parent_rack_id: $parent_rack_id";
-	echo "elevation: $elevation";
-	echo "parent_equipment_id: $parent_equipment_id";
-	echo "comment: $comment";
-	*/
+	if(isset($_GET["affiliation"])){
+		// We only store the equipment properties on the initial load of affiliation
+		// On any subsequent loads $_POST[affiliationChar] is set and we do not overwrite
+		if(!isset($_POST['affiliationChar'])){
+			echo "Overloading SESSION!!!";
+			$_SESSION['barcode'] = $_POST['inputBarcode'];
+			$_SESSION['vendor_id'] = $_POST['inputVendorID'];
+			$_SESSION['model'] = $_POST['inputModel'];
+			$_SESSION['serial_num'] = $_POST['inputSerialNum'];
+			$_SESSION['GFE_id'] = $_POST['inputGFEID'];
+			$_SESSION['comment'] = $_POST['inputComment'];
+		} else {
+			echo "Not overloading SESSION";
+			$_SESSION['affiliationChar'] = $_POST['affiliationChar'];
+		}
 
-	if (isset($_POST['submit']) && isEquipmentValid() && isAffiliationValid())
+		$affiliationChar = $_SESSION['affiliationChar'];
+	}
+
+	if (isset($_POST['insert']) /* && isEquipmentValid() && isAffiliationValid() */)
 	{
 
-		/* TODO: Insert both Equipment and its corresponding affiliation into the database.	*/
+		$barcode = $_SESSION['barcode'];
+		$vendor_id = $_SESSION['vendor_id'];
+		$model = $_SESSION['model'];
+		$serial_num = $_SESSION['serial_num'];
+		$GFE_id = $_SESSION['GFE_id'];
+		$comment = $_SESSION['comment'];
 
-		// $parent_rack_id = $_POST['inputParentRackID'];
-		// $elevation = $_POST['inputElevation'];
+		$affiliated = $_SESSION['affiliationChar'];
+		$parent_equipment_id = $_POST['parent_equipment_id'];
+		$parent_rack_id = $_POST['parent_rack_id'];
+		$elevation = $_POST['elevation'];
 
-		// $query = "INSERT INTO Equipment (BN_barcode_number, vendor_id, affiliation_id, model, serial_num, GFE_id, comment) Values
-		// (:barcode, :vendor_id, :affiliation_id, :model, :serial_num, :GFE_id, :comment)";
+		try{
+			// Insert affiliation
+			$query = "INSERT INTO affiliations (affiliated, parent_equipment_id, parent_rack_id, elevation) VALUES
+			(:affiliated, :parent_equipment_id, :parent_rack_id, :elevation)";
 
-		// $q = $pdo->prepare($query);
-		// $q->execute(array(':barcode'=>$barcode,
-		// 				  ':vendor_id'=>$vendor_id,
-		// 				  ':model'=>$model,
-		// 				  ':serial_num'=>$serial_num,
-		// 				  ':GFE_id'=>$GFE_id,
-		// 				  ':comment'=>$comment));
+			$q = $pdo->prepare($query);
+			$wasSuccessful = $q->execute(array(':affiliated'=>$affiliated,
+							  ':parent_equipment_id'=>$parent_equipment_id,
+							  ':parent_rack_id'=>$parent_rack_id,
+							  ':elevation'=>$elevation));
+
+			if($wasSuccessful){
+				//Insertion of Affiliation was successful";
+			} else {
+				echo '<pre>';
+				echo 'Insertion of Affiliation was NOT successful\n';
+				echo ' . ^ . ^ .';
+				print_r($q->errorInfo());
+				echo ' . ^ . ^ .';
+				echo $q->errorCode();
+				echo ' . ^ . ^ .';
+				exit;
+			}
+
+			// Find and store lastInsertId
+			$lastInsertId = $pdo->lastInsertId();
+
+			// Insert piece of equipment with lastInsertId as id/pk
+			$query = "INSERT INTO equipment (id, barcode_number, vendor_id, model, serial_num, GFE_id, comment) VALUES
+			(:id, :barcode, :vendor_id, :model, :serial_num, :GFE_id, :comment)";
+
+			$q = $pdo->prepare($query);
+			$wasSuccessful = $q->execute(array(':id'=>$lastInsertId,
+							  ':barcode'=>$barcode,
+							  ':vendor_id'=>$vendor_id,
+							  ':model'=>$model,
+							  ':serial_num'=>$serial_num,
+							  ':GFE_id'=>$GFE_id,
+							  ':comment'=>$comment));
+
+			if($wasSuccessful){
+				echo "Insertion of Equipment was successful";
+			} else {
+				echo '<pre>';
+				echo 'Insertion of Affiliation was NOT successful\n';
+				echo ' . ^ . ^ .';
+				print_r($q->errorInfo());
+				echo ' . ^ . ^ .';
+				echo $q->errorCode();
+				echo ' . ^ . ^ .';
+				exit;
+			}
+
+			// All was successful, cear session variables and redirect user
+			unset($_SESSION['barcode']);
+			unset($_SESSION['vendor_id']);
+			unset($_SESSION['model']);
+			unset($_SESSION['serial_num']);
+			unset($_SESSION['GFE_id']);
+			unset($_SESSION['comment']);
+			unset($_SESSION['affiliationChar']);
+
+			header('Location: /reports/equipment.php?id=' . $lastInsertId);
+
+
+		} catch (Exception $e) {
+			echo 'Caught exception: ', $e->getMessage(), "\n";
+		}
+
 	}
+
+	// echo '<pre>';
+
+	// var_dump($_SESSION) . "\n";
+
+	// echo '</pre>';
+
+	// echo '<pre>';
+
+	// echo "barcode: $barcode\n";
+	// echo "vendor id: $vendor_id\n";
+	// echo "model: $model\n";
+	// echo "serial_num: $serial_num\n";
+	// echo "GFE_id: $GFE_id\n";
+	// echo "affiliated: $affiliated\n";
+	// echo "parent_rack_id: $parent_rack_id\n";
+	// echo "elevation: $elevation\n";
+	// echo "parent_equipment_id: $parent_equipment_id\n";
+	// echo "comment: $comment\n";
+
+	// echo '</pre>';
 
  ?>
 <!DOCTYPE html>
@@ -144,7 +225,7 @@
 
 					<?php if(isset($affiliationChar) && ($affiliationChar === "R" || $affiliationChar === "E")){ ?>
 
-						<form role="form" method="post" action="/forms/equipment.php?affiliation">
+						<form role="form" method="post" action="/forms/equipment.php?submit">
 
 							<?php if($affiliationChar === "R"){ ?>
 
@@ -173,15 +254,10 @@
 
 
 							<?php } else { ?>
-								<?php echo '<p>$affiliationChar is invalid. It is currently "' . $affiliationChar . '" I am very confused.</p>' ?>
+								<?php echo '<p>$affiliationChar is invalid. It is currently "' . $affiliationChar . '" I am very confused; this can literally never be called!</p>' ?>
 							<?php } ?>
 
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
-
-							<button type="submit" name="submit" class="btn btn-default">Submit</button>
+							<button type="submit" name="insert" class="btn btn-default">Insert</button>
 
 						</form>
 
