@@ -73,7 +73,6 @@ include "/inc/prototypes.php";
 // 	return $string;
 // }
 
-
 class EquipmentReport implements reportsInterface{
 	public function getTitle(){
 		return 'Equipment';
@@ -125,6 +124,71 @@ class EquipmentReport implements reportsInterface{
 
 	public function getAddButton(){
 		return '<a href="/forms/equipment.php">Add Equipment</a>';
+	}
+
+	public function getIdString($id){
+		if(!isset($id)){
+			return '<br>';
+		}
+
+		global $pdo;
+
+		$query = 'SELECT barcode_number, vendor, model, serial_num, GFE_id, equipment.comment
+					FROM equipment, vendors
+					WHERE equipment.vendor_id = vendors.id AND equipment.id = :id';
+
+		$q = $pdo->prepare($query);
+		$q->bindParam(':id', $id, PDO::PARAM_INT);
+		$q->execute();
+
+		$row = $q->fetchObject();
+
+		$string = '<table class="table" style="width: 450px; font-size: 16px;">';
+		$string .= '	<tr><td><strong>Barcode Number: </strong></td><td>' . $row->barcode_number . '</td></tr>';
+		$string .= '	<tr><td><strong>Vendor: </strong></td><td>' . $row->vendor . '</td></tr>';
+		$string .= '	<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
+		$string .= '	<tr><td><strong>Serial Number: </strong></td><td>' . $row->serial_num . '</td></tr>';
+		$string .= '	<tr><td><strong>GFE ID: </strong></td><td>' . $row->GFE_id . '</td></tr>';
+		$string .= '	<tr><td><strong>Comment: </strong></td><td>' . $row->comment . '</td></tr>';
+		$string .= '</table>';
+
+		$string .= '<br>';
+
+		$string .= '<table class="table">';
+		$string .= '<tr>';
+		$string .= '<th>Connector Type</th>';
+		$string .= '<th>Name</th>';
+		$string .= '<th>Port Number</th>';
+		$string .= '<th>Gender</th>';
+		$string .= '<th>Type</th>';
+		$string .= '</tr>';
+
+		$query = 'SELECT ports.name AS connector_type, port_number, type, connector_gender, connector_types.name
+					FROM ports, connector_types
+					WHERE ports.connector_type_id = connector_types.id AND equipment_id = :id
+					ORDER BY connector_types.name, ports.name, port_number';
+
+		$q = $pdo->prepare($query);
+		$q->bindParam(':id', $id, PDO::PARAM_INT);
+		$q->execute();
+
+		while ($row = $q->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td>' . $row->connector_type . '</td>';
+			$string .= '<td>' . $row->name . '</td>';
+			$string .= '<td>' . $row->port_number . '</td>';
+			$string .= '<td>' . $row->connector_gender . '</td>';
+			$string .= '<td>';
+			$string .= $row->type === "E" ? 'Electrical' : 'Optical';
+			$string .= '</td>';
+			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a></td>';
+			$string .= '<td><a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '</tr>';
+		}
+
+		$string .= '</table>';
+
+		return $string;
 	}
 }
 

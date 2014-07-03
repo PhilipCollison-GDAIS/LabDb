@@ -20,9 +20,16 @@
 
 						<h1><?php echo $report->getHeading(); ?></h1>
 
-						<?php echo $report->getTableString(); ?>
+						<?php
+						if(empty($_GET)){
+							echo $report->getTableString();
 
-						<p><?php echo $report->getAddButton(); ?></p>
+							echo '<p>';
+							echo $report->getAddButton();
+							echo '</p>';
+						} else if(isset($_GET['id'])){
+							echo $report->getIdString($_GET['id']);
+						} ?>
 
 					</div> <!--jumbotron-->
 				</div>

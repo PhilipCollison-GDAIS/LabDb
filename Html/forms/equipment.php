@@ -4,7 +4,23 @@
 	global $pdo;
 
 	function isEquipmentValid() {
-		// global $barcode, $vendor_id, $model, $serial_num, $GFE_id;
+		global $barcode, $vendor_id, $model, $serial_num, $GFE_id;
+
+		if(!isset($barcode))
+			return "barcode is not set.";
+
+		if(!isset($vendor_id))
+			return "Please choose a vendor";
+
+		if(!isset($model))
+			return "model is not set.";
+
+		if(!isset($serial_num))
+			return "serial_num is not set.";
+
+		if(!isset($GFE_id))
+			return "GFE_id is not set.";
+			// TODO: Can this be empty?
 
 		// if (!isShortAlNum($barcode)) {
 		// 	$error_message = "barcode was invalid";
@@ -31,6 +47,10 @@
 		// 	return false;
 		// }
 
+		return true;
+	}
+
+	function isAffiliationValid() {
 		// if ($affiliated === "R") {
 		// 	if (isNumericInt($parent_rack_id) && isNumericInt($elevation)) {
 		// 		return true;
@@ -53,15 +73,14 @@
 		return false;
 	}
 
-	function isAffiliationValid() {
-		return false;
+	if (empty($_GET)) {
+		unset($_SESSION['affiliated']);
 	}
 
 	if(isset($_GET["affiliation"])){
 		// We only store the equipment properties on the initial load of affiliation
-		// On any subsequent loads $_POST[affiliationChar] is set and we do not overwrite
-		if(!isset($_POST['affiliationChar'])){
-			echo "Overloading SESSION!!!";
+		// On any subsequent loads $_POST[affiliated] is set and we do not overwrite
+		if(!isset($_POST['affiliated'])){
 			$_SESSION['barcode'] = $_POST['inputBarcode'];
 			$_SESSION['vendor_id'] = $_POST['inputVendorID'];
 			$_SESSION['model'] = $_POST['inputModel'];
@@ -69,27 +88,27 @@
 			$_SESSION['GFE_id'] = $_POST['inputGFEID'];
 			$_SESSION['comment'] = $_POST['inputComment'];
 		} else {
-			echo "Not overloading SESSION";
-			$_SESSION['affiliationChar'] = $_POST['affiliationChar'];
+			$_SESSION['affiliated'] = $_POST['affiliated'];
+			$affiliated = $_SESSION['affiliated'];
 		}
 
-		$affiliationChar = $_SESSION['affiliationChar'];
 	}
 
-	if (isset($_POST['insert']) /* && isEquipmentValid() && isAffiliationValid() */)
+	$barcode = $_SESSION['barcode'];
+	$vendor_id = $_SESSION['vendor_id'];
+	$model = $_SESSION['model'];
+	$serial_num = $_SESSION['serial_num'];
+	$GFE_id = $_SESSION['GFE_id'];
+	$comment = $_SESSION['comment'];
+
+	$parent_equipment_id = $_POST['parent_equipment_id'];
+	$parent_rack_id = $_POST['parent_rack_id'];
+	$elevation = $_POST['elevation'];
+
+	if (isset($_POST['insert']) /* && isEquipmentValid() === true && isAffiliationValid() === true */)
 	{
 
-		$barcode = $_SESSION['barcode'];
-		$vendor_id = $_SESSION['vendor_id'];
-		$model = $_SESSION['model'];
-		$serial_num = $_SESSION['serial_num'];
-		$GFE_id = $_SESSION['GFE_id'];
-		$comment = $_SESSION['comment'];
-
-		$affiliated = $_SESSION['affiliationChar'];
-		$parent_equipment_id = $_POST['parent_equipment_id'];
-		$parent_rack_id = $_POST['parent_rack_id'];
-		$elevation = $_POST['elevation'];
+		$affiliated = $_SESSION['affiliated'];
 
 		try{
 			// Insert affiliation
@@ -106,13 +125,12 @@
 				//Insertion of Affiliation was successful";
 			} else {
 				echo '<pre>';
-				echo 'Insertion of Affiliation was NOT successful\n';
-				echo ' . ^ . ^ .';
-				print_r($q->errorInfo());
-				echo ' . ^ . ^ .';
-				echo $q->errorCode();
-				echo ' . ^ . ^ .';
-				exit;
+				echo 'Insertion of Affiliation was NOT successful' . "\n";
+				echo ' . ^ . ^ .' . "\n";
+				print_r($q->errorInfo()) . "\n";
+				echo ' . ^ . ^ .' . "\n";
+				echo $q->errorCode() . "\n";
+				echo ' . ^ . ^ .' . "\n";
 			}
 
 			// Find and store lastInsertId
@@ -135,13 +153,12 @@
 				echo "Insertion of Equipment was successful";
 			} else {
 				echo '<pre>';
-				echo 'Insertion of Affiliation was NOT successful\n';
-				echo ' . ^ . ^ .';
-				print_r($q->errorInfo());
-				echo ' . ^ . ^ .';
-				echo $q->errorCode();
-				echo ' . ^ . ^ .';
-				exit;
+				echo 'Insertion of Equipment was NOT successful' . "\n";
+				echo ' . ^ . ^ .' . "\n";
+				print_r($q->errorInfo()) . "\n";
+				echo ' . ^ . ^ .' . "\n";
+				echo $q->errorCode() . "\n";
+				echo ' . ^ . ^ .' . "\n";
 			}
 
 			// All was successful, cear session variables and redirect user
@@ -151,7 +168,7 @@
 			unset($_SESSION['serial_num']);
 			unset($_SESSION['GFE_id']);
 			unset($_SESSION['comment']);
-			unset($_SESSION['affiliationChar']);
+			unset($_SESSION['affiliated']);
 
 			header('Location: /reports/equipment.php?id=' . $lastInsertId);
 
@@ -206,16 +223,16 @@
 					<h1>Equipment</h1>
 
 					<?php
-						if (!isset($_GET["affiliation"]) /* TODO: && !isEquipmentValid() */) {
-							include "/inc/forms/equipment.php";
+						if (!isset($_GET["affiliation"]) /* TODO: || isEquipmentValid() !== true */) {
+							include "/inc/forms/equipment/equipment_base.php";
 						} else { ?>
 
 						<form role="form" method="post" action="/forms/equipment.php?affiliation">
 							<div class="form-group">
-								<label for="affiliationChar">Parent Affiliation:  </label>
-								<select name="affiliationChar" onchange="this.form.submit();" <?php if(!isset($affiliationChar)) echo 'id="DropdownInitiallyBlank"' ?>>
-									<option value="E" <?php if(isset($affiliationChar) && $affiliationChar == "E"){print "selected=\"selected\"";} ?>>Equipment</option>
-									<option value="R" <?php if(isset($affiliationChar) && $affiliationChar == "R"){print "selected=\"selected\"";} ?>>Racks</option>
+								<label for="affiliated">Parent Affiliation:  </label>
+								<select name="affiliated" onchange="this.form.submit();" <?php if(!isset($affiliated)) echo 'id="DropdownInitiallyBlank"' ?>>
+									<option value="E" <?php if(isset($affiliated) && $affiliated == "E"){print "selected=\"selected\"";} ?>>Equipment</option>
+									<option value="R" <?php if(isset($affiliated) && $affiliated == "R"){print "selected=\"selected\"";} ?>>Racks</option>
 								</select>
 							</div>
 						</form>
@@ -223,11 +240,11 @@
 					<?php } ?>
 
 
-					<?php if(isset($affiliationChar) && ($affiliationChar === "R" || $affiliationChar === "E")){ ?>
+					<?php if(isset($affiliated) && ($affiliated === "R" || $affiliated === "E")){ ?>
 
 						<form role="form" method="post" action="/forms/equipment.php?submit">
 
-							<?php if($affiliationChar === "R"){ ?>
+							<?php if($affiliated === "R"){ ?>
 
 							<div class="form-group">
 								<label for="parent_rack_id">Parent Rack</label>
@@ -240,10 +257,7 @@
 								<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php if(isset($elevation)){ echo htmlspecialchars($elevation);} ?>"  maxlength="10" size="10">
 							</div>
 
-
-
-
-							<?php } else if ($affiliationChar === "E"){ ?>
+							<?php } else if ($affiliated === "E"){ ?>
 
 
 							<div class="form-group">
@@ -251,10 +265,8 @@
 								<input type="text" name="parent_equipment_id" class="form-control" id="parent_equipment_id" placeholder="Enter Parent's Equipment ID" value="<?php if(isset($parent_equipment_id)){ echo htmlspecialchars($parent_equipment_id);} ?>"  maxlength="10" size="10">
 							</div>
 
-
-
 							<?php } else { ?>
-								<?php echo '<p>$affiliationChar is invalid. It is currently "' . $affiliationChar . '" I am very confused; this can literally never be called!</p>' ?>
+								<?php echo '<p>$affiliated is invalid. It is currently "' . $affiliated . '". I am very confused; this can literally never be called!</p>' ?>
 							<?php } ?>
 
 							<button type="submit" name="insert" class="btn btn-default">Insert</button>
