@@ -1,6 +1,7 @@
 <?php
 require_once "/inc/connect.php";
 
+
 function getWidthOptions($id){
 	global $pdo;
 
@@ -115,6 +116,29 @@ function getVendorOptions($id){
 		}
 		$string .= '>';
 		$string .= $row->vendor;
+		$string .= '</option>';
+	}
+
+	return $string;
+}
+function getConnectorTypes($id){
+	global $pdo;
+
+	$string .= '<option></option>';
+
+	$query = 'SELECT id, name FROM connector_types';
+
+	$row_resource = $pdo->query($query);
+
+	while ($row = $row_resource->fetchObject()) {
+		$string .= '<option value="';
+		$string .=  $row->id;
+		$string .= '"';
+		if(isset($id) && $id == $row->id){
+			$string .= ' selected="selected"';
+		}
+		$string .= '>';
+		$string .= $row->name;
 		$string .= '</option>';
 	}
 

@@ -1,6 +1,7 @@
 <?php
 require_once "/inc/connect.php";
 include "/inc/prototypes.php";
+include "/inc/database.php";
 
 // function queryEquipmentForVendor ($equipment_object) {
 // 	global $pdo;
@@ -131,6 +132,18 @@ class EquipmentReport implements reportsInterface{
 			return '<br>';
 		}
 
+		$string = '';
+
+		$string .= '<div id="portModal" class="modalDialog">';
+		$string .= '	<div>';
+		$string .= '		<a href="#close" title="Close" class="close">X</a>';
+		$string .= '		<h2>Add a Port</h2>';
+		ob_start();
+		include "/inc/forms/ports/port_base.php";
+		$string .= ob_get_clean();
+		$string .= '	</div>';
+		$string .= '</div>';
+
 		global $pdo;
 
 		$query = 'SELECT barcode_number, vendor, model, serial_num, GFE_id, equipment.comment
@@ -143,13 +156,13 @@ class EquipmentReport implements reportsInterface{
 
 		$row = $q->fetchObject();
 
-		$string = '<table class="table" style="width: 450px; font-size: 16px;">';
-		$string .= '	<tr><td><strong>Barcode Number: </strong></td><td>' . $row->barcode_number . '</td></tr>';
-		$string .= '	<tr><td><strong>Vendor: </strong></td><td>' . $row->vendor . '</td></tr>';
-		$string .= '	<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
-		$string .= '	<tr><td><strong>Serial Number: </strong></td><td>' . $row->serial_num . '</td></tr>';
-		$string .= '	<tr><td><strong>GFE ID: </strong></td><td>' . $row->GFE_id . '</td></tr>';
-		$string .= '	<tr><td><strong>Comment: </strong></td><td>' . $row->comment . '</td></tr>';
+		$string .= '<table class="table" style="width: 450px; font-size: 16px;">';
+		$string .= '<tr><td><strong>Barcode Number: </strong></td><td>' . $row->barcode_number . '</td></tr>';
+		$string .= '<tr><td><strong>Vendor: </strong></td><td>' . $row->vendor . '</td></tr>';
+		$string .= '<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
+		$string .= '<tr><td><strong>Serial Number: </strong></td><td>' . $row->serial_num . '</td></tr>';
+		$string .= '<tr><td><strong>GFE ID: </strong></td><td>' . $row->GFE_id . '</td></tr>';
+		$string .= '<tr><td><strong>Comment: </strong></td><td>' . $row->comment . '</td></tr>';
 		$string .= '</table>';
 
 		$string .= '<br>';
@@ -161,6 +174,7 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<th>Port Number</th>';
 		$string .= '<th>Gender</th>';
 		$string .= '<th>Type</th>';
+		$string .= '<th><a href="#portModal">Add Port</a></th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT ports.name AS connector_type, port_number, type, connector_gender, connector_types.name
@@ -181,8 +195,7 @@ class EquipmentReport implements reportsInterface{
 			$string .= '<td>';
 			$string .= $row->type === "E" ? 'Electrical' : 'Optical';
 			$string .= '</td>';
-			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a></td>';
-			$string .= '<td><a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
