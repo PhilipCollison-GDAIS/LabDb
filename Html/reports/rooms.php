@@ -38,6 +38,10 @@ class RoomsReport implements reportsInterface{
 		return $string;
 	}
 
+	public function getIdString($id){
+		return $this->getTableString();
+	}
+
 	public function getAddButton(){
 		return '<a href="/forms/rooms.php">Add Room</a>';
 	}

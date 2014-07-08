@@ -14,6 +14,7 @@
 
 		if($wasSuccessful){
 			header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
+			exit;
 		} else {
 			//TODO: Let the user fix input
 		}

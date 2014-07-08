@@ -18,7 +18,7 @@
 		(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
 
 		$q = $pdo->prepare($query);
-		$q->execute(array(':name'=>$name,
+		$wasSuccessful = $q->execute(array(':name'=>$name,
 						  ':old_name'=>$old_name,
 						  ':room_id'=>$room_id,
 						  ':floor_location'=>$floor_location,
@@ -27,6 +27,13 @@
 						  ':depth_id'=>$depth_id,
 						  ':max_power'=>$max_power,
 						  ':comment'=>$comment));
+
+		if($wasSuccessful) {
+			header("Location: /reports/racks.php?id=" . $pdo->lastInsertId());
+			exit;
+		} else {
+			// TODO: Alert user of error
+		}
 	}
 	
 	if(isset($_GET['copy_id'])){
@@ -41,7 +48,7 @@
 			$old_name = $row->old_name;
 			$room_id = $row->room_id;
 			$floor_location = $row->floor_location;
-			$height_ru = $row->height_ru;
+			$height = $row->height_ru;
 			$width_id = $row->width_id;
 			$depth_id = $row->depth_id;
 			$max_power = $row->max_power;

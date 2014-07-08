@@ -121,12 +121,13 @@ function getVendorOptions($id){
 
 	return $string;
 }
+
 function getConnectorTypes($id){
 	global $pdo;
 
 	$string .= '<option></option>';
 
-	$query = 'SELECT id, name FROM connector_types';
+	$query = 'SELECT id, connector_type FROM connector_types';
 
 	$row_resource = $pdo->query($query);
 
@@ -138,7 +139,7 @@ function getConnectorTypes($id){
 			$string .= ' selected="selected"';
 		}
 		$string .= '>';
-		$string .= $row->name;
+		$string .= $row->connector_type;
 		$string .= '</option>';
 	}
 

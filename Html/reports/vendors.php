@@ -38,6 +38,10 @@ class VendorsReport implements reportsInterface{
 		return $string;
 	}
 
+	public function getIdString($id){
+		return $this->getTableString();
+	}
+
 	public function getAddButton(){
 		return '<a href="/forms/vendors.php">Add Vendor</a>';
 	}

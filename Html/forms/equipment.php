@@ -171,7 +171,7 @@
 			unset($_SESSION['affiliated']);
 
 			header('Location: /reports/equipment.php?id=' . $lastInsertId);
-
+			exit;
 
 		} catch (Exception $e) {
 			echo 'Caught exception: ', $e->getMessage(), "\n";

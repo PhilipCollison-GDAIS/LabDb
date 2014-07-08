@@ -38,6 +38,10 @@ class ProjectsReport implements reportsInterface{
 		return $string;
 	}
 
+	public function getIdString($id){
+		return $this->getTableString();
+	}
+
 	public function getAddButton(){
 		return '<a href="/forms/projects.php">Add Project</a>';
 	}
