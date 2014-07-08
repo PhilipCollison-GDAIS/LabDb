@@ -112,10 +112,6 @@ class EquipmentReport implements reportsInterface{
 		return $string;
 	}
 
-	public function getAddButton(){
-		return '<a href="/forms/equipment.php">Add Equipment</a>';
-	}
-
 	public function getIdString($id){
 		if(!isset($id)){
 			return '<br>';
@@ -133,7 +129,7 @@ class EquipmentReport implements reportsInterface{
 
 		$row = $q->fetchObject();
 
-		$string = '<table class="table" style="width: 450px; font-size: 16px;">';
+		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
 		$string .= '<tr><td><strong>Barcode Number: </strong></td><td>' . $row->barcode_number . '</td></tr>';
 		$string .= '<tr><td><strong>Vendor: </strong></td><td>' . $row->vendor . '</td></tr>';
 		$string .= '<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
@@ -153,7 +149,7 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<th>Type</th>';
 		$string .= '<th>';
 		ob_start();
-		include "/inc/forms/ports/port_base.php";
+		include "/inc/modal_buttons/port_button.php";
 		$string .= ob_get_clean();
 		$string .= '</th>';
 		$string .= '</tr>';
@@ -185,6 +181,10 @@ class EquipmentReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
+	}
+
+	public function getAddButton(){
+		return '<a href="/forms/equipment.php">Add Equipment</a>';
 	}
 }
 

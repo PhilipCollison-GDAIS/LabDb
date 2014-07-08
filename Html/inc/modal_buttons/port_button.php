@@ -1,9 +1,5 @@
 						<?php
 
-						$inputPortName = $_POST['inputPortName'];
-						$connector_type_id = $_POST['inputConnectorType'];
-						$connector_gender = $_POST['inputGender'];
-
 						if (isset($_POST['insert_port']) /* && isPortValid() === true */) {
 
 							try{
@@ -13,19 +9,21 @@
 								$q = $pdo->prepare($query);
 								$wasSuccessful = $q->execute(array(':affiliated'=>'E',
 												  ':equipment_id'=>$id,
-												  ':name'=>$inputPortName,
-												  ':connector_type_id'=>$connector_type_id,
-												  ':connector_gender'=>$connector_gender));
+												  ':name'=>$_POST['inputPortName'],
+												  ':connector_type_id'=>$_POST['inputConnectorType'],
+												  ':connector_gender'=>$_POST['inputGender']));
 
-								// if($wasSuccessful) {
-								// 	echo "Successful";
-								// } else {
-								// 	echo '<pre>';
-								// 	print_r($q->errorInfo()) . "\n";
-								// 	echo ' . ^ . ^ .' . "\n";
-								// 	echo $q->errorCode() . "\n";
-								// 	echo ' . ^ . ^ .' . "\n";
-								// }
+								if($wasSuccessful) {
+									header('Location: '.$_SERVER['REQUEST_URI']);
+									exit;
+								} else {
+									// echo '<pre>';
+									// print_r($q->errorInfo()) . "\n";
+									// echo ' . ^ . ^ .' . "\n";
+									// echo $q->errorCode() . "\n";
+									// echo ' . ^ . ^ .' . "\n";
+									// TODO: allow user to fix input
+								}
 
 							} catch (Exception $e) {
 								echo 'Caught exception: ', $e->getMessage(), "\n";
@@ -48,7 +46,7 @@
 						</script>
 
 						<div id="dialog" title="Port Form">
-							<form role="form" method="post" action="/reports/equipment.php<?php if(isset($id)){ echo '?id=' . htmlspecialchars($id); } ?>">
+							<form role="form" method="post" action="">
 								<div class="form-group">
 									<label for="intutConnectorType">Connector Type</label>
 									<select name="inputConnectorType" class="form-control">

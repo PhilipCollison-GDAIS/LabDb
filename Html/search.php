@@ -34,18 +34,6 @@
 
 						<p>Results will appear in a table here, pagination optional.</p>
 
-						<form role="form" method="post" action="/forms/equipment.php?submit">
-							<div class="form-group">
-								<label for="inputDepthID">Depth</label>
-								<select name="inputDepthID" class="form-control">
-									<option>Equipment</option>
-									<option>Racks</option>
-									<option>Vendors</option>
-								</select>
-							</div>
-						</form>
-
-
 					</div> <!--jumbotron-->
 				</div>
 				<div class="col-md-4"></div>
