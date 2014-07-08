@@ -23,13 +23,10 @@
 						<?php
 						if(empty($_GET)){
 							echo $report->getTableString();
-
-							echo '<p>';
-							echo $report->getAddButton();
-							echo '</p>';
 						} else if(isset($_GET['id'])){
 							echo $report->getIdString($_GET['id']);
-						} ?>
+						}
+						 ?>
 
 					</div> <!--jumbotron-->
 				</div>

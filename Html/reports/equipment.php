@@ -69,7 +69,11 @@ class EquipmentReport implements reportsInterface{
 	}
 
 	public function getHeading(){
-		return 'Equipment';
+		if(empty($_GET)){
+			return 'Equipment';
+		} else {
+			return '<a href="/reports/equipment.php">Equipment</a>';
+		}
 	}
 
 	public function getTableString(){
@@ -83,12 +87,18 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<th>Model</th>';
 		$string .= '<th>Serial Number</th>';
 		$string .= '<th>GFE ID</th>';
+		$string .= '<th>Location</th>';
+		$string .= '<th>Rack</th>';
 		$string .= '<th>Comments</th>';
+		$string .= '<th><a href="/forms/equipment.php">Add Equipment</a></th>';
 		$string .= '</tr>';
 
-		$query = 'SELECT equipment.id, barcode_number, vendor, model, serial_num, GFE_id, equipment.comment
-					FROM equipment, vendors
+		$query = 'SELECT equipment.id, barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment
+					FROM equipment, vendors, racks, rooms, affiliations
 					WHERE equipment.vendor_id = vendors.id
+						AND equipment.id = affiliations.id
+						AND affiliations.parent_rack_id = racks.id
+						AND racks.room_id = rooms.id
 					ORDER BY barcode_number, model';
 					// TODO: How is is that the ORDER BY clauses should be ordered?
 
@@ -101,9 +111,10 @@ class EquipmentReport implements reportsInterface{
 			$string .= '<td>' . $row->model . '</td>';
 			$string .= '<td>' . $row->serial_num . '</td>';
 			$string .= '<td>' . $row->GFE_id . '</td>';
+			$string .= '<td>' . $row->room_number . " " .  $row->building_name . '</td>';
+			$string .= '<td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="/forms/equipment.php?edit_id=' . $row->id . '">Edit</a></td>';
-			$string .= '<td><a href="/forms/equipment.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '<td><a href="/forms/equipment.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/equipment.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
@@ -119,9 +130,13 @@ class EquipmentReport implements reportsInterface{
 
 		global $pdo;
 
-		$query = 'SELECT barcode_number, vendor, model, serial_num, GFE_id, equipment.comment
-					FROM equipment, vendors
-					WHERE equipment.vendor_id = vendors.id AND equipment.id = :id';
+		$query = 'SELECT barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment
+					FROM equipment, vendors, racks, rooms, affiliations
+					WHERE equipment.vendor_id = vendors.id
+						AND equipment.id = affiliations.id
+						AND affiliations.parent_rack_id = racks.id
+						AND racks.room_id = rooms.id
+						AND equipment.id = :id';
 
 		$q = $pdo->prepare($query);
 		$q->bindParam(':id', $id, PDO::PARAM_INT);
@@ -135,6 +150,8 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
 		$string .= '<tr><td><strong>Serial Number: </strong></td><td>' . $row->serial_num . '</td></tr>';
 		$string .= '<tr><td><strong>GFE ID: </strong></td><td>' . $row->GFE_id . '</td></tr>';
+		$string .= '<tr><td><strong>Location</strong></td><td>' . $row->room_number . " " .  $row->building_name . '</td></tr>';
+		$string .= '<tr><td><strong>Rack</strong></td><td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td></tr>';
 		$string .= '<tr><td><strong>Comment: </strong></td><td>' . $row->comment . '</td></tr>';
 		$string .= '</table>';
 
@@ -181,10 +198,6 @@ class EquipmentReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
-	}
-
-	public function getAddButton(){
-		return '<a href="/forms/equipment.php">Add Equipment</a>';
 	}
 }
 

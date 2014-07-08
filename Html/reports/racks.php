@@ -9,7 +9,11 @@ class RacksReport implements reportsInterface{
 	}
 
 	public function getHeading(){
-		return 'Racks';
+		if(empty($_GET)){
+			return 'Racks';
+		} else {
+			return '<a href="/reports/racks.php">Racks</a>';
+		}
 	}
 
 	public function getTableString(){
@@ -22,12 +26,13 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Old Name</th>';
 		$string .= '<th>Room Number</th>';
 		$string .= '<th>Floor Location</th>';
-		$string .= '<th>Dimensions (W x H x D) </th>';
+		$string .= '<th>Dimensions (WxHxD) </th>';
 		$string .= '<th>Max Power</th>';
 		$string .= '<th>Comments</th>';
+		$string .= '<th><a href="/forms/racks.php">Add Rack</a></th>';
 		$string .= '</tr>';
 
-		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment 
+		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment
 					FROM racks, rooms, widths, depths
 					WHERE racks.room_id = rooms.id
 					AND racks.width_id = widths.id
@@ -47,8 +52,7 @@ class RacksReport implements reportsInterface{
 			$string .= '<td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td>';
 			$string .= '<td>' . $row->max_power . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="/forms/racks.php?edit_id=' . $row->id . '">Edit</a></td>';
-			$string .= '<td><a href="/forms/racks.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '<td><a href="/forms/racks.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/racks.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
@@ -64,7 +68,7 @@ class RacksReport implements reportsInterface{
 
 		global $pdo;
 
-		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment 
+		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment
 					FROM racks, rooms, widths, depths
 					WHERE racks.room_id = rooms.id
 					AND racks.width_id = widths.id
@@ -137,10 +141,6 @@ class RacksReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
-	}
-
-	public function getAddButton(){
-		return '<a href="/forms/racks.php">Add Rack</a>';
 	}
 }
 

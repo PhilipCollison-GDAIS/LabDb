@@ -19,6 +19,7 @@ class RoomsReport implements reportsInterface{
 		$string .= '<tr>';
 		$string .= '<th>Room Number</th>';
 		$string .= '<th>Comment</th>';
+		$string .= '<th><a href="/forms/rooms.php">Add Room</a></th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT room_number, comment FROM rooms';
@@ -40,10 +41,6 @@ class RoomsReport implements reportsInterface{
 
 	public function getIdString($id){
 		return $this->getTableString();
-	}
-
-	public function getAddButton(){
-		return '<a href="/forms/rooms.php">Add Room</a>';
 	}
 }
 

@@ -19,6 +19,7 @@ class ProjectsReport implements reportsInterface{
 		$string .= '<tr>';
 		$string .= '<th>Project Name</th>';
 		$string .= '<th>Comments</th>';
+		$string .= '<th><a href="/forms/projects.php">Add Project</a></th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT name, comment FROM projects';
@@ -40,10 +41,6 @@ class ProjectsReport implements reportsInterface{
 
 	public function getIdString($id){
 		return $this->getTableString();
-	}
-
-	public function getAddButton(){
-		return '<a href="/forms/projects.php">Add Project</a>';
 	}
 }
 

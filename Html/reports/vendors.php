@@ -19,6 +19,7 @@ class VendorsReport implements reportsInterface{
 		$string .= '<tr>';
 		$string .= '<th>Vendor</th>';
 		$string .= '<th>Comments</th>';
+		$string .= '<th><a href="/forms/vendors.php">Add Vendor</a></th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT vendor, comment FROM vendors';
@@ -40,10 +41,6 @@ class VendorsReport implements reportsInterface{
 
 	public function getIdString($id){
 		return $this->getTableString();
-	}
-
-	public function getAddButton(){
-		return '<a href="/forms/vendors.php">Add Vendor</a>';
 	}
 }
 
