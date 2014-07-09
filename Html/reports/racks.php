@@ -117,10 +117,6 @@ class RacksReport implements reportsInterface{
 		$string .= '</th>';
 		$string .= '</tr>';
 
-		// $query = 'SELECT equipment.id, elevation, model, vendor, equipment.name AS name, serial_num, barcode_number, GFE_id, equipment.comment AS comment
-		// 			FROM equipment, vendors, affiliations
-		// 			WHERE equipment.vendor_id = vendors.id AND affiliations.id = equipment.id AND equipment_id = :id
-		// 			ORDER BY connector_types.connector_type, ports.name';
 		$query = 'SELECT equipment.id AS id, elevation, model, vendor, equipment.name AS name, serial_num, barcode_number, GFE_id, equipment.comment AS comment
 					FROM equipment, vendors, affiliations
 					WHERE equipment.vendor_id = vendors.id AND affiliations.parent_rack_id = :id AND affiliations.id = equipment.id
@@ -147,6 +143,24 @@ class RacksReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
+	}
+
+	public function redirect(){
+		global $pdo;
+
+		if(isset($_GET['id'])){
+
+			$query = 'SELECT EXISTS(SELECT 1 FROM racks WHERE id = :id) AS redirect';
+
+			$q = $pdo->prepare($query);
+			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
+			$q->execute();
+
+			if($q->fetchObject()->redirect === "0"){
+				header('Location: ' . $_SERVER['PHP_SELF']);
+				exit;
+			}
+		}
 	}
 }
 

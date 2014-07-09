@@ -4,6 +4,6 @@ interface reportsInterface{
 	public function getHeading();
 	public function getTableString();
 	public function getIdString($id);
-	/* TODO: public function redirect(); */
+	public function redirect();
 }
  ?>

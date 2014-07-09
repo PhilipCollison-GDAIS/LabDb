@@ -1,4 +1,4 @@
-<?php /* TODO: $reports->redirect(); */ ?>
+<?php $report->redirect(); ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>

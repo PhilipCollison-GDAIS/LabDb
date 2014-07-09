@@ -42,6 +42,24 @@ class VendorsReport implements reportsInterface{
 	public function getIdString($id){
 		return $this->getTableString();
 	}
+
+	public function redirect(){
+		global $pdo;
+
+		if(isset($_GET['id'])){
+
+			$query = 'SELECT EXISTS(SELECT 1 FROM vendors WHERE id = :id) AS redirect';
+
+			$q = $pdo->prepare($query);
+			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
+			$q->execute();
+
+			if($q->fetchObject()->redirect === "0"){
+				header('Location: ' . $_SERVER['PHP_SELF']);
+				exit;
+			}
+		}
+	}
 }
 
 $report = new VendorsReport();
