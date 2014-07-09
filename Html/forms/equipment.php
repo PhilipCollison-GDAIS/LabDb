@@ -4,73 +4,78 @@
 	global $pdo;
 
 	function isEquipmentValid() {
-		global $barcode, $vendor_id, $model, $serial_num, $GFE_id;
+		$barcode = $_SESSION['barcode'];
+		$vendor_id = $_SESSION['vendor_id'];
+		$model = $_SESSION['model'];
+		$serial_num = $_SESSION['serial_num'];
+		$GFE_id = $_SESSION['GFE_id'];
+		$comment = $_SESSION['comment'];
 
-		if(!isset($barcode))
-			return "barcode is not set.";
+		if (!isset($barcode)) {
+			return "Barcode must be set.";
+		}
 
-		if(!isset($vendor_id))
+		if (!isset($vendor_id) || !isNumericInt($vendor_id)) {
 			return "Please choose a vendor";
+		}
 
-		if(!isset($model))
-			return "model is not set.";
+		if (!isset($model)) {
+			return "Model is not set.";
+		}
 
-		if(!isset($serial_num))
-			return "serial_num is not set.";
+		if (!isset($serial_num)) {
+			return "Serial Number must be set.";
+		}
 
-		if(!isset($GFE_id))
-			return "GFE_id is not set.";
-			// TODO: Can this be empty?
+		if (!isAlphaNumeric($barcode, 10)) {
+			return "Barcode must be alphanumeric.";
+		}
 
-		// if (!isShortAlNum($barcode)) {
-		// 	$error_message = "barcode was invalid";
-		// 	return false;
-		// }
+		if (!isAlphaNumeric($model, 10)) {
+			return "Model must be alphanumeric.";
+		}
 
-		// if (!isNumericInt($vendor_id)) {
-		// 	$error_message = "vendor_id was invalid";
-		// 	return false;
-		// }
+		if (!isNumericInt($serial_num)) {
+			return "Serial Number must be an integer.";
+		}
 
-		// if (!isShortAlNum($model)) {
-		// 	$error_message = "model was invalid";
-		// 	return false;
-		// }
+		if (isset($GFE_id) && !ctype_alnum($GFE_id)) {
+			return "GFE id must be alphanumeric.";
+		}
 
-		// if (!isNumericInt($serial_num)) {
-		// 	$error_message = "serial_num was invalid";
-		// 	return false;
-		// }
-
-		// if (!isShortAlNum($GFE_id)) {
-		// 	$error_message = "GFE_id was invalid";
-		// 	return false;
-		// }
+		if (isset($comment) && !ctype_alnum($comment)) {
+			return "Comment must be alphanumeric.";
+		}
 
 		return true;
 	}
 
 	function isAffiliationValid() {
-		// if ($affiliated === "R") {
-		// 	if (isNumericInt($parent_rack_id) && isNumericInt($elevation)) {
-		// 		return true;
-		// 	} else {
-		// 		$error_message = "Affiliation was invalid in Racks";
-		// 		return false;
-		// 	}
-		// } else if ($affiliated === "E") {
-		// 	if (isNumericInt($parent_equipment_id)) {
-		// 		return true;
-		// 	} else {
-		// 		$error_message = "Affiliation was invalid in Equipment";
-		// 		return false;
-		// 	}
-		// } else {
-		// 	$error_message = "Affiliation was " . $affiliated;
-		// 	return false;
-		// }
+		$parent_equipment_id = $_POST['parent_equipment_id'];
+		$parent_rack_id = $_POST['parent_rack_id'];
+		$elevation = $_POST['elevation'];
 
-		return false;
+		if ($affiliated === "R") {
+			if (!isNumericInt($parent_rack_id)){
+				return "Please choose a rack.";
+			}
+
+			if (!isset($elevation)){
+				return "Please input an elevation.";
+			}
+
+			if (!isNumericInt($elevation)) {
+				return "Elevation must ba a number.";
+			}
+		} else if ($affiliated === "E") {
+			if (!isNumericInt($parent_equipment_id)) {
+				return "Please choose parent equipmet.";
+			}
+		} else {
+			return "Please choose an affiliation.";
+		}
+
+		return true;
 	}
 
 	if (empty($_GET)) {
@@ -123,6 +128,47 @@
 
 			if($wasSuccessful){
 				//Insertion of Affiliation was successful";
+
+				// Find and store lastInsertId
+				$lastInsertId = $pdo->lastInsertId();
+
+				// Insert piece of equipment with lastInsertId as id/pk
+				$query = "INSERT INTO equipment (id, barcode_number, vendor_id, model, serial_num, GFE_id, comment) VALUES
+				(:id, :barcode, :vendor_id, :model, :serial_num, :GFE_id, :comment)";
+
+				$q = $pdo->prepare($query);
+				$wasSuccessful = $q->execute(array(':id'=>$lastInsertId,
+								  ':barcode'=>$barcode,
+								  ':vendor_id'=>$vendor_id,
+								  ':model'=>$model,
+								  ':serial_num'=>$serial_num,
+								  ':GFE_id'=>$GFE_id,
+								  ':comment'=>$comment));
+
+				if($wasSuccessful){
+					echo "Insertion of Equipment was successful";
+				} else {
+					echo '<pre>';
+					echo 'Insertion of Equipment was NOT successful' . "\n";
+					echo ' . ^ . ^ .' . "\n";
+					print_r($q->errorInfo()) . "\n";
+					echo ' . ^ . ^ .' . "\n";
+					echo $q->errorCode() . "\n";
+					echo ' . ^ . ^ .' . "\n";
+				}
+
+				// All was successful, clear session variables and redirect user
+				unset($_SESSION['barcode']);
+				unset($_SESSION['vendor_id']);
+				unset($_SESSION['model']);
+				unset($_SESSION['serial_num']);
+				unset($_SESSION['GFE_id']);
+				unset($_SESSION['comment']);
+				unset($_SESSION['affiliated']);
+
+				header('Location: /reports/equipment.php?id=' . $lastInsertId);
+				exit;
+
 			} else {
 				echo '<pre>';
 				echo 'Insertion of Affiliation was NOT successful' . "\n";
@@ -132,46 +178,6 @@
 				echo $q->errorCode() . "\n";
 				echo ' . ^ . ^ .' . "\n";
 			}
-
-			// Find and store lastInsertId
-			$lastInsertId = $pdo->lastInsertId();
-
-			// Insert piece of equipment with lastInsertId as id/pk
-			$query = "INSERT INTO equipment (id, barcode_number, vendor_id, model, serial_num, GFE_id, comment) VALUES
-			(:id, :barcode, :vendor_id, :model, :serial_num, :GFE_id, :comment)";
-
-			$q = $pdo->prepare($query);
-			$wasSuccessful = $q->execute(array(':id'=>$lastInsertId,
-							  ':barcode'=>$barcode,
-							  ':vendor_id'=>$vendor_id,
-							  ':model'=>$model,
-							  ':serial_num'=>$serial_num,
-							  ':GFE_id'=>$GFE_id,
-							  ':comment'=>$comment));
-
-			if($wasSuccessful){
-				echo "Insertion of Equipment was successful";
-			} else {
-				echo '<pre>';
-				echo 'Insertion of Equipment was NOT successful' . "\n";
-				echo ' . ^ . ^ .' . "\n";
-				print_r($q->errorInfo()) . "\n";
-				echo ' . ^ . ^ .' . "\n";
-				echo $q->errorCode() . "\n";
-				echo ' . ^ . ^ .' . "\n";
-			}
-
-			// All was successful, cear session variables and redirect user
-			unset($_SESSION['barcode']);
-			unset($_SESSION['vendor_id']);
-			unset($_SESSION['model']);
-			unset($_SESSION['serial_num']);
-			unset($_SESSION['GFE_id']);
-			unset($_SESSION['comment']);
-			unset($_SESSION['affiliated']);
-
-			header('Location: /reports/equipment.php?id=' . $lastInsertId);
-			exit;
 
 		} catch (Exception $e) {
 			echo 'Caught exception: ', $e->getMessage(), "\n";
@@ -231,7 +237,7 @@
 							</div>
 							<div class="form-group">
 								<label for="inputVendorID">Vendor</label>
-								<select name="inputVendorID" class="form-control">
+								<select name="inputVendorID" class="form-control DropdownInitiallyBlank">
 									<?php echo getVendorOptions(); ?>
 								</select>
 							</div>
@@ -259,7 +265,7 @@
 						<form role="form" method="post" action="/forms/equipment.php?affiliation">
 							<div class="form-group">
 								<label for="affiliated">Parent Affiliation:  </label>
-								<select name="affiliated" onchange="this.form.submit();" <?php if(!isset($affiliated)) echo 'id="DropdownInitiallyBlank"' ?>>
+								<select name="affiliated" onchange="this.form.submit();" <?php if(!isset($affiliated)) echo 'class="DropdownInitiallyBlank"' ?>>
 									<option value="E" <?php if(isset($affiliated) && $affiliated == "E"){print "selected=\"selected\"";} ?>>Equipment</option>
 									<option value="R" <?php if(isset($affiliated) && $affiliated == "R"){print "selected=\"selected\"";} ?>>Racks</option>
 								</select>
@@ -277,7 +283,7 @@
 
 							<div class="form-group">
 								<label for="parent_rack_id">Parent Rack</label>
-								<select name="parent_rack_id" class="form-control">
+								<select name="parent_rack_id" class="form-control DropdownInitiallyBlank">
 									<?php echo getRackOptions(); ?>
 								</select>
 							</div>
@@ -312,8 +318,6 @@
 		</div> <!-- /container -->
 
 		<?php include "inc/footer.php" ?>
-
-		<script type="text/javascript">document.getElementById("DropdownInitiallyBlank").selectedIndex = -1;</script>
 
 	</body>
 </html>

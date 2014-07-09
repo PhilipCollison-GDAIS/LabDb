@@ -1,5 +1,11 @@
 						<?php
 
+						function isEquipmentValid(){
+							// TODO:
+
+							return true;
+						}
+
 						if (isset($_POST['insert_equipment']) /* && isEquipmentValid() === true */) {
 
 							try{
@@ -80,7 +86,7 @@
 								</div>
 								<div class="form-group">
 									<label for="vendor_id">Vendor</label>
-									<select name="vendor_id" class="form-control">
+									<select name="vendor_id" class="form-control DropdownInitiallyBlank">
 										<?php echo getVendorOptions(); ?>
 									</select>
 								</div>
@@ -104,7 +110,7 @@
 									<label for="elevation">Elevation</label>
 									<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php if(isset($elevation)){ echo htmlspecialchars($elevation);} ?>"  maxlength="10" size="10">
 								</div>
-								<button type="submit" name="insert_equipment" class="btn btn-default">Submit</button>
+								<button type="submit" name="insert_equipment" class="btn btn-default pull-right">Submit</button>
 							</form>
 						</div>
 

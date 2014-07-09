@@ -1,4 +1,4 @@
-<?php 
+<?php
 	require_once "/inc/connect.php";
 	include "/inc/database.php";
 	global $pdo;
@@ -101,7 +101,7 @@
 							</div>
 							<div class="form-group">
 								<label for="inputRoomID">Room Number</label>
-								<select name="inputRoomID" class="form-control">
+								<select name="inputRoomID" class="form-control DropdownInitiallyBlank">
 									<?php echo getRoomOptions($room_id); ?>
 								</select>
 							</div>
@@ -115,13 +115,13 @@
 							</div>
 							<div class="form-group">
 								<label for="inputWidthID">Width</label>
-								<select name="inputWidthID" class="form-control">
+								<select name="inputWidthID" class="form-control DropdownInitiallyBlank">
 									<?php echo getWidthOptions($width_id); ?>
 								</select>
 							</div>
 							<div class="form-group">
 								<label for="inputDepthID">Depth</label>
-								<select name="inputDepthID" class="form-control">
+								<select name="inputDepthID" class="form-control DropdownInitiallyBlank">
 									<?php echo getDepthOptions($depth_id); ?>
 								</select>
 							</div>

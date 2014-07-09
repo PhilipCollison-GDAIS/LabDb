@@ -5,7 +5,7 @@ require_once "/inc/connect.php";
 function getWidthOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, width FROM widths';
 
@@ -29,7 +29,7 @@ function getWidthOptions($id){
 function getDepthOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, depth FROM depths';
 
@@ -53,7 +53,7 @@ function getDepthOptions($id){
 function getRoomOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, room_number FROM rooms';
 
@@ -77,7 +77,7 @@ function getRoomOptions($id){
 function getRackOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, name FROM racks';
 
@@ -101,7 +101,7 @@ function getRackOptions($id){
 function getVendorOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, vendor FROM vendors';
 
@@ -122,10 +122,10 @@ function getVendorOptions($id){
 	return $string;
 }
 
-function getConnectorTypes($id){
+function getConnectorOptions($id){
 	global $pdo;
 
-	$string .= '<option></option>';
+	$string = '';
 
 	$query = 'SELECT id, connector_type FROM connector_types';
 

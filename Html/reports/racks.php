@@ -84,12 +84,18 @@ class RacksReport implements reportsInterface{
 
 		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
 		$string .= '<tr><td><strong>Name: </strong></td><td>' . $row->name . '</td></tr>';
-		$string .= '<tr><td><strong>Old Name: </strong></td><td>' . $row->old_name . '</td></tr>';
+		if (!is_null($row->old_name)) {
+			$string .= '<tr><td><strong>Old Name: </strong></td><td>' . $row->old_name . '</td></tr>';
+		}
 		$string .= '<tr><td><strong>Room Number: </strong></td><td>' . $row->room_number . '</td></tr>';
-		$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
+		if (!is_null($row->comment)) {
+					$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
+		}
 		$string .= '<tr><td><strong>Dimensions (WxHxD): </strong></td><td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td></tr>';
 		$string .= '<tr><td><strong>Max Power: </strong></td><td>' . $row->max_power . '</td></tr>';
-		$string .= '<tr><td><strong>Comments: </strong></td><td>' . $row->comment . '</td></tr>';
+		if (!is_null($row->comment)) {
+			$string .= '<tr><td><strong>Comments: </strong></td><td>' . $row->comment . '</td></tr>';
+		}
 		$string .= '</table>';
 
 		$string .= '<br>';

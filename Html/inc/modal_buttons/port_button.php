@@ -1,5 +1,11 @@
 						<?php
 
+						function isPortValid(){
+							// TODO:
+
+							return true;
+						}
+
 						if (isset($_POST['insert_port']) /* && isPortValid() === true */) {
 
 							try{
@@ -49,22 +55,22 @@
 							<form role="form" method="post" action="">
 								<div class="form-group">
 									<label for="intutConnectorType">Connector Type</label>
-									<select name="inputConnectorType" class="form-control">
-										<?php echo getConnectorTypes(); ?>
+									<select name="inputConnectorType" class="form-control DropdownInitiallyBlank">
+										<?php echo getConnectorOptions(); ?>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="inputGender">Gender</label>
+									<select name="inputGender" class="form-control DropdownInitiallyBlank">
+										<option value="M">Male</option>
+										<option value="F">Female</option>
 									</select>
 								</div>
 								<div class="form-group">
 									<label for="inputPortName">Port Name</label>
 									<input type="text" name="inputPortName" class="form-control" id="inputPortName" placeholder="Enter Port Name" value="<?php if(isset($port_name)){ echo htmlspecialchars($serial_num);} ?>"  maxlength="10" size ="10">
 								</div>
-								<div class="form-group">
-									<label for="inputGender">Gender</label>
-									<select name="inputGender" class="form-control">
-										<option value="M">Male</option>
-										<option value="F">Female</option>
-									</select>
-								</div>
-								<button type="submit" name="insert_port" class="btn btn-default">Submit</button>
+								<button type="submit" name="insert_port" class="btn btn-default pull-right">Submit</button>
 							</form>
 						</div>
 
