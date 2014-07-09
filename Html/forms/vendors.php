@@ -1,55 +1,70 @@
 <?php
-	include "/inc/connect.php";
-	global $pdo;
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-	$vendor = $_POST['inputVendor'];
-	$comment = $_POST['inputComment'];
+class VendorsForm implements formsInterface{
+	public function submit(){
+		global $pdo;
 
-	$query = "INSERT INTO vendors (vendor, comment) Values (:vendor, :comment)";
+		$vendor = $_POST['inputVendor'];
+		$comment = $_POST['inputComment'];
 
-	$pdo->prepare($query)->execute(array(':vendor'=>$vendor, ':comment'=>$comment));
+		if(isset($_POST['insert']) /* && inputValidation */) {
+			$query = "INSERT INTO vendors (vendor, comment) Values (:vendor, :comment)";
 
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-	    <?php include "/inc/header.php" ?>
+			$wasSuccessful = $pdo->prepare($query)->execute(array(':vendor'=>$vendor, ':comment'=>$comment));
 
-		<title>Vendors</title>
-	</head>
+			if ($wasSuccessful) {
+				header('Location: /reports/vendors.php');
+				exit;
+			} else {
+				// TODO: inform user
+			}
+		}
+	}
 
-	<body>
-		<div class="container">
+	public function getTitle(){
+		return 'Vendors';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getHeading(){
+		return 'Vendors';
+	}
 
-			<div class="row">
-				<?php include "/inc/sidebar.php" ?>
+	public function getFormString(){
+		$vendor = $_POST['inputVendor'];
+		$comment = $_POST['inputComment'];
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputVendor">Vendor</label>';
+		$string .= '<input type="text" name="inputVendor" class="form-control" id="inputVendor" placeholder="Enter Vendor" maxlength="20" size ="20"'; 
+		if(isset($vendor)){ $string.= 'value="' . htmlspecialchars($vendor);} '"';
+		$string .= 'autofocus="autofocus">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputComment">Comments</label>';
+		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">';
+		if(isset($comment)){ $string .= stripslashes($comment);}
+		$string .= '</textarea>';
+		$string .= '</div>';
+		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
+		$string .= '</form>';
 
-						<h1>Vendors</h1>
 
-						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
-							<div class="form-group">
-								<label for="inputVendor">Vendor</label>
-								<input type="text" name="inputVendor" class="form-control" id="inputVendor" placeholder="Enter Vendor" maxlength="20" size ="20" value="<?php if(isset($vendor)){ echo htmlspecialchars($vendor);} ?>" autofocus="autofocus">
-							</div>
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
-							<button type="submit" name="insert" class="btn btn-default">Insert</button>
-						</form>
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+		return $string;
+	}
 
-		</div> <!-- /container -->
+	public function getEditString($id){
+		throw new Exception('Unimplemented Function');
+	}
 
-		<?php include "/inc/footer.php" ?>
+	public function getCopyString($id){
+		throw new Exception('Unimplemented Function');
+	}
+}
 
-	</body>
-</html>
+$form = new VendorsForm();
+
+include "/inc/forms.php";
+?>

@@ -1,55 +1,69 @@
 <?php
-	include "/inc/connect.php";
-	global $pdo;
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-	$room_number = $_POST['inputRoomNumber'];
-	$comment = $_POST['inputComment'];
+class RoomsForm implements formsInterface{
+	public function submit(){
+		global $pdo;
 
-	$query = "INSERT INTO rooms (room_number, comment) Values (:room_number, :comment)";
+		$room_number = $_POST['inputRoomNumber'];
+		$comment = $_POST['inputComment'];
 
-	$pdo->prepare($query)->execute(array(':room_number'=>$room_number, ':comment'=>$comment));
+		if(isset($_POST['insert']) /* && inputValidation */) {
+			$query = "INSERT INTO rooms (room_number, comment) Values (:room_number, :comment)";
 
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<?php include "/inc/header.php" ?>
+			$wasSuccessful = $pdo->prepare($query)->execute(array(':room_number'=>$room_number, ':comment'=>$comment));
 
-		<title>Rooms</title>
-	</head>
+			if ($wasSuccessful) {
+				header('Location: /reports/rooms.php');
+				exit;
+			} else {
+				// TODO: inform user
+			}
+		}
+	}
 
-	<body>
-		<div class="container">
+	public function getTitle(){
+		return 'Rooms';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getHeading(){
+		return 'Rooms';
+	}
 
-			<div class="row">
-				<?php include "/inc/sidebar.php" ?>
+	public function getFormString(){
+		$room_number = $_POST['inputRoomNumber'];
+		$comment = $_POST['inputComment'];
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$string = '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputRoomNumber">Room Number</label>';
+		$string .= '<input type="text" name="inputRoomNumber" class="form-control" id="inputRoomNumber" placeholder="Enter Room Number"';
+		if(isset($room_number)){ $string .= 'value="' . htmlspecialchars($room_number) . '"'; }
+		$string .= 'maxlength="10" size ="10" autofocus="autofocus">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputComment">Comments</label>';
+		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">';
+		if(isset($comment)){ $string .= stripslashes($comment) ;}
+		$string .= '</textarea>';
+		$string .= '</div>';
+		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
+		$string .= '</form>';
 
-						<h1>Rooms</h1>
+		return $string;
+	}
 
-						<form role="form" method="post" action="<?php echo $PHP_SELF; ?>">
-							<div class="form-group">
-								<label for="inputRoomNumber">Room Number</label>
-								<input type="text" name="inputRoomNumber" class="form-control" id="inputRoomNumber" placeholder="Enter Room Number" value="<?php if(isset($room_number)){ echo htmlspecialchars($room_number);} ?>" maxlength="10" size ="10" autofocus="autofocus">
-							</div>
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
-							<button type="submit" name="insert" class="btn btn-default">Insert</button>
-						</form>
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+	public function getEditString($id){
+		throw new Exception('Unimplemented Function');
+	}
 
-		</div> <!-- /container -->
+	public function getCopyString($id){
+		throw new Exception('Unimplemented Function');
+	}
+}
 
-		<?php include "/inc/footer.php" ?>
+$form = new RoomsForm();
 
-	</body>
-</html>
+include "/inc/forms.php";
+?>

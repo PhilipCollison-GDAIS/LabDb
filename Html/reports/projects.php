@@ -22,13 +22,13 @@ class ProjectsReport implements reportsInterface{
 		$string .= '<th><a href="/forms/projects.php">Add Project</a></th>';
 		$string .= '</tr>';
 
-		$query = 'SELECT name, comment FROM projects';
+		$query = 'SELECT id, name, comment FROM projects';
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="#">' . $row->name . '</a></td>';
+			$string .= '<td><a href="?id=' . $row->id . '">' . $row->name . '</a></td>';
 			$string .= '<td>' . $row->comment . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
@@ -47,17 +47,8 @@ class ProjectsReport implements reportsInterface{
 		global $pdo;
 
 		if(isset($_GET['id'])){
-
-			$query = 'SELECT EXISTS(SELECT 1 FROM projects WHERE id = :id) AS redirect';
-
-			$q = $pdo->prepare($query);
-			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
-			$q->execute();
-
-			if($q->fetchObject()->redirect === "0"){
-				header('Location: ' . $_SERVER['PHP_SELF']);
-				exit;
-			}
+			header('Location: ' . $_SERVER['PHP_SELF']);
+			exit;
 		}
 	}
 }

@@ -4,6 +4,24 @@ include "/inc/prototypes.php";
 include "/inc/database.php";
 
 class RacksReport implements reportsInterface{
+	public function redirect(){
+		global $pdo;
+
+		if(isset($_GET['id'])){
+
+			$query = 'SELECT EXISTS(SELECT 1 FROM racks WHERE id = :id) AS redirect';
+
+			$q = $pdo->prepare($query);
+			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
+			$q->execute();
+
+			if($q->fetchObject()->redirect === "0"){
+				header('Location: ' . $_SERVER['PHP_SELF']);
+				exit;
+			}
+		}
+	}
+
 	public function getTitle(){
 		return 'Racks';
 	}
@@ -143,24 +161,6 @@ class RacksReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
-	}
-
-	public function redirect(){
-		global $pdo;
-
-		if(isset($_GET['id'])){
-
-			$query = 'SELECT EXISTS(SELECT 1 FROM racks WHERE id = :id) AS redirect';
-
-			$q = $pdo->prepare($query);
-			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
-			$q->execute();
-
-			if($q->fetchObject()->redirect === "0"){
-				header('Location: ' . $_SERVER['PHP_SELF']);
-				exit;
-			}
-		}
 	}
 }
 

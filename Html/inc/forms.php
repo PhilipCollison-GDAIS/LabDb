@@ -1,10 +1,10 @@
-<?php $report->redirect(); ?>
+<?php $form->submit(); ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<?php include "/inc/header.php" ?>
 
-		<title><?php echo $report->getTitle(); ?></title>
+		<title><?php echo $form->getTitle(); ?></title>
 	</head>
 
 	<body>
@@ -19,15 +19,17 @@
 				<div class="col-md-10">
 					<div class="jumbotron">
 
-						<h1><?php echo $report->getHeading(); ?></h1>
+						<h1><?php echo $form->getHeading(); ?></h1>
 
 						<?php
 						if (empty($_GET)) {
-							echo $report->getTableString();
-						} else if (isset($_GET['id'])) {
-							echo $report->getIdString($_GET['id']);
+							echo $form->getFormString();
+						} else if (isset($_GET['edit_id'])) {
+							echo $form->getEditString($_GET['edit_id']);
+						} else if (isset($_GET['copy_id'])) {
+							echo $form->getCopyString($_GET['copy_id']);
 						} else {
-							// TODO: redirect user back to main page
+							// TODO: redirect user to main page
 						}
 						 ?>
 

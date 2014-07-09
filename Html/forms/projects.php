@@ -1,65 +1,67 @@
 <?php
-	require_once "/inc/connect.php";
-	global $pdo;
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
 
-	if(isset($_POST['insert'])){
+class ProjectsForm implements formsInterface{
+	public function submit(){
+		global $pdo;
+
 		$name = $_POST['inputProjectName'];
 		$comment = $_POST['inputComment'];
 
-		$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
+		if(isset($_POST['insert']) /* && inputValidation */) {
+			$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
 
-		$q = $pdo->prepare($query);
+			$q = $pdo->prepare($query);
 
-		$wasSuccessful = $q->execute(array(':name'=>$name, ':comment'=>$comment));
+			$wasSuccessful = $q->execute(array(':name'=>$name, ':comment'=>$comment));
 
-		if($wasSuccessful){
-			header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
-			exit;
-		} else {
-			//TODO: Let the user fix input
+			if ($wasSuccessful) {
+				header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
+				exit;
+			} else {
+				// TODO: inform user
+			}
 		}
 	}
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-	    <?php include "/inc/header.php" ?>
 
-		<title>Projects</title>
-	</head>
+	public function getTitle(){
+		return 'Projects';
+	}
 
-	<body>
-		<div class="container">
+	public function getHeading(){
+		return 'Projects';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getFormString(){
+		$name = $_POST['inputProjectName'];
+		$comment = $_POST['inputComment'];
 
-			<div class="row">
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputProjectName">Project Name</label>';
+		$string .= '<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" if(isset($name)){ echo value="' . htmlspecialchars($name) . '" maxlength="45" size ="45" autofocus="autofocus">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputComment">Comments</label>';
+		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments"  cols="60" rows="4">' . stripslashes($comment) . '</textarea>';
+		$string .= '</div>';
+		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
+		$string .= '</form>';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		return $string;
+	}
 
-						<h1>Projects</h1>
+	public function getEditString($id){
+		throw new Exception('Unimplemented Function');
+	}
 
-						<form role="form" method="post" action="/forms/projects.php?submit">
-							<div class="form-group">
-								<label for="inputProjectName">Project Name</label>
-								<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" value="<?php if(isset($name)){ echo htmlspecialchars($name);} ?>" maxlength="45" size ="45" autofocus="autofocus">
-							</div>
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments"  cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
-							<button type="submit" name="insert" class="btn btn-default">Insert</button>
-						</form>
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+	public function getCopyString($id){
+		throw new Exception('Unimplemented Function');
+	}
+}
 
-		</div> <!-- /container -->
+$form = new ProjectsForm();
 
-		<?php include "/inc/footer.php" ?>
-
-	</body>
-</html>
+include "/inc/forms.php";
+?>
