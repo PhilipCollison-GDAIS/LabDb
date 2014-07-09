@@ -1,149 +1,125 @@
 <?php
-	require_once "/inc/connect.php";
-	include "/inc/database.php";
-	global $pdo;
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
+include "/inc/database.php";
 
-	$name = $_POST['inputName'];
-	$old_name = $_POST['inputOldName'];
-	$room_id = $_POST['inputRoomID'];
-	$floor_location = $_POST['inputFloorLocation'];
-	$height = $_POST['inputHeight'];
-	$width_id = $_POST['inputWidthID'];
-	$depth_id =  $_POST['inputDepthID'];
-	$max_power =  $_POST['inputMaxPower'];
-	$comment = $_POST['inputComment'];
+class RacksForm implements formsInterface{
+	public function submit(){
+		global $pdo;
 
-	if(isset($_POST['insert'])){
-		$query = "INSERT INTO racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
-		(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
+		$name = $_POST['inputName'];
+		$old_name = $_POST['inputOldName'];
+		$room_id = $_POST['inputRoomID'];
+		$floor_location = $_POST['inputFloorLocation'];
+		$height = $_POST['inputHeight'];
+		$width_id = $_POST['inputWidthID'];
+		$depth_id =  $_POST['inputDepthID'];
+		$max_power =  $_POST['inputMaxPower'];
+		$comment = $_POST['inputComment'];
 
-		$q = $pdo->prepare($query);
-		$wasSuccessful = $q->execute(array(':name'=>$name,
-						  ':old_name'=>$old_name,
-						  ':room_id'=>$room_id,
-						  ':floor_location'=>$floor_location,
-						  ':height'=>$height,
-						  ':width_id'=>$width_id,
-						  ':depth_id'=>$depth_id,
-						  ':max_power'=>$max_power,
-						  ':comment'=>$comment));
+		if(isset($_POST['insert']) /* && inputValidation */) {
+			$query = "INSERT INTO racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
+			(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
 
-		if($wasSuccessful) {
-			header("Location: /reports/racks.php?id=" . $pdo->lastInsertId());
-			exit;
-		} else {
-			// TODO: Alert user of error
+			$q = $pdo->prepare($query);
+			$wasSuccessful = $q->execute(array(':name'=>$name,
+							  ':old_name'=>$old_name,
+							  ':room_id'=>$room_id,
+							  ':floor_location'=>$floor_location,
+							  ':height'=>$height,
+							  ':width_id'=>$width_id,
+							  ':depth_id'=>$depth_id,
+							  ':max_power'=>$max_power,
+							  ':comment'=>$comment));
+
+			if($wasSuccessful) {
+				header("Location: /reports/racks.php?id=" . $pdo->lastInsertId());
+				exit;
+			} else {
+				// TODO: Alert user of error
+			}
 		}
 	}
-	
-	if(isset($_GET['copy_id'])){
-		$id = $_GET['copy_id'];
-		$query = 'SELECT * FROM racks WHERE id = :id';
-		$q = $pdo->prepare($query);
-		$q->bindParam(':id', $id, PDO::PARAM_STR);
-		if($q->execute()){
 
-			$row = $q->fetchObject();
-			$name = $row->name;
-			$old_name = $row->old_name;
-			$room_id = $row->room_id;
-			$floor_location = $row->floor_location;
-			$height = $row->height_ru;
-			$width_id = $row->width_id;
-			$depth_id = $row->depth_id;
-			$max_power = $row->max_power;
-			$comment = $row->comment;
-		}
-
-		// echo 'name: ' .$name;
-		// echo 'old name: ' . $old_name;
-		// echo 'room_id: ' . $room_id;
-		// echo 'floor_location: ' . $floor_location;
-		// echo 'height_ru: ' . $height_ru;
-		// echo 'width_id: ' . $width_id;
-		// echo 'depth_id: ' . $depth_id;
-		// echo 'max_power: ' . $max_power;
-		// echo 'comment: ' . $comment;
-
+	public function getTitle(){
+		return 'Racks';
 	}
 
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-	    <?php include "/inc/header.php" ?>
+	public function getHeading(){
+		return 'Racks';
+	}
 
-		<title>Racks</title>
-	</head>
+	public function getFormString(){
+		$name = $_POST['inputName'];
+		$old_name = $_POST['inputOldName'];
+		$room_id = $_POST['inputRoomID'];
+		$floor_location = $_POST['inputFloorLocation'];
+		$height = $_POST['inputHeight'];
+		$width_id = $_POST['inputWidthID'];
+		$depth_id =  $_POST['inputDepthID'];
+		$max_power =  $_POST['inputMaxPower'];
+		$comment = $_POST['inputComment'];
 
-	<body>
-		<div class="container">
-			
-			<?php include "/inc/navbar.php" ?>
-		
-			
-			<div class="row">
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputName">Name</label>';
+		$string .= '<input type="text" name="inputName" class="form-control" id="inputName" placeholder="Enter Name" value="' . htmlspecialchars($name) . '" maxlength="15" size="15" autofocus="autofocus">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputOldName">Old Name</label>';
+		$string .= '<input type="text" name="inputOldName" class="form-control" id="inputOldName" placeholder="Enter Old Name" value="' . htmlspecialchars($old_name) . '" maxlength="15" size ="15">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputRoomID">Room Number</label>';
+		$string .= '<select name="inputRoomID" class="form-control DropdownInitiallyBlank">';
+		$string .= getRoomOptions($room_id);
+		$string .= '</select>';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputFloorLocation">Floor Location</label>';
+		$string .= '<input type="text" name="inputFloorLocation" class="form-control" id="inputFloorLocation" placeholder="Enter Floor Location" value="' . htmlspecialchars($floor_location) . '" maxlength="10" size ="10">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputHeight">Height (ru)</label>';
+		$string .= '<input type="text" name="inputHeight" class="form-control" id="inputHeight" placeholder="Enter Height" value="' . htmlspecialchars($height_ru) . '" maxlength="10" size ="10">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputWidthID">Width</label>';
+		$string .= '<select name="inputWidthID" class="form-control DropdownInitiallyBlank">';
+		$string .= getWidthOptions($width_id);
+		$string .= '</select>';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputDepthID">Depth</label>';
+		$string .= '<select name="inputDepthID" class="form-control DropdownInitiallyBlank">';
+		$string .= getDepthOptions($depth_id);
+		$string .= '</select>';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputmax_power">max_power</label>';
+		$string .= '<input type="text" name="inputMaxPower" class="form-control" id="inputMaxPower" placeholder="Enter Max Power" value="' . htmlspecialchars($max_power) . '" maxlength="10" size ="10">';
+		$string .= '</div>';
+		$string .= '<div class="form-group">';
+		$string .= '<label for="inputComment">Comments</label>';
+		$string .= '<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->';
+		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">' . stripslashes($comment) . '</textarea>';
+		$string .= '</div>';
+		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
+		$string .= '</form>';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		return $string;
+	}
 
-						<h1>Racks</h1>
+	public function getEditString($id){
+		throw new Exception('Unimplemented Function');
+	}
 
-						<form role="form" method="post" action="/forms/racks.php">
-							<div class="form-group">
-								<label for="inputName">Name</label>
-								<input type="text" name="inputName" class="form-control" id="inputName" placeholder="Enter Name" value="<?php if(isset($name)){ echo htmlspecialchars($name);} ?>" maxlength="15" size="15" autofocus="autofocus">
-							</div>
-							<div class="form-group">
-								<label for="inputOldName">Old Name</label>
-								<input type="text" name="inputOldName" class="form-control" id="inputOldName" placeholder="Enter Old Name" value="<?php if(isset($old_name)){ echo htmlspecialchars($old_name);} ?>" maxlength="15" size ="15">
-							</div>
-							<div class="form-group">
-								<label for="inputRoomID">Room Number</label>
-								<select name="inputRoomID" class="form-control DropdownInitiallyBlank">
-									<?php echo getRoomOptions($room_id); ?>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="inputFloorLocation">Floor Location</label>
-								<input type="text" name="inputFloorLocation" class="form-control" id="inputFloorLocation" placeholder="Enter Floor Location" value="<?php if(isset($floor_location)){ echo htmlspecialchars($floor_location);} ?>" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputHeight">Height (ru)</label>
-								<input type="text" name="inputHeight" class="form-control" id="inputHeight" placeholder="Enter Height" value="<?php if(isset($height_ru)){ echo htmlspecialchars($height_ru);} ?>" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputWidthID">Width</label>
-								<select name="inputWidthID" class="form-control DropdownInitiallyBlank">
-									<?php echo getWidthOptions($width_id); ?>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="inputDepthID">Depth</label>
-								<select name="inputDepthID" class="form-control DropdownInitiallyBlank">
-									<?php echo getDepthOptions($depth_id); ?>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="inputmax_power">max_power</label>
-								<input type="text" name="inputMaxPower" class="form-control" id="inputMaxPower" placeholder="Enter Max Power" value="<?php if(isset($max_power)){ echo htmlspecialchars($max_power);} ?>" maxlength="10" size ="10">
-							</div>
-							<div class="form-group">
-								<label for="inputComment">Comments</label>
-								<!--<input type="text" class="form-control" id="inputComment" placeholder="Enter Comments" maxlength="255" size ="255">-->
-								<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
-							<button type="submit" name="insert" class="btn btn-default">Insert</button>
-						</form>
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+	public function getCopyString($id){
+		throw new Exception('Unimplemented Function');
+	}
+}
 
-		</div> <!-- /container -->
+$form = new RacksForm();
 
-		<?php include "inc/footer.php" ?>
-
-	</body>
-</html>
+include "/inc/forms.php";
+?>

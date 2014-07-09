@@ -12,9 +12,7 @@ class ProjectsForm implements formsInterface{
 		if(isset($_POST['insert']) /* && inputValidation */) {
 			$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
 
-			$q = $pdo->prepare($query);
-
-			$wasSuccessful = $q->execute(array(':name'=>$name, ':comment'=>$comment));
+			$wasSuccessful = $pdo->prepare($query)->execute(array(':name'=>$name, ':comment'=>$comment));
 
 			if ($wasSuccessful) {
 				header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
@@ -37,10 +35,10 @@ class ProjectsForm implements formsInterface{
 		$name = $_POST['inputProjectName'];
 		$comment = $_POST['inputComment'];
 
-		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string = '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputProjectName">Project Name</label>';
-		$string .= '<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" if(isset($name)){ echo value="' . htmlspecialchars($name) . '" maxlength="45" size ="45" autofocus="autofocus">';
+		$string .= '<input type="text" name="inputProjectName" class="form-control" id="inputProjectName" placeholder="Enter Project Name" value="' . htmlspecialchars($name) . '" maxlength="45" size ="45" autofocus="autofocus">';
 		$string .= '</div>';
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputComment">Comments</label>';

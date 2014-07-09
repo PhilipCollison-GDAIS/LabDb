@@ -4,6 +4,24 @@ include "/inc/prototypes.php";
 include "/inc/database.php";
 
 class EquipmentReport implements reportsInterface{
+	public function redirect(){
+		global $pdo;
+
+		if(isset($_GET['id'])){
+			// If the equipment that is being searched for does not exist, redirect the user
+			$query = 'SELECT EXISTS(SELECT 1 FROM equipment WHERE id = :id) AS redirect';
+
+			$q = $pdo->prepare($query);
+			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
+			$q->execute();
+
+			if($q->fetchObject()->redirect === "0"){
+				header('Location: ' . $_SERVER['PHP_SELF']);
+				exit;
+			}
+		}
+	}
+
 	public function getTitle(){
 		return 'Equipment';
 	}
@@ -138,24 +156,6 @@ class EquipmentReport implements reportsInterface{
 		$string .= '</table>';
 
 		return $string;
-	}
-
-	public function redirect(){
-		global $pdo;
-
-		if(isset($_GET['id'])){
-
-			$query = 'SELECT EXISTS(SELECT 1 FROM equipment WHERE id = :id) AS redirect';
-
-			$q = $pdo->prepare($query);
-			$q->bindParam(':id', $_GET['id'] , PDO::PARAM_INT);
-			$q->execute();
-
-			if($q->fetchObject()->redirect === "0"){
-				header('Location: ' . $_SERVER['PHP_SELF']);
-				exit;
-			}
-		}
 	}
 }
 

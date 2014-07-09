@@ -35,22 +35,17 @@ class VendorsForm implements formsInterface{
 		$vendor = $_POST['inputVendor'];
 		$comment = $_POST['inputComment'];
 
-		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
+		$string = '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputVendor">Vendor</label>';
-		$string .= '<input type="text" name="inputVendor" class="form-control" id="inputVendor" placeholder="Enter Vendor" maxlength="20" size ="20"'; 
-		if(isset($vendor)){ $string.= 'value="' . htmlspecialchars($vendor);} '"';
-		$string .= 'autofocus="autofocus">';
+		$string .= '<input type="text" name="inputVendor" class="form-control" id="inputVendor" placeholder="Enter Vendor" maxlength="20" size ="20" value="' . htmlspecialchars($vendor) . '" autofocus="autofocus">';
 		$string .= '</div>';
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputComment">Comments</label>';
-		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">';
-		if(isset($comment)){ $string .= stripslashes($comment);}
-		$string .= '</textarea>';
+		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">' . stripslashes($comment) . '</textarea>';
 		$string .= '</div>';
 		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
 		$string .= '</form>';
-
 
 		return $string;
 	}

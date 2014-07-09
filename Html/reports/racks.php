@@ -8,7 +8,7 @@ class RacksReport implements reportsInterface{
 		global $pdo;
 
 		if(isset($_GET['id'])){
-
+			// If the rack that is being searched for does not exist, redirect the user
 			$query = 'SELECT EXISTS(SELECT 1 FROM racks WHERE id = :id) AS redirect';
 
 			$q = $pdo->prepare($query);
