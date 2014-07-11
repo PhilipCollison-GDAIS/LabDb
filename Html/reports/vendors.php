@@ -49,7 +49,8 @@ class VendorsReport implements reportsInterface{
 	}
 
 	public function getIdString($id){
-		throw new Exception('Unimplemented Function');
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
 	}
 
 }

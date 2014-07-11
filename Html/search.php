@@ -1,5 +1,6 @@
 <?php
 	include "/inc/connect.php";
+	include "/inc/database.php";
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +23,30 @@
 
 						<h1>Search</h1>
 
-						<p>There is a dropdown or a set of radio buttons here that asks what would you like to search</p>
+						<form role="form" method="get" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+							<label for="search">What would you like to search for:   </label>
+							<select name="search" <?php if(!isset($_GET['search'])) echo 'class="DropdownInitiallyBlank"' ?> onchange="this.form.submit();">
+								<option value="equipment" <?php if($_GET['search'] === "equipment"){print "selected=\"selected\"";} ?>>Equipment</option>	
+								<option value="rack" <?php if($_GET['search'] === "rack"){print "selected=\"selected\"";} ?>>Rack</option>	
+								<option value="connection" <?php if($_GET['search'] === "connection"){print "selected=\"selected\"";} ?>>Connection</option>	
+								<option value="port" <?php if($_GET['search'] === "port"){print "selected=\"selected\"";} ?>>Port</option>	
+							</select>
+						</form>
+
+						<?php if (!isset($_GET['search'])) { ?>
+
+						<?php } else if ($_GET['search'] === "equipment") { ?>
+
+						<?php } else if ($_GET['search'] === "rack") { ?>
+
+						<?php } else if ($_GET['search'] === "connection") { ?>
+
+						<?php } else if ($_GET['search'] === "port") { ?>
+
+						<?php } else { ?>
+							<?php echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>'; ?>
+							<?php exit; ?>
+						<?php } ?>
 
 						<br>
 
@@ -33,6 +57,13 @@
 						<br>
 
 						<p>Results will appear in a table here, pagination optional.</p>
+
+						<br>
+
+						<p>-------------------------------------------------------------------</p>
+
+						<br>
+
 
 					</div> <!--jumbotron-->
 				</div>

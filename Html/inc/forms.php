@@ -29,7 +29,8 @@
 						} else if (isset($_GET['copy_id'])) {
 							echo $form->getCopyString($_GET['copy_id']);
 						} else {
-							// TODO: redirect user to main page
+							echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+							exit;
 						}
 						 ?>
 

@@ -115,6 +115,8 @@ class EquipmentReport implements reportsInterface{
 
 		$string .= '<br>';
 
+		$string .= '<h2>Ports</h2>';
+
 		$string .= '<table class="table">';
 		$string .= '<tr>';
 		$string .= '<th>Connector Type</th>';

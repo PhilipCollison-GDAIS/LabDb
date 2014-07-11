@@ -51,11 +51,13 @@ class VendorsForm implements formsInterface{
 	}
 
 	public function getEditString($id){
-		throw new Exception('Unimplemented Function');
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
 	}
 
 	public function getCopyString($id){
-		throw new Exception('Unimplemented Function');
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
 	}
 }
 

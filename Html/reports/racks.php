@@ -91,8 +91,7 @@ class RacksReport implements reportsInterface{
 					WHERE racks.room_id = rooms.id
 					AND racks.width_id = widths.id
 					AND racks.depth_id = depths.id
-					AND racks.id = :id
-					ORDER BY room_number, name';
+					AND racks.id = :id';
 
 		$q = $pdo->prepare($query);
 		$q->bindParam(':id', $id, PDO::PARAM_INT);
@@ -102,21 +101,23 @@ class RacksReport implements reportsInterface{
 
 		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
 		$string .= '<tr><td><strong>Name: </strong></td><td>' . $row->name . '</td></tr>';
-		if (!is_null($row->old_name)) {
+		if (!empty($row->old_name)) {
 			$string .= '<tr><td><strong>Old Name: </strong></td><td>' . $row->old_name . '</td></tr>';
 		}
 		$string .= '<tr><td><strong>Room Number: </strong></td><td>' . $row->room_number . '</td></tr>';
-		if (!is_null($row->comment)) {
+		if (!empty($row->floor_location)) {
 					$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
 		}
 		$string .= '<tr><td><strong>Dimensions (WxHxD): </strong></td><td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td></tr>';
 		$string .= '<tr><td><strong>Max Power: </strong></td><td>' . $row->max_power . '</td></tr>';
-		if (!is_null($row->comment)) {
+		if (!empty($row->comment)) {
 			$string .= '<tr><td><strong>Comments: </strong></td><td>' . $row->comment . '</td></tr>';
 		}
 		$string .= '</table>';
 
 		$string .= '<br>';
+
+		$string .= '<h2>Equipment</h2>';
 
 		$string .= '<table class="table">';
 		$string .= '<tr>';
@@ -138,7 +139,7 @@ class RacksReport implements reportsInterface{
 		$query = 'SELECT equipment.id AS id, elevation, model, vendor, equipment.name AS name, serial_num, barcode_number, GFE_id, equipment.comment AS comment
 					FROM equipment, vendors, affiliations
 					WHERE equipment.vendor_id = vendors.id AND affiliations.parent_rack_id = :id AND affiliations.id = equipment.id
-					ORDER BY elevation';
+					ORDER BY elevation DESC';
 
 		$q = $pdo->prepare($query);
 		$q->bindParam(':id', $id, PDO::PARAM_INT);
@@ -154,6 +155,50 @@ class RacksReport implements reportsInterface{
 			$string .= '<td>' . $row->barcode_number . '</td>';
 			$string .= '<td>' . $row->GFE_id . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
+			$string .= '</tr>';
+		}
+
+		$string .= '</table>';
+
+		$string .= '<br>';
+
+		$string .= '<h2>Patch Panels<h4>TODO: What should this look like?</h4></h2>';
+
+		$string .= '<table class="table">';
+		$string .= '<tr>';
+		$string .= '<th>Connector Type</th>';
+		$string .= '<th>Name</th>';
+		$string .= '<th>Connection</th>';
+		$string .= '<th>Gender</th>';
+		$string .= '<th>Type</th>';
+		$string .= '<th>';
+		ob_start();
+		include "/inc/modal_buttons/port_button.php";
+		$string .= ob_get_clean();
+		$string .= '</th>';
+		$string .= '</tr>';
+
+		$query = 'SELECT connector_type, ports.name, ports.id, connector_gender, connector_types.affiliated AS type
+					FROM ports, connector_types
+					WHERE ports.connector_type_id = connector_types.id AND equipment_id = :id
+					ORDER BY connector_types.connector_type, ports.name';
+
+		$q = $pdo->prepare($query);
+		$q->bindParam(':id', $id, PDO::PARAM_INT);
+		$q->execute();
+
+		while ($row = $q->fetchObject()) {
+			$string .= '<tr>';
+			$string .= '<td>' . $row->connector_type . '</td>';
+			$string .= '<td>' . $row->name . '</td>';
+			$string .= '<td>' . 'conditional link' . '</td>';
+			$string .= '<td>';
+			$string .= $row->connector_gender === "F" ? 'Female' : 'Male';
+			$string .= '</td>';
+			$string .= '<td>';
+			$string .= $row->type === "E" ? 'Electrical' : 'Optical';
+			$string .= '</td>';
 			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}

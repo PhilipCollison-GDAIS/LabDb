@@ -27,7 +27,8 @@
 						} else if (isset($_GET['id'])) {
 							echo $report->getIdString($_GET['id']);
 						} else {
-							// TODO: redirect user back to main page
+							echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+							exit;
 						}
 						 ?>
 

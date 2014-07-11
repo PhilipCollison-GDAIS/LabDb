@@ -27,17 +27,19 @@ class RoomsReport implements reportsInterface{
 
 		$string .= '<tr>';
 		$string .= '<th>Room Number</th>';
+		$string .= '<th>Building Name</th>';
 		$string .= '<th>Comment</th>';
 		$string .= '<th><a href="/forms/rooms.php">Add Room</a></th>';
 		$string .= '</tr>';
 
-		$query = 'SELECT id, room_number, comment FROM rooms';
+		$query = 'SELECT id, building_name, room_number, comment FROM rooms ORDER BY building_name, room_number';
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
 			$string .= '<td><a href="?id=' . $row->id . '">' . $row->room_number . '</td>';
+			$string .= '<td>' . $row->building_name . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
@@ -49,7 +51,8 @@ class RoomsReport implements reportsInterface{
 	}
 
 	public function getIdString($id){
-		throw new Exception('Unimplemented Function');
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
 	}
 
 }
