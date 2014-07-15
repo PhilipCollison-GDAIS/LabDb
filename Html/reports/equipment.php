@@ -126,7 +126,7 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<th>Type</th>';
 		$string .= '<th>';
 		ob_start();
-		include "/inc/modal_buttons/port_button.php";
+		include "/inc/modal_buttons/port_button_for_equipment.php";
 		$string .= ob_get_clean();
 		$string .= '</th>';
 		$string .= '</tr>';
