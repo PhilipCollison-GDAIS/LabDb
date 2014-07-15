@@ -68,17 +68,19 @@
 
 						<script>
 						$(function(){
-							$( "#dialog" ).dialog({
+							$( "#dialog_equipment_modal" ).dialog({
 								autoOpen: false,
+								draggable: false,
+								modal: true,
 							});
 
-							$( "#open" ).click(function() {
-								$( "#dialog" ).dialog( "open" );
+							$( "#open_equipment_modal" ).click(function() {
+								$( "#dialog_equipment_modal" ).dialog( "open" );
 							});
 						});
 						</script>
 
-						<div id="dialog" title="Equipment Form">
+						<div id="dialog_equipment_modal" title="Equipment Form">
 							<form role="form" method="post" action="">
 								<div class="form-group">
 									<label for="barcode">Barcode Number</label>
@@ -104,7 +106,7 @@
 								</div>
 								<div class="form-group">
 									<label for="comment">Comments</label>
-									<textarea name="comment" class="form-control" id="comment" placeholder="Enter Optional Comments" cols="60" rows="4"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
+									<textarea name="comment" class="form-control" id="comment" placeholder="Enter Optional Comments" cols="60" rows="0"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
 								</div>
 								<div class="form-group">
 									<label for="elevation">Elevation</label>
@@ -114,4 +116,4 @@
 							</form>
 						</div>
 
-						<button id="open">Add Equipment</button>
+						<button id="open_equipment_modal">Add Equipment</button>

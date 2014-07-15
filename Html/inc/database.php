@@ -78,20 +78,45 @@ function getRackOptions($id = NULL){
 
 	$string = '';
 
-	$query = 'SELECT id, name FROM racks';
+	$query = 'SELECT racks.id AS rack_id, racks.name AS rack_name, rooms.id AS room_id, room_number, building_name
+			  FROM racks, rooms
+			  WHERE rooms.id = racks.room_id
+			  ORDER BY room_id, rack_name';
 
 	$row_resource = $pdo->query($query);
 
-	while ($row = $row_resource->fetchObject()) {
-		$string .= '<option value="';
-		$string .=  $row->id;
-		$string .= '"';
-		if(isset($id) && $id == $row->id){
-			$string .= ' selected="selected"';
+	$rack_ids = array();
+	$rack_names = array();
+	$room_info = array();
+	foreach($row_resource->fetchAll() as $row) {
+		$rack_ids[$row['room_id']][] = $row['rack_id'];
+		$rack_names[$row['room_id']][] = $row['rack_name'];
+		$room_info[$row['room_id']]['building_name'] = $row['building_name'];
+		$room_info[$row['room_id']]['room_number'] = $row['room_number'];
+	}
+
+	// echo '<pre>';
+
+	// echo 'rack ids\n';
+	// var_dump($rack_ids);
+	// echo '\n';
+
+	// echo 'rack names\n';
+	// var_dump($rack_names);
+	// echo '\n';
+
+	// echo 'room info\n';
+	// var_dump($room_info);
+	// echo '\n';
+
+	// echo '</pre>';
+
+	foreach ($room_info as $key => $info) {
+		$string .= '<optgroup label="' . $info['room_number'] . ', ' . $info['building_name'] . '">';
+		for ($i = 0; $i < count($rack_ids[$key]); $i = $i + 1) {
+			$string .= '<option value="' . $rack_ids[$key][$i] . '">' . $rack_names[$key][$i] . '</option>';
 		}
-		$string .= '>';
-		$string .= $row->name;
-		$string .= '</option>';
+		$string .= '</optgroup>';
 	}
 
 	return $string;

@@ -41,17 +41,19 @@
 
 						<script>
 						$(function(){
-							$( "#dialog" ).dialog({
+							$( "#dialog_port_modal" ).dialog({
 								autoOpen: false,
+								draggable: false,
+								modal: true,
 							});
 
-							$( "#open" ).click(function() {
-								$( "#dialog" ).dialog( "open" );
+							$( "#open_port_modal" ).click(function() {
+								$( "#dialog_port_modal" ).dialog( "open" );
 							});
 						});
 						</script>
 
-						<div id="dialog" title="Port Form">
+						<div id="dialog_port_modal" title="Port Form">
 							<form role="form" method="post" action="">
 								<div class="form-group">
 									<label for="intutConnectorType">Connector Type</label>
@@ -74,4 +76,4 @@
 							</form>
 						</div>
 
-						<button id="open">Add Port</button>
+						<button id="open_port_modal">Add Port</button>

@@ -17,21 +17,10 @@
 					<div class="jumbotron">
 						<h1>Forms</h1>
 
-						<p>Standard User</a></p>
-						<ul>
-							<p><a href="forms/equipment.php">Equipment</a></p>
-							<p><a href="forms/racks.php">Racks</a></p>
-						</ul>
+						<p><a href="forms/equipment.php">Equipment</a></p>
+						<p><a href="forms/racks.php">Racks</a></p>
 
 						<br>
-
-						<p>Admin</a></p>
-						<ul>
-							<p><a href="forms/rooms.php">Rooms</a></p>
-							<p><a href="forms/projects.php">Projects</a></p>
-							<p><a href="forms/vendors.php">Vendors</a></p>
-						</ul>
-
 					</div>
 				</div>
 			</div> <!--row-->

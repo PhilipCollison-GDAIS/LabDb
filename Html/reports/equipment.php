@@ -40,13 +40,13 @@ class EquipmentReport implements reportsInterface{
 		$string = '<table class="table">';
 
 		$string .= '<tr>';
-		$string .= '<th>Barcode</th>';
+		$string .= '<th>Serial Number</th>';
+		$string .= '<th>Rack</th>';
+		$string .= '<th>Location</th>';
 		$string .= '<th>Vendor</th>';
 		$string .= '<th>Model</th>';
-		$string .= '<th>Serial Number</th>';
+		$string .= '<th>Barcode</th>';
 		$string .= '<th>GFE ID</th>';
-		$string .= '<th>Location</th>';
-		$string .= '<th>Rack</th>';
 		$string .= '<th>Comments</th>';
 		$string .= '<th><a href="/forms/equipment.php">Add Equipment</a></th>';
 		$string .= '</tr>';
@@ -57,20 +57,20 @@ class EquipmentReport implements reportsInterface{
 						AND equipment.id = affiliations.id
 						AND affiliations.parent_rack_id = racks.id
 						AND racks.room_id = rooms.id
-					ORDER BY barcode_number, model';
+					ORDER BY rooms.id, racks.id, serial_num';
 					// TODO: How is is that the ORDER BY clauses should be ordered?
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->barcode_number . '</a></td>';
+			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->serial_num . '</a></td>';
+			$string .= '<td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td>';
+			$string .= '<td>' . $row->room_number . " " .  $row->building_name . '</td>';
 			$string .= '<td>' . $row->vendor . '</td>';
 			$string .= '<td>' . $row->model . '</td>';
-			$string .= '<td>' . $row->serial_num . '</td>';
+			$string .= '<td>' . $row->barcode_number . '</td>';
 			$string .= '<td>' . $row->GFE_id . '</td>';
-			$string .= '<td>' . $row->room_number . " " .  $row->building_name . '</td>';
-			$string .= '<td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td>';
 			$string .= '<td>' . $row->comment . '</td>';
 			$string .= '<td><a href="/forms/equipment.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/equipment.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';

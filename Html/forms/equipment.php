@@ -276,7 +276,7 @@
 
 						<form role="form" method="post" action="/forms/equipment.php?affiliation">
 							<div class="form-group">
-								<label for="affiliated">Parent Affiliation:  </label>
+								<label for="affiliated">Are you located on a rack or in a piece of equipment:  </label>
 								<select name="affiliated" onchange="this.form.submit();" <?php if(!isset($affiliated)) echo 'class="DropdownInitiallyBlank"' ?>>
 									<option value="E" <?php if(isset($affiliated) && $affiliated == "E"){print "selected=\"selected\"";} ?>>Equipment</option>
 									<option value="R" <?php if(isset($affiliated) && $affiliated == "R"){print "selected=\"selected\"";} ?>>Racks</option>
