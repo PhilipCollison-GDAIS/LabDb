@@ -177,3 +177,7 @@ function isNaturalNumber($x) {
 function isAlphaNumeric($x, $length) {
 	return !empty($x) && (!isset($length) || strlen($x) > $length) && ctype_alnum($x);
 }
+
+function isInteger($input){
+	return (is_numeric($x) ? intval($x) == $x : false);
+}

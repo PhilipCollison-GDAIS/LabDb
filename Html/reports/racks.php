@@ -131,14 +131,16 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Comment</th>';
 		$string .= '<th>';
 		ob_start();
-		include "/inc/modal_buttons/equipment_button.php";
+		include "/inc/modal_buttons/equipment_button_for_racks.php";
 		$string .= ob_get_clean();
 		$string .= '</th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT equipment.id AS id, elevation, model, vendor, equipment.name AS name, serial_num, barcode_number, GFE_id, equipment.comment AS comment
 					FROM equipment, vendors, affiliations
-					WHERE equipment.vendor_id = vendors.id AND affiliations.parent_rack_id = :id AND affiliations.id = equipment.id
+					WHERE equipment.vendor_id = vendors.id
+						AND affiliations.id = equipment.id
+						AND affiliations.parent_rack_id = :id
 					ORDER BY elevation DESC';
 
 		$q = $pdo->prepare($query);
@@ -174,14 +176,16 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Type</th>';
 		$string .= '<th>';
 		ob_start();
-		include "/inc/modal_buttons/port_button.php";
+		include "/inc/modal_buttons/optical_cassette_button_for_racks.php";
 		$string .= ob_get_clean();
 		$string .= '</th>';
 		$string .= '</tr>';
 
 		$query = 'SELECT connector_type, ports.name, ports.id, connector_gender, connector_types.affiliated AS type
 					FROM ports, connector_types
-					WHERE ports.connector_type_id = connector_types.id AND equipment_id = :id
+					WHERE ports.connector_type_id = connector_types.id
+						AND ports.optical_cassette_id = optical_cassettes.id
+						AND optical_cassettes.rack_id = :id
 					ORDER BY connector_types.connector_type, ports.name';
 
 		$q = $pdo->prepare($query);
