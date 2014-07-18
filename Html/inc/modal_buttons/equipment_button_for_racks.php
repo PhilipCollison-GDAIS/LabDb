@@ -6,7 +6,12 @@
 							return true;
 						}
 
-						if (isset($_POST['insert_equipment']) /* && isEquipmentValid() === true */) {
+						$isEquipmentValid = isEquipmentValid();
+
+						/* If the user is attempting to insert equipment and the input is valid, then
+						   an affiliation is created and inserted into the database. Given the success
+						   of this operation the corresonding piece of equipment is then inserted. */
+						if (isset($_POST['insert_equipment'])  && isEquipmentValid() === true) {
 
 							try{
 
@@ -38,7 +43,7 @@
 													  ':comment'=>$_POST['comment']));
 
 									if($wasSuccessful) {
-										header('Location: '.$_SERVER['REQUEST_URI']);
+										header('Location: ' . $_SERVER['REQUEST_URI']);
 										exit;
 									} else {
 										// echo '<pre>';

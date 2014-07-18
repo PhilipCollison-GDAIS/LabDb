@@ -165,7 +165,7 @@ class RacksReport implements reportsInterface{
 
 		$string .= '<br>';
 
-		$string .= '<h2>Patch Panels<h4>TODO: What should this look like?</h4></h2>';
+		$string .= '<h2>Patch Panels</h2>';
 
 		$string .= '<table class="table">';
 		$string .= '<tr>';
@@ -182,7 +182,7 @@ class RacksReport implements reportsInterface{
 		$string .= '</tr>';
 
 		$query = 'SELECT connector_type, ports.name, ports.id, connector_gender, connector_types.affiliated AS type
-					FROM ports, connector_types
+					FROM ports, connector_types, optical_cassettes
 					WHERE ports.connector_type_id = connector_types.id
 						AND ports.optical_cassette_id = optical_cassettes.id
 						AND optical_cassettes.rack_id = :id

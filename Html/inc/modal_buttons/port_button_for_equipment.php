@@ -90,7 +90,7 @@
 
 								// On succcess redirect user else inform them of error
 								if($wasSuccessful) {
-									header('Location: '.$_SERVER['REQUEST_URI']);
+									header('Location: ' . $_SERVER['REQUEST_URI']);
 									exit;
 								} else {
 									// TODO:
@@ -133,7 +133,7 @@
 
 						<div id="dialog_port_modal" title="Port Form">
 
-							<?php if (!empty($_POST) && isset($isValidInputEquipmentPorts)) { echo '<br><div><strong><font color="red" size="4">' . $isValidInputEquipmentPorts . '</font></strong></div><br>'; } ?>
+							<?php if (!empty($_POST) && $isValidInputRacksOpticalCassettes !== true) { echo '<br><div><strong><font color="red" size="4">' . $isValidInputEquipmentPorts . '</font></strong></div><br>'; } ?>
 
 							<form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" name="EquipmentPortModalForm">
 								<div class="form-group">
