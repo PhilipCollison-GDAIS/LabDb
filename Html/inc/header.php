@@ -21,4 +21,17 @@
 
 		<script type="text/javascript">$(function(){ $(".DropdownInitiallyBlank").prop("selectedIndex", -1); });</script>
 
+		<!-- Make all tables sortable -->
+		<script type="text/javascript">
+		(function(){
+			var s=document.createElement('script');
+			s.src='http://kryogenix.org/code/browser/sorttable/sorttable.js';
+			s.onload=function(){
+				sorttable.init();
+				Array.prototype.slice.call(document.getElementsByTagName('table')).forEach(function(t){sorttable.makeSortable(t);})
+			};
+			document.getElementsByTagName('head')[0].appendChild(s);
+		})()
+		</script>
+
 		<link rel="stylesheet" href="/css/docs.css">

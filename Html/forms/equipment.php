@@ -147,6 +147,19 @@
 
 				if($wasSuccessful){
 					echo "Insertion of Equipment was successful";
+
+					// All was successful, clear session variables and redirect user
+					unset($_SESSION['barcode']);
+					unset($_SESSION['vendor_id']);
+					unset($_SESSION['model']);
+					unset($_SESSION['serial_num']);
+					unset($_SESSION['GFE_id']);
+					unset($_SESSION['comment']);
+					unset($_SESSION['affiliated']);
+
+					header('Location: /reports/equipment.php?id=' . $lastInsertId);
+					exit;
+
 				} else {
 					echo '<pre>';
 					echo 'Insertion of Equipment was NOT successful' . "\n";
@@ -155,19 +168,8 @@
 					echo ' . ^ . ^ .' . "\n";
 					echo $q->errorCode() . "\n";
 					echo ' . ^ . ^ .' . "\n";
+					echo '</pre>';
 				}
-
-				// All was successful, clear session variables and redirect user
-				unset($_SESSION['barcode']);
-				unset($_SESSION['vendor_id']);
-				unset($_SESSION['model']);
-				unset($_SESSION['serial_num']);
-				unset($_SESSION['GFE_id']);
-				unset($_SESSION['comment']);
-				unset($_SESSION['affiliated']);
-
-				header('Location: /reports/equipment.php?id=' . $lastInsertId);
-				exit;
 
 			} else {
 				echo '<pre>';
@@ -177,6 +179,7 @@
 				echo ' . ^ . ^ .' . "\n";
 				echo $q->errorCode() . "\n";
 				echo ' . ^ . ^ .' . "\n";
+				echo '</pre>';
 			}
 
 		} catch (Exception $e) {
@@ -215,9 +218,9 @@
 		<title>Equipment</title>
 	</head>
 
-	<body onload='hideBoth()'>
+	<body>
 		<div class="container">
-			
+
 			<?php include "/inc/navbar.php" ?>
 
 			<div class="row">

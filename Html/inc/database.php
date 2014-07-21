@@ -170,6 +170,30 @@ function getConnectorOptions($id = NULL){
 	return $string;
 }
 
+function getProjectOptions($id = NULL){
+	global $pdo;
+
+	$string = '';
+
+	$query = 'SELECT id, name FROM projects';
+
+	$row_resource = $pdo->query($query);
+
+	while ($row = $row_resource->fetchObject()) {
+		$string .= '<option value="';
+		$string .=  $row->id;
+		$string .= '"';
+		if(isset($id) && $id == $row->id){
+			$string .= ' selected="selected"';
+		}
+		$string .= '>';
+		$string .= $row->name;
+		$string .= '</option>';
+	}
+
+	return $string;
+}
+
 function isNaturalNumber($x) {
 	return !empty($x) && is_numeric($x) && $x > 0 && $x == round($x);
 }
