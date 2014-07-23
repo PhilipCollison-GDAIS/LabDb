@@ -2,6 +2,8 @@ li{
 	list-style: none;
 }
 
+th, td { white-space: nowrap; }
+
 textarea{
 	resize: none;
 }

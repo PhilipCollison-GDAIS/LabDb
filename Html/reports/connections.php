@@ -14,8 +14,9 @@ class ConnectionsReports implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Connection Type</th>';
 		$string .= '<th>Location</th>';
@@ -27,6 +28,8 @@ class ConnectionsReports implements reportsInterface{
 		$string .= '<th>Elevation</th>';
 		$string .= '<th><a href="/forms/connections.php">Add Connection</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
+
 
 		// TODO: Create, execute and display query for connection information
 		// $query = 'SELECT id, name, comment FROM connections';

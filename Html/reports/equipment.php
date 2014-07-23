@@ -37,8 +37,9 @@ class EquipmentReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Serial Number</th>';
 		$string .= '<th>Rack</th>';
@@ -50,6 +51,7 @@ class EquipmentReport implements reportsInterface{
 		$string .= '<th>Comments</th>';
 		$string .= '<th><a href="/forms/equipment.php">Add Equipment</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT equipment.id, barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment
 					FROM equipment, vendors, racks, rooms, affiliations

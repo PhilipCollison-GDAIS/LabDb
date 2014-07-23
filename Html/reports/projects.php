@@ -14,13 +14,15 @@ class ProjectsReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Project Name</th>';
 		$string .= '<th>Comments</th>';
 		$string .= '<th><a href="/forms/projects.php">Add Project</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT id, name, comment FROM projects';
 

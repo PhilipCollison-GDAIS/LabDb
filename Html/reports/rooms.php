@@ -23,14 +23,16 @@ class RoomsReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Room Number</th>';
 		$string .= '<th>Building Name</th>';
 		$string .= '<th>Comment</th>';
 		$string .= '<th><a href="/forms/rooms.php">Add Room</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT id, building_name, room_number, comment FROM rooms ORDER BY building_name, room_number';
 

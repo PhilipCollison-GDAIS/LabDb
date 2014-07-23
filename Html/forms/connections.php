@@ -38,7 +38,7 @@
 					(:connection_id, :project_id)";
 
 					$q = $pdo->prepare($query);
-					$wasSuccessful = $q->execute(array(':id'=>$lastInsertId,
+					$wasSuccessful = $q->execute(array(':connection_id'=>$lastInsertId,
 									  ':project_id'=>$_POST['project_id']));
 				}
 

@@ -37,8 +37,9 @@ class RacksReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Name</th>';
 		$string .= '<th>Old Name</th>';
@@ -49,6 +50,7 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Comments</th>';
 		$string .= '<th><a href="/forms/racks.php">Add Rack</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment
 					FROM racks, rooms, widths, depths

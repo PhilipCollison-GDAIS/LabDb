@@ -23,13 +23,15 @@ class VendorsReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table">';
+		$string = '<table class="table data-table">';
 
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Vendor</th>';
 		$string .= '<th>Comments</th>';
 		$string .= '<th><a href="/forms/vendors.php">Add Vendor</a></th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT id, vendor, comment FROM vendors';
 
