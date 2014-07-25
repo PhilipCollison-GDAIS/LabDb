@@ -237,7 +237,7 @@
 
 							<div class="form-group">
 								<label for="inputSerialNum">Serial Number</label>
-								<input type="text" name="inputSerialNum" class="form-control" id="inputSerialNum" placeholder="Enter Serial Number" value="<?php if(isset($serial_num)){ echo htmlspecialchars($serial_num);} ?>"  maxlength="10" size ="10">
+								<input type="text" name="inputSerialNum" class="form-control" id="inputSerialNum" placeholder="Enter Serial Number" value="<?php if(isset($serial_num)){ echo htmlspecialchars($serial_num);} ?>"  maxlength="10" size ="10" autofocus="autofocus">
 							</div>
 
 							<div class="form-group">
@@ -247,7 +247,7 @@
 
 							<div class="form-group">
 								<label for="inputBarcode">Barcode Number</label>
-								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" value="<?php if(isset($barcode)){ echo htmlspecialchars($barcode);} ?>"  maxlength="10" size="10" autofocus="autofocus">
+								<input type="text" name="inputBarcode" class="form-control" id="inputBarcode" placeholder="Enter Barcode Number" value="<?php if(isset($barcode)){ echo htmlspecialchars($barcode);} ?>"  maxlength="10" size="10">
 							</div>
 
 							<div class="form-group">

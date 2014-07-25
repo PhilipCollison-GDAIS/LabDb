@@ -80,6 +80,22 @@ class EquipmentReport implements reportsInterface{
 
 		$string .= '</table>';
 
+		$string .= '<br>';
+
+		$string .= '<div>';
+
+		$space .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+
+		$string .= '<button type="button" class="btn btn-default btn-lg">Add</button>';
+		$string .= $space;
+		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button>';
+		$string .= $space;
+		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button>';
+		$string .= $space;
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg" disabled>Delete</button>';
+
+		$string .= '</div>';
+
 		return $string;
 	}
 

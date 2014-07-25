@@ -1,7 +1,6 @@
-
 $(document).ready(function() {
-	$('.data-table').dataTable( {
-		 // A complete list of all optins can be found at: http://www.datatables.net/reference/option/
+	var table = $('.data-table').DataTable({
+		// A complete list of all optins can be found at: http://www.datatables.net/reference/option/
 		"scrollY": 300,
 		"scrollCollapse": true,
 		"scrollX": true,
@@ -13,6 +12,23 @@ $(document).ready(function() {
 		renderer: "bootstrap",
 		"info": false,
 		// "border-bottom": false,
+	});
+
+	$('.data-table').on('click', 'tr', function() {
+		$(this).toggleClass('selected');
+
+		// disable and enable buttons based on number of selected rows
+		var selected = table.rows('.selected').data().length;
+		if(selected == 1){
+			$('.oneSelected').removeAttr('disabled'); //Enable
+		} else {
+			$('.oneSelected').attr('disabled', 'disabled'); //Disable
+		}
+		if(selected != 0){
+			$('.notNoneSelected').removeAttr('disabled'); //Enable
+		} else {
+			$('.notNoneSelected').attr('disabled', 'disabled'); //Disable
+		}
 	});
 });
 
