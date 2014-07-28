@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	    <?php include "inc/header.php" ?>
+		<?php include "inc/header.php" ?>
 
 		<title>Sign in</title>
 	</head>
