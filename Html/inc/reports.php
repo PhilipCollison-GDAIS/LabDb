@@ -37,7 +37,7 @@
 				<div class="col-md-4"></div>
 			</div>
 
-		</div> <!-- /container -->
+		</div> <!-- container -->
 
 		<?php include "/inc/footer.php" ?>
 

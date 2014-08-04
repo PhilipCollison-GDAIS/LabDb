@@ -1,6 +1,7 @@
 <?php
 require_once "/inc/connect.php";
 include "/inc/prototypes.php";
+require_once "/delete/connections.php";
 
 class ConnectionsReports implements reportsInterface{
 	public function getTitle(){
@@ -14,14 +15,15 @@ class ConnectionsReports implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table data-table">';
+		$string = '<div class="table-n-buttons" name="main-table-for-connections">';
+
+		$string .= '<table class="table data-table">';
 
 		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Connector Type</th>';
 		$string .= '<th>Location</th>';
 		$string .= '<th>Project</th>';
-		$string .= '<th>Name</th>';
 		$string .= '<th>Rack</th>';
 		$string .= '<th>Elevation</th>';
 		$string .= '<th>Port Type</th>';
@@ -29,7 +31,7 @@ class ConnectionsReports implements reportsInterface{
 		$string .= '<th>Rack</th>';
 		$string .= '<th>Elevation</th>';
 		$string .= '<th>Port Type</th>';
-		$string .= '<th><a href="/forms/connections.php">Add Connection</a></th>';
+		$string .= '<th>Name</th>';
 		$string .= '</tr>';
 		$string .= '</thead>';
 
@@ -80,7 +82,7 @@ class ConnectionsReports implements reportsInterface{
 				// Display first two columns
 				if ($is_first) {
 					$is_first = false;
-					$string .= '<tr>';
+					$string .= '<tr value="' . $row->id . '">';
 					$string .= '<td>';
 					$string .= $port_info->affiliated === "E" ? 'Electrical' : 'Optical';
 					$string .= '</td>';
@@ -96,17 +98,24 @@ class ConnectionsReports implements reportsInterface{
 				}
 
 				// Display information for current port
-				$string .= '<td style="border-left:1px solid black;">' . $port_info->name . '</td>';
-				$string .= '<td>' . $rack_info->name . '</td>';
+				$string .= '<td style="border-left:1px solid black;">' . $rack_info->name . '</td>';
 				$string .= '<td>' . $rack_id_and_elevation->elevation . '</td>';
 				$string .= '<td>' . $port_info->connector_type . '</td>';
+				$string .= '<td>' . $port_info->name . '</td>';
 			}
 
-			$string .= '<td style="border-left:1px solid black;"><a href="#">Edit</a></td>';
 			$string .= '</tr>';
 		}
 
 		$string .= '</table>';
+
+		$string .= '<br>';
+
+		$string .= '<a href="/forms/connections.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/connections.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" id="delete" disabled>Delete</button>';
+
+		$string .= '</div>';
 
 		return $string;
 	}

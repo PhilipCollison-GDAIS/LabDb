@@ -74,7 +74,7 @@ class RacksForm implements formsInterface{
 
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputRoomID">Room Number</label>';
-		$string .= '<select name="inputRoomID" class="form-control DropdownInitiallyBlank">';
+		$string .= '<select name="inputRoomID" class="form-control">';
 		$string .= getRoomOptions($room_id);
 		$string .= '</select>';
 		$string .= '</div>';
@@ -91,14 +91,14 @@ class RacksForm implements formsInterface{
 
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputWidthID">Width (inches)</label>';
-		$string .= '<select name="inputWidthID" class="form-control DropdownInitiallyBlank">';
+		$string .= '<select name="inputWidthID" class="form-control">';
 		$string .= getWidthOptions($width_id);
 		$string .= '</select>';
 		$string .= '</div>';
 
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputDepthID">Depth (inches)</label>';
-		$string .= '<select name="inputDepthID" class="form-control DropdownInitiallyBlank">';
+		$string .= '<select name="inputDepthID" class="form-control">';
 		$string .= getDepthOptions($depth_id);
 		$string .= '</select>';
 		$string .= '</div>';

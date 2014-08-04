@@ -131,20 +131,21 @@
 						});
 						</script>
 
-						<div id="dialog_port_modal" title="Port Form">
+						<div id="dialog_port_modal" title="Port Form" style="display: none;">
 
 							<?php if (!empty($_POST) && $isValidInputRacksOpticalCassettes !== true) { echo '<br><div><strong><font color="red" size="4">' . $isValidInputEquipmentPorts . '</font></strong></div><br>'; } ?>
 
 							<form role="form" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>" name="EquipmentPortModalForm">
 								<div class="form-group">
 									<label for="inputConnectorType">Connector Type</label>
-									<select name="inputConnectorType" class="form-control<?php if (empty($_POST['inputConnectorType'])) { echo " DropdownInitiallyBlank";   } ?>">
-										<?php echo getConnectorOptions(htmlspecialchars($_POST['inputConnectorType'])); ?>
+									<select name="inputConnectorType" class="form-control">
+										<?php echo getConnectorOptions($_POST['inputConnectorType']); ?>
 									</select>
 								</div>
 								<div class="form-group">
 									<label for="inputGender">Gender</label>
-									<select name="inputGender" class="form-control<?php if (empty($_POST['inputGender'])) { echo " DropdownInitiallyBlank";   } ?>">
+									<select name="inputGender" class="form-control">
+										<option></option>
 										<option value="F"<?php if ($_POST['inputGender'] === "F") { echo " selected"; } ?>>Female</option>
 										<option value="M"<?php if ($_POST['inputGender'] === "M") { echo " selected"; } ?>>Male</option>
 									</select>
@@ -166,12 +167,13 @@
 
 								<div class="form-group">
 									<label>Names will be padded with</label>
-									<select name="inputPaddingCharacter"><!-- class="DropdownInitiallyBlank" -->
+									<select name="inputPaddingCharacter">
 										<option value="zero">zeros</option>
 										<!-- <option value="space">spaces</option> -->
 									</select>
 									<label>to a total length of</label>
-									<select name="inputPaddingNumber" <?php if (empty($_POST['inputPaddingNumber'])) { echo ' class="DropdownInitiallyBlank"'; } ?>>
+									<select name="inputPaddingNumber">
+										<option></option>
 										<option value="2"<?php if ($_POST['inputPaddingNumber'] === "2") { echo " selected"; } ?>>2</option>
 										<option value="3"<?php if ($_POST['inputPaddingNumber'] === "3") { echo " selected"; } ?>>3</option>
 										<option value="4"<?php if ($_POST['inputPaddingNumber'] === "4") { echo " selected"; } ?>>4</option>
@@ -193,4 +195,4 @@
 							</form>
 						</div>
 
-						<button id="open_port_modal">Add Ports</button>
+						<button id="open_port_modal" type="button" class="btn btn-default btn-lg">Add</button>

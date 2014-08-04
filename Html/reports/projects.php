@@ -19,24 +19,33 @@ class ProjectsReport implements reportsInterface{
 		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Project Name</th>';
+		$string .= '<th>Connections</th>';
+		$string .= '<th>Equipment</th>';
 		$string .= '<th>Comments</th>';
-		$string .= '<th><a href="/forms/projects.php">Add Project</a></th>';
 		$string .= '</tr>';
 		$string .= '</thead>';
 
-		$query = 'SELECT id, name, comment FROM projects';
+		$query = 'SELECT id AS unique_project_id_name, name, comment,
+					(SELECT COUNT(*) FROM project_connections WHERE project_connections.project_id = unique_project_id_name) AS conn_count,
+					(SELECT COUNT(*) FROM project_equipment WHERE project_equipment.project_id = unique_project_id_name) AS equip_count
+				  FROM projects';
 
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
 			$string .= '<td><a href="?id=' . $row->id . '">' . $row->name . '</a></td>';
+			$string .= '<td>' . $row->conn_count . '</td>';
+			$string .= '<td>' . $row->equip_count . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
 		}
 
 		$string .= '</table>';
+
+		$string .= '<br>';
+
+		$string .= '<a href="/forms/projects.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
 
 		return $string;
 	}

@@ -2,6 +2,8 @@
 require_once "/inc/connect.php";
 include "/inc/prototypes.php";
 include "/inc/database.php";
+require_once "/delete/equipment.php";
+require_once "/delete/ports.php";
 
 class EquipmentReport implements reportsInterface{
 	public function redirect(){
@@ -37,23 +39,27 @@ class EquipmentReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table data-table">';
+		$string = '<div class="table-n-buttons" name="main-table-for-equipment">';
+
+		$string .= '<table class="table data-table">';
 
 		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Serial Number</th>';
 		$string .= '<th>Rack</th>';
 		$string .= '<th>Location</th>';
+		$string .= '<th>Conn : Ports</th>';
 		$string .= '<th>Vendor</th>';
 		$string .= '<th>Model</th>';
 		$string .= '<th>Barcode</th>';
 		$string .= '<th>GFE ID</th>';
 		$string .= '<th>Comments</th>';
-		$string .= '<th><a href="/forms/equipment.php">Add Equipment</a></th>';
 		$string .= '</tr>';
 		$string .= '</thead>';
 
-		$query = 'SELECT equipment.id, barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment
+		$query = 'SELECT equipment.id AS unique_equipment_id_name, barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment,
+						(SELECT COUNT(*) FROM ports WHERE ports.equipment_id = unique_equipment_id_name) AS port_count,
+						(SELECT COUNT(*) FROM connections, ports WHERE (connections.port_id_1 = ports.id OR connections.port_id_2 = ports.id) AND ports.equipment_id = unique_equipment_id_name ) AS conn_count
 					FROM equipment, vendors, racks, rooms, affiliations
 					WHERE equipment.vendor_id = vendors.id
 						AND equipment.id = affiliations.id
@@ -65,16 +71,16 @@ class EquipmentReport implements reportsInterface{
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
-			$string .= '<tr>';
-			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->serial_num . '</a></td>';
+			$string .= '<tr value="' . $row->unique_equipment_id_name . '">';
+			$string .= '<td><a href="/reports/equipment.php?id=' . $row->unique_equipment_id_name . '">' . $row->serial_num . '</a></td>';
 			$string .= '<td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td>';
 			$string .= '<td>' . $row->room_number . " " .  $row->building_name . '</td>';
+			$string .= '<td>' . $row->conn_count . " : " . $row->port_count . '</td>';
 			$string .= '<td>' . $row->vendor . '</td>';
 			$string .= '<td>' . $row->model . '</td>';
 			$string .= '<td>' . $row->barcode_number . '</td>';
 			$string .= '<td>' . $row->GFE_id . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="/forms/equipment.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/equipment.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
@@ -82,17 +88,10 @@ class EquipmentReport implements reportsInterface{
 
 		$string .= '<br>';
 
-		$string .= '<div>';
-
-		$space .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-
-		$string .= '<button type="button" class="btn btn-default btn-lg">Add</button>';
-		$string .= $space;
-		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button>';
-		$string .= $space;
-		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button>';
-		$string .= $space;
-		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg" disabled>Delete</button>';
+		$string .= '<a href="/forms/equipment.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/equipment.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/equipment.php?copy_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button></a>';
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" disabled>Delete</button>';
 
 		$string .= '</div>';
 
@@ -100,10 +99,6 @@ class EquipmentReport implements reportsInterface{
 	}
 
 	public function getIdString($id){
-		if(!isset($id)){
-			return '<br>';
-		}
-
 		global $pdo;
 
 		$query = 'SELECT barcode_number, vendor, model, serial_num, GFE_id, building_name, room_number, racks.name AS rack_name, racks.id AS rack_id, equipment.comment
@@ -133,23 +128,22 @@ class EquipmentReport implements reportsInterface{
 
 		$string .= '<br>';
 
+		$string .= '<div class="table-n-buttons" name="ports-table-for-equipment">';
+
 		$string .= '<h2>Ports</h2>';
 
-		$string .= '<table class="table">';
+		$string .= '<table class="table data-table">';
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Connector Type</th>';
 		$string .= '<th>Name</th>';
 		$string .= '<th>Connection</th>';
 		$string .= '<th>Gender</th>';
 		$string .= '<th>Type</th>';
-		$string .= '<th>';
-		ob_start();
-		include "/inc/modal_buttons/port_button_for_equipment.php";
-		$string .= ob_get_clean();
-		$string .= '</th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
-		$query = 'SELECT connector_type, ports.name, ports.id, connector_gender, connector_types.affiliated AS type
+		$query = 'SELECT connector_type, ports.name, ports.id AS id, connector_gender, connector_types.affiliated AS type
 					FROM ports, connector_types
 					WHERE ports.connector_type_id = connector_types.id AND equipment_id = :id
 					ORDER BY connector_types.connector_type, ports.name';
@@ -159,7 +153,7 @@ class EquipmentReport implements reportsInterface{
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr>';
+			$string .= '<tr value="' . $row->id . '">';
 			$string .= '<td>' . $row->connector_type . '</td>';
 			$string .= '<td>' . $row->name . '</td>';
 			$string .= '<td>' . 'conditional link' . '</td>';
@@ -169,11 +163,21 @@ class EquipmentReport implements reportsInterface{
 			$string .= '<td>';
 			$string .= $row->type === "E" ? 'Electrical' : 'Optical';
 			$string .= '</td>';
-			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
 		$string .= '</table>';
+
+		$string .= '<br>';
+
+		ob_start();
+		include "/inc/modal_buttons/port_button_for_equipment.php";
+		$string .= trim(ob_get_clean());
+		$string .= '<a onclick="addURL(this)" href="/forms/ports.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/ports.php?copy_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button></a>';
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" disabled>Delete</button>';
+
+		$string .= '</div>';
 
 		return $string;
 	}

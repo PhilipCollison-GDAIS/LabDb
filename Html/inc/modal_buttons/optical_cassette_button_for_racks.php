@@ -1,6 +1,6 @@
 						<?php
 
-						function isValidInputRacksOpticalCassettes(){
+						function isOpticalCassetteInputForRacksValid($rack_height){
 							if (empty($_POST['name'])) {
 								return "All fields must be set.<br>Please choose an Optical Cassette Name.";
 							}
@@ -39,6 +39,28 @@
 
 							if (empty($_POST['paddingLength'])) {
 								return "All fields must be set.<br>Please choose a padding length.";
+							}
+
+							if (!ctype_digit(ltrim($_POST['elevation'], '-'))) {
+								return "Elevation must be an integer.";
+							}
+
+							if (intval($_POST['elevation']) < 0) {
+								return "Elevation cannot be negative.";
+							}
+
+							if (!isset($rack_height)) {
+								// TODO: Do Query to set $rack_height
+								return "Rack Height is not set internally!<br>Please inform an Administrator!";
+							}
+
+							if ($_POST['elevation'] > $rack_height) {
+								return "Elevation cannot exceed rack height";
+							}
+
+							// TODO: Query to see if elevation is already occupied
+							if (false) {
+								return "The elevation you have chosen is already occupied.";
 							}
 
 							if (!ctype_digit(ltrim($_POST['starting_num'], '-'))) {
@@ -80,14 +102,14 @@
 							return $string;
 						}
 
-						$isValidInputRacksOpticalCassettes = isValidInputRacksOpticalCassettes();
+						$isOpticalCassetteInputForRacksValid = isOpticalCassetteInputForRacksValid($rack_height);
 
 						/* If the user is attempting to create an optical cassette and the input is valid,
 						   then optical cassette is created and inserted into the database. On the success
 						   of this operation the corresonding ports are inserted. */
-						if (!empty($_POST) && $isValidInputRacksOpticalCassettes === true) {
-							try{
+						if (!empty($_POST) && isset($_POST['is_optical_cassette']) && $isOpticalCassetteInputForRacksValid === true) {
 
+							try{
 								$port_count = 1 + ((int) $_POST['ending_num'] - (int) $_POST['starting_num']);
 
 								// Insert optical cassette
@@ -161,8 +183,8 @@
 						<script>
 						$(function(){
 							$( "#optical_cassette_modal" ).dialog({
-								autoOpen: <?php echo empty($_POST) ? 'false' : 'true'; ?>,
-								//draggable: false,
+								autoOpen: <?php echo isset($_POST['is_optical_cassette']) ? 'true' : 'false'; ?>,
+								draggable: true,
 								modal: true,
 								resizable: false,
 
@@ -179,9 +201,9 @@
 						});
 						</script>
 
-						<div id="optical_cassette_modal" title="Optical Cassette Form">
+						<div id="optical_cassette_modal" title="Optical Cassette Form" style="display: none;">
 
-							<?php if (!empty($_POST) && $isValidInputRacksOpticalCassettes !== true) { echo '<br><div><strong><font color="red" size="4">' . $isValidInputRacksOpticalCassettes . '</font></strong></div><br>'; } ?>
+							<?php if ( isset($_POST['is_optical_cassette']) && $isOpticalCassetteInputForRacksValid !== true) { echo '<br><div><strong><font color="red" size="4">' . $isOpticalCassetteInputForRacksValid . '</font></strong></div><br>'; } ?>
 
 							<form role="form" method="post" action="" name="RackOpticalCassetteModalForm">
 
@@ -202,14 +224,15 @@
 
 								<div class="form-group">
 									<label for="connector_type">Port Connector Type</label>
-									<select name="connector_type" class="form-control<?php if (empty($_POST['connector_type'])) { echo " DropdownInitiallyBlank";   } ?>">
-										<?php echo getConnectorOptions(htmlspecialchars($_POST['connector_type'])); ?>
+									<select name="connector_type" class="form-control">
+										<?php echo getConnectorOptions($_POST['connector_type']); ?>
 									</select>
 								</div>
 
 								<div class="form-group">
-									<label for="gender">Port Gender</label> <!-- TODO: is this always female? -->
-									<select name="gender" class="form-control<?php if (empty($_POST['gender'])) { echo " DropdownInitiallyBlank";   } ?>">
+									<label for="gender">Port Gender</label>
+									<select name="gender" class="form-control">
+										<option></option>
 										<option value="F"<?php if ($_POST['gender'] === "F") { echo " selected"; } ?>>Female</option>
 										<option value="M"<?php if ($_POST['gender'] === "M") { echo " selected"; } ?>>Male</option>
 									</select>
@@ -227,12 +250,12 @@
 
 								<div class="form-group">
 									<label>Names will be padded with</label>
-									<select name="paddingCharacter"><!-- class="DropdownInitiallyBlank" -->
+									<select name="paddingCharacter">
 										<option value="zero">zeros</option>
-										<!-- <option value="space">spaces</option> -->
 									</select>
 									<label>to a total length of</label>
-									<select name="paddingLength" <?php if (empty($_POST['paddingLength'])) { echo ' class="DropdownInitiallyBlank"'; } ?>>
+									<select name="paddingLength">
+										<option></option>
 										<option value="2"<?php if ($_POST['paddingLength'] === "2") { echo " selected"; } ?>>2</option>
 										<option value="3"<?php if ($_POST['paddingLength'] === "3") { echo " selected"; } ?>>3</option>
 										<option value="4"<?php if ($_POST['paddingLength'] === "4") { echo " selected"; } ?>>4</option>
@@ -240,7 +263,8 @@
 									</select>
 									<label>digits.</label>
 								</div>
+								<input type="checkbox" name="is_optical_cassette" style="display: none;" checked>
 							</form>
 						</div>
 
-						<button id="open_optical_cassette_modal">Add Optical Cassette</button>
+						<button id="open_optical_cassette_modal" type="button" class="btn btn-default btn-lg">Add</button>

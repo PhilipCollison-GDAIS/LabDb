@@ -24,7 +24,6 @@
 		<script type="text/javascript" language="javascript" src="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 		<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.css">
 
-
 		<!-- Enterprise -->
 		<script src="/js/java.js"></script>
 		<link rel="stylesheet" href="/css/docs.css">

@@ -32,7 +32,7 @@
 				// Find and store lastInsertId
 				$lastInsertId = $pdo->lastInsertId();
 
-				if (isset($_POST['project_id'])) {
+				if (isset($_POST['project_id']) && !empty($_POST['project_id'])) {
 					// Insert into project_connections connection with lastInsertId as id/pk
 					$query = "INSERT INTO project_connections (connection_id, project_id) VALUES
 					(:connection_id, :project_id)";
@@ -110,7 +110,7 @@
 
 							<div class="form-group">
 								<label for="project_id">Project (Optional)</label>
-								<select name="project_id" class="form-control DropdownInitiallyBlank">
+								<select name="project_id" class="form-control">
 									<?php echo getProjectOptions(); ?>
 								</select>
 							</div>

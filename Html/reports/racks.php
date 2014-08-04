@@ -2,6 +2,8 @@
 require_once "/inc/connect.php";
 include "/inc/prototypes.php";
 include "/inc/database.php";
+require_once "/delete/equipment.php";
+require_once "/delete/ports.php";
 
 class RacksReport implements reportsInterface{
 	public function redirect(){
@@ -37,7 +39,9 @@ class RacksReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table data-table">';
+		$string = '<div class="table-n-buttons" name="main-table-for-racks">';
+
+		$string .= '<table class="table data-table">';
 
 		$string .= '<thead>';
 		$string .= '<tr>';
@@ -48,7 +52,6 @@ class RacksReport implements reportsInterface{
 		$string .= '<th>Dimensions (WxHxD) </th>';
 		$string .= '<th>Max Power</th>';
 		$string .= '<th>Comments</th>';
-		$string .= '<th><a href="/forms/racks.php">Add Rack</a></th>';
 		$string .= '</tr>';
 		$string .= '</thead>';
 
@@ -59,7 +62,7 @@ class RacksReport implements reportsInterface{
 					AND racks.depth_id = depths.id
 					ORDER BY room_number, name';
 					// TODO: How is is that the ORDER BY clauses should be ordered?
-					//       This decision depends on the conventions for floor_location and name.
+					//		 This decision depends on the conventions for floor_location and name.
 
 		$row_resource = $pdo->query($query);
 
@@ -72,20 +75,23 @@ class RacksReport implements reportsInterface{
 			$string .= '<td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td>';
 			$string .= '<td>' . $row->max_power . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="/forms/racks.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/racks.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
 		$string .= '</table>';
 
+		$string .= '<br>';
+
+		$string .= '<a href="/forms/racks.php"><button type="button" class="oneSelected btn btn-default btn-lg">Add</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/racks.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/racks.php?copy_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button></a>';
+
+		$string .= '</div>';
+
 		return $string;
 	}
 
 	public function getIdString($id){
-		if(!isset($id)){
-			return '<br>';
-		}
-
 		global $pdo;
 
 		$query = 'SELECT racks.id, name, old_name, room_number, floor_location, height_ru, width, depth, max_power, racks.comment
@@ -101,6 +107,9 @@ class RacksReport implements reportsInterface{
 
 		$row = $q->fetchObject();
 
+		// Used in modals
+		$rack_height = $row->height_ru;
+
 		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
 		$string .= '<tr><td><strong>Name: </strong></td><td>' . $row->name . '</td></tr>';
 		if (!empty($row->old_name)) {
@@ -108,7 +117,7 @@ class RacksReport implements reportsInterface{
 		}
 		$string .= '<tr><td><strong>Room Number: </strong></td><td>' . $row->room_number . '</td></tr>';
 		if (!empty($row->floor_location)) {
-					$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
+			$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
 		}
 		$string .= '<tr><td><strong>Dimensions (WxHxD): </strong></td><td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td></tr>';
 		$string .= '<tr><td><strong>Max Power: </strong></td><td>' . $row->max_power . '</td></tr>';
@@ -119,24 +128,23 @@ class RacksReport implements reportsInterface{
 
 		$string .= '<br>';
 
+		$string .= '<div class="table-n-buttons" name="equipment-table-for-racks">';
+
 		$string .= '<h2>Equipment</h2>';
 
-		$string .= '<table class="table">';
+		$string .= '<table class="table data-table">';
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Elevation</th>';
-		$string .= '<th>Model</th>';
-		$string .= '<th>Vendor</th>';
-		$string .= '<th>Name</th>';
 		$string .= '<th>Serial Number</th>';
 		$string .= '<th>Barcode Number</th>';
+		$string .= '<th>Name</th>';
+		$string .= '<th>Vendor</th>';
+		$string .= '<th>Model</th>';
 		$string .= '<th>GFE ID</th>';
 		$string .= '<th>Comment</th>';
-		$string .= '<th>';
-		ob_start();
-		include "/inc/modal_buttons/equipment_button_for_racks.php";
-		$string .= ob_get_clean();
-		$string .= '</th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT equipment.id AS id, elevation, model, vendor, equipment.name AS name, serial_num, barcode_number, GFE_id, equipment.comment AS comment
 					FROM equipment, vendors, affiliations
@@ -150,16 +158,15 @@ class RacksReport implements reportsInterface{
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr>';
+			$string .= '<tr value="' . $row->id . '">';
 			$string .= '<td>' . $row->elevation . '</td>';
-			$string .= '<td>' . $row->model . '</td>';
-			$string .= '<td>' . $row->vendor . '</td>';
-			$string .= '<td>' . $row->name . '</td>';
 			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->serial_num . '</a></td>';
 			$string .= '<td>' . $row->barcode_number . '</td>';
+			$string .= '<td>' . $row->name . '</td>';
+			$string .= '<td>' . $row->vendor . '</td>';
+			$string .= '<td>' . $row->model . '</td>';
 			$string .= '<td>' . $row->GFE_id . '</td>';
 			$string .= '<td>' . $row->comment . '</td>';
-			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
@@ -167,21 +174,31 @@ class RacksReport implements reportsInterface{
 
 		$string .= '<br>';
 
+		ob_start();
+		include "/inc/modal_buttons/equipment_button_for_racks.php";
+		$string .= trim(ob_get_clean());
+		$string .= '<a onclick="addURL(this)" href="/forms/equipment.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/equipment.php?copy_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button></a>';
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" disabled>Delete</button>';
+
+		$string .= '</div>';
+
+		$string .= '<br>';
+
+		$string .= '<div class="table-n-buttons" name="optical_cassette-table-for-racks">';
+
 		$string .= '<h2>Patch Panels</h2>';
 
-		$string .= '<table class="table">';
+		$string .= '<table class="table data-table">';
+		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Connector Type</th>';
 		$string .= '<th>Name</th>';
 		$string .= '<th>Connection</th>';
 		$string .= '<th>Gender</th>';
 		$string .= '<th>Type</th>';
-		$string .= '<th>';
-		ob_start();
-		include "/inc/modal_buttons/optical_cassette_button_for_racks.php";
-		$string .= ob_get_clean();
-		$string .= '</th>';
 		$string .= '</tr>';
+		$string .= '</thead>';
 
 		$query = 'SELECT connector_type, ports.name, ports.id, connector_gender, connector_types.affiliated AS type
 					FROM ports, connector_types, optical_cassettes
@@ -191,11 +208,11 @@ class RacksReport implements reportsInterface{
 					ORDER BY connector_types.connector_type, ports.name';
 
 		$q = $pdo->prepare($query);
-		$q->bindParam(':id', $id, PDO::PARAM_INT);
+		$q->bindParam(':id', $id);
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr>';
+			$string .= '<tr value="' . $row->id . '">';
 			$string .= '<td>' . $row->connector_type . '</td>';
 			$string .= '<td>' . $row->name . '</td>';
 			$string .= '<td>' . 'conditional link' . '</td>';
@@ -205,11 +222,22 @@ class RacksReport implements reportsInterface{
 			$string .= '<td>';
 			$string .= $row->type === "E" ? 'Electrical' : 'Optical';
 			$string .= '</td>';
-			$string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
+			// $string .= '<td><a href="/forms/ports.php?edit_id=' . $row->id . '">Edit</a>&nbsp;&nbsp;&nbsp;<a href="/forms/ports.php?copy_id=' . $row->id . '">Copy</a></td>';
 			$string .= '</tr>';
 		}
 
 		$string .= '</table>';
+
+		$string .= '<br>';
+
+		ob_start();
+		include "/inc/modal_buttons/optical_cassette_button_for_racks.php";
+		$string .= trim(ob_get_clean());
+		$string .= '<a onclick="addURL(this)" href="/forms/ports.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<a onclick="addURL(this)" href="/forms/ports.php?copy_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Copy</button></a>';
+		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" disabled>Delete</button>';
+
+		$string .= '</div>';
 
 		return $string;
 	}

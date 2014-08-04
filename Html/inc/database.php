@@ -4,7 +4,7 @@ require_once "/inc/connect.php";
 function getWidthOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT id, width FROM widths ORDER BY width';
 
@@ -28,7 +28,7 @@ function getWidthOptions($id = NULL){
 function getDepthOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT id, depth FROM depths ORDER BY depth';
 
@@ -52,7 +52,7 @@ function getDepthOptions($id = NULL){
 function getRoomOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT id, room_number FROM rooms';
 
@@ -76,7 +76,7 @@ function getRoomOptions($id = NULL){
 function getRackOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT racks.id AS rack_id, racks.name AS rack_name, rooms.id AS room_id, room_number, building_name
 			  FROM racks, rooms
@@ -88,28 +88,13 @@ function getRackOptions($id = NULL){
 	$rack_ids = array();
 	$rack_names = array();
 	$room_info = array();
+
 	foreach($row_resource->fetchAll() as $row) {
 		$rack_ids[$row['room_id']][] = $row['rack_id'];
 		$rack_names[$row['room_id']][] = $row['rack_name'];
 		$room_info[$row['room_id']]['building_name'] = $row['building_name'];
 		$room_info[$row['room_id']]['room_number'] = $row['room_number'];
 	}
-
-	// echo '<pre>';
-
-	// echo 'rack ids\n';
-	// var_dump($rack_ids);
-	// echo '\n';
-
-	// echo 'rack names\n';
-	// var_dump($rack_names);
-	// echo '\n';
-
-	// echo 'room info\n';
-	// var_dump($room_info);
-	// echo '\n';
-
-	// echo '</pre>';
 
 	foreach ($room_info as $key => $info) {
 		$string .= '<optgroup label="' . $info['room_number'] . ', ' . $info['building_name'] . '">';
@@ -125,7 +110,7 @@ function getRackOptions($id = NULL){
 function getVendorOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT id, vendor FROM vendors';
 
@@ -149,11 +134,39 @@ function getVendorOptions($id = NULL){
 function getConnectorOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
-	$query = 'SELECT id, connector_type FROM connector_types';
+	$query = 'SELECT id, connector_type, affiliated FROM connector_types';
 
 	$row_resource = $pdo->query($query);
+
+	$info = array();
+
+	foreach($row_resource->fetchAll() as $row) {
+		$info[$row['affiliated']][] = array('id' => $row['id'], 'type' => $row['connector_type']);
+	}
+
+	foreach ($info as $affiliated => $data) {
+		if ($affiliated === "E")
+			$affiliated = "Electrical";
+
+		if ($affiliated === "O")
+			$affiliated = "Optical";
+
+		$string .= '<optgroup label="' . $affiliated . '">';
+		for ($i = 0; $i < count($data); $i = $i + 1) {
+			$string .= '<option value="' . $data[$i]['id'] . '"';
+			if (isset($id) && $id === $data[$i]['id']){
+				$string .= ' selected="selected"';
+			}
+			$string .= '>';
+			$string .= $data[$i]['type'];
+			$string .= '</option>';
+		}
+		$string .= '</optgroup>';
+	}
+
+	return $string;
 
 	while ($row = $row_resource->fetchObject()) {
 		$string .= '<option value="';
@@ -173,7 +186,7 @@ function getConnectorOptions($id = NULL){
 function getProjectOptions($id = NULL){
 	global $pdo;
 
-	$string = '';
+	$string = '<option></option>';
 
 	$query = 'SELECT id, name FROM projects';
 
