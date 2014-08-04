@@ -181,12 +181,13 @@
 									</select>
 									<label>digits.</label>
 								</div>
-
+<!--
 								<br>
 
 								<div>
-									<strong>Dynamic Javascript Example</strong><!-- TODO:  -->
+									<strong>Dynamic Javascript Example</strong>TODO:
 								</div>
+-->
 <!--
 								<br>
 

@@ -68,13 +68,13 @@ class RacksReport implements reportsInterface{
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="/reports/racks.php?id=' . $row->id . '">' . $row->name . '</a></td>';
-			$string .= '<td>' . $row->old_name . '</td>';
-			$string .= '<td>' . $row->room_number . '</td>';
-			$string .= '<td>' . $row->floor_location . '</td>';
-			$string .= '<td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td>';
-			$string .= '<td>' . $row->max_power . '</td>';
-			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="/reports/racks.php?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->name) . '</a></td>';
+			$string .= '<td>' .  htmlspecialchars($row->old_name) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->room_number) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->floor_location) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->height_ru) . ' x ' .  htmlspecialchars($row->width) . ' x ' .  htmlspecialchars($row->depth) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->max_power) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
 			$string .= '</tr>';
 		}
 
@@ -111,18 +111,18 @@ class RacksReport implements reportsInterface{
 		$rack_height = $row->height_ru;
 
 		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
-		$string .= '<tr><td><strong>Name: </strong></td><td>' . $row->name . '</td></tr>';
+		$string .= '<tr><td><strong>Name: </strong></td><td>' .  htmlspecialchars($row->name) . '</td></tr>';
 		if (!empty($row->old_name)) {
-			$string .= '<tr><td><strong>Old Name: </strong></td><td>' . $row->old_name . '</td></tr>';
+			$string .= '<tr><td><strong>Old Name: </strong></td><td>' .  htmlspecialchars($row->old_name) . '</td></tr>';
 		}
-		$string .= '<tr><td><strong>Room Number: </strong></td><td>' . $row->room_number . '</td></tr>';
+		$string .= '<tr><td><strong>Room Number: </strong></td><td>' .  htmlspecialchars($row->room_number) . '</td></tr>';
 		if (!empty($row->floor_location)) {
-			$string .= '<tr><td><strong>Floor Location: </strong></td><td>' . $row->floor_location . '</td></tr>';
+			$string .= '<tr><td><strong>Floor Location: </strong></td><td>' .  htmlspecialchars($row->floor_location) . '</td></tr>';
 		}
-		$string .= '<tr><td><strong>Dimensions (WxHxD): </strong></td><td>' . $row->height_ru . ' x ' . $row->width . ' x ' . $row->depth . '</td></tr>';
-		$string .= '<tr><td><strong>Max Power: </strong></td><td>' . $row->max_power . '</td></tr>';
+		$string .= '<tr><td><strong>Dimensions (WxHxD): </strong></td><td>' .  htmlspecialchars($row->height_ru) . ' x ' .  htmlspecialchars($row->width) . ' x ' . $row->depth . '</td></tr>';
+		$string .= '<tr><td><strong>Max Power: </strong></td><td>' .  htmlspecialchars($row->max_power) . '</td></tr>';
 		if (!empty($row->comment)) {
-			$string .= '<tr><td><strong>Comments: </strong></td><td>' . $row->comment . '</td></tr>';
+			$string .= '<tr><td><strong>Comments: </strong></td><td>' .  htmlspecialchars($row->comment) . '</td></tr>';
 		}
 		$string .= '</table>';
 
@@ -158,15 +158,15 @@ class RacksReport implements reportsInterface{
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr value="' . $row->id . '">';
-			$string .= '<td>' . $row->elevation . '</td>';
-			$string .= '<td><a href="/reports/equipment.php?id=' . $row->id . '">' . $row->serial_num . '</a></td>';
-			$string .= '<td>' . $row->barcode_number . '</td>';
-			$string .= '<td>' . $row->name . '</td>';
-			$string .= '<td>' . $row->vendor . '</td>';
-			$string .= '<td>' . $row->model . '</td>';
-			$string .= '<td>' . $row->GFE_id . '</td>';
-			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<tr value="' .  htmlspecialchars($row->id) . '">';
+			$string .= '<td>' .  htmlspecialchars($row->elevation) . '</td>';
+			$string .= '<td><a href="/reports/equipment.php?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->serial_num) . '</a></td>';
+			$string .= '<td>' .  htmlspecialchars($row->barcode_number) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->name) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->vendor) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->model) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->GFE_id) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
 			$string .= '</tr>';
 		}
 
@@ -212,9 +212,9 @@ class RacksReport implements reportsInterface{
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr value="' . $row->id . '">';
-			$string .= '<td>' . $row->connector_type . '</td>';
-			$string .= '<td>' . $row->name . '</td>';
+			$string .= '<tr value="' .  htmlspecialchars($row->id) . '">';
+			$string .= '<td>' .  htmlspecialchars($row->connector_type) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->name) . '</td>';
 			$string .= '<td>' . 'conditional link' . '</td>';
 			$string .= '<td>';
 			$string .= $row->connector_gender === "F" ? 'Female' : 'Male';

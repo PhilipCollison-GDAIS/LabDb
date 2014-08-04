@@ -39,8 +39,8 @@ class VendorsReport implements reportsInterface{
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="?id=' . $row->id . '">' . $row->vendor . '</a></td>';
-			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->vendor) . '</a></td>';
+			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
 		}

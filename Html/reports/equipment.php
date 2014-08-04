@@ -71,16 +71,16 @@ class EquipmentReport implements reportsInterface{
 		$row_resource = $pdo->query($query);
 
 		while ($row = $row_resource->fetchObject()) {
-			$string .= '<tr value="' . $row->unique_equipment_id_name . '">';
-			$string .= '<td><a href="/reports/equipment.php?id=' . $row->unique_equipment_id_name . '">' . $row->serial_num . '</a></td>';
-			$string .= '<td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td>';
-			$string .= '<td>' . $row->room_number . " " .  $row->building_name . '</td>';
-			$string .= '<td>' . $row->conn_count . " : " . $row->port_count . '</td>';
-			$string .= '<td>' . $row->vendor . '</td>';
-			$string .= '<td>' . $row->model . '</td>';
-			$string .= '<td>' . $row->barcode_number . '</td>';
-			$string .= '<td>' . $row->GFE_id . '</td>';
-			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<tr value="' .  htmlspecialchars($row->unique_equipment_id_name) . '">';
+			$string .= '<td><a href="/reports/equipment.php?id=' .  htmlspecialchars($row->unique_equipment_id_name) . '">' . $row->serial_num . '</a></td>';
+			$string .= '<td><a href="/reports/racks.php?id=' .  htmlspecialchars($row->rack_id) . '">' .  htmlspecialchars($row->rack_name) . '</a></td>';
+			$string .= '<td>' .  htmlspecialchars($row->room_number) . " " .   htmlspecialchars($row->building_name) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->conn_count) . " : " .  htmlspecialchars($row->port_count) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->vendor) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->model) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->barcode_number) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->GFE_id) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
 			$string .= '</tr>';
 		}
 
@@ -116,14 +116,14 @@ class EquipmentReport implements reportsInterface{
 		$row = $q->fetchObject();
 
 		$string = '<table class="table" style="width: 400px; font-size: 16px;">';
-		$string .= '<tr><td><strong>Barcode Number: </strong></td><td>' . $row->barcode_number . '</td></tr>';
-		$string .= '<tr><td><strong>Vendor: </strong></td><td>' . $row->vendor . '</td></tr>';
-		$string .= '<tr><td><strong>Model: </strong></td><td>' . $row->model . '</td></tr>';
-		$string .= '<tr><td><strong>Serial Number: </strong></td><td>' . $row->serial_num . '</td></tr>';
-		$string .= '<tr><td><strong>GFE ID: </strong></td><td>' . $row->GFE_id . '</td></tr>';
-		$string .= '<tr><td><strong>Location</strong></td><td>' . $row->room_number . " " .  $row->building_name . '</td></tr>';
-		$string .= '<tr><td><strong>Rack</strong></td><td><a href="/reports/racks.php?id=' . $row->rack_id . '">' . $row->rack_name . '</a></td></tr>';
-		$string .= '<tr><td><strong>Comment: </strong></td><td>' . $row->comment . '</td></tr>';
+		$string .= '<tr><td><strong>Barcode Number: </strong></td><td>' .  htmlspecialchars($row->barcode_number) . '</td></tr>';
+		$string .= '<tr><td><strong>Vendor: </strong></td><td>' .  htmlspecialchars($row->vendor) . '</td></tr>';
+		$string .= '<tr><td><strong>Model: </strong></td><td>' .  htmlspecialchars($row->model) . '</td></tr>';
+		$string .= '<tr><td><strong>Serial Number: </strong></td><td>' .  htmlspecialchars($row->serial_num) . '</td></tr>';
+		$string .= '<tr><td><strong>GFE ID: </strong></td><td>' .  htmlspecialchars($row->GFE_id) . '</td></tr>';
+		$string .= '<tr><td><strong>Location</strong></td><td>' .  htmlspecialchars($row->room_number) . " " .   htmlspecialchars($row->building_name) . '</td></tr>';
+		$string .= '<tr><td><strong>Rack</strong></td><td><a href="/reports/racks.php?id=' .  htmlspecialchars($row->rack_id) . '">' .  htmlspecialchars($row->rack_name) . '</a></td></tr>';
+		$string .= '<tr><td><strong>Comment: </strong></td><td>' .  htmlspecialchars($row->comment) . '</td></tr>';
 		$string .= '</table>';
 
 		$string .= '<br>';
@@ -153,9 +153,9 @@ class EquipmentReport implements reportsInterface{
 		$q->execute();
 
 		while ($row = $q->fetchObject()) {
-			$string .= '<tr value="' . $row->id . '">';
-			$string .= '<td>' . $row->connector_type . '</td>';
-			$string .= '<td>' . $row->name . '</td>';
+			$string .= '<tr value="' .  htmlspecialchars($row->id) . '">';
+			$string .= '<td>' .  htmlspecialchars($row->connector_type) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->name) . '</td>';
 			$string .= '<td>' . 'conditional link' . '</td>';
 			$string .= '<td>';
 			$string .= $row->connector_gender === "F" ? 'Female' : 'Male';

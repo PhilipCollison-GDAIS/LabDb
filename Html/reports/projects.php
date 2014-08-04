@@ -34,10 +34,10 @@ class ProjectsReport implements reportsInterface{
 
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="?id=' . $row->id . '">' . $row->name . '</a></td>';
-			$string .= '<td>' . $row->conn_count . '</td>';
-			$string .= '<td>' . $row->equip_count . '</td>';
-			$string .= '<td>' . $row->comment . '</td>';
+			$string .= '<td><a href="?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->name) . '</a></td>';
+			$string .= '<td>' .  htmlspecialchars($row->conn_count) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->equip_count) . '</td>';
+			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
 			$string .= '</tr>';
 		}
 

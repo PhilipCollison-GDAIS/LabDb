@@ -82,26 +82,26 @@ class ConnectionsReports implements reportsInterface{
 				// Display first two columns
 				if ($is_first) {
 					$is_first = false;
-					$string .= '<tr value="' . $row->id . '">';
+					$string .= '<tr value="' .  htmlspecialchars($row->id) . '">';
 					$string .= '<td>';
-					$string .= $port_info->affiliated === "E" ? 'Electrical' : 'Optical';
+					$string .=  htmlspecialchars($port_info->affiliated) === "E" ? 'Electrical' : 'Optical';
 					$string .= '</td>';
-					$string .= '<td>' . $rack_info->room_number . " " .  $rack_info->building_name . '</td>';
+					$string .= '<td>' .  htmlspecialchars($rack_info->room_number) . " " .   htmlspecialchars($rack_info->building_name) . '</td>';
 
 					//Retrieve project information
 					$connection_id = $row->id;
 					$project_info_stmt->execute();
 					$project_info = $project_info_stmt->fetchObject();
 					$string .= '<td>';
-					$string .= $project_info ? '<a href="/reports/projects.php?id=' . $project_info->project_id . '">' . $project_info->project_name . '</a>' : "";
+					$string .=  $project_info ? '<a href="/reports/projects.php?id=' .  htmlspecialchars($project_info->project_id) . '">' .  htmlspecialchars($project_info->project_name) . '</a>' : "";
 					$string .= '</td>';
 				}
 
 				// Display information for current port
-				$string .= '<td style="border-left:1px solid black;">' . $rack_info->name . '</td>';
-				$string .= '<td>' . $rack_id_and_elevation->elevation . '</td>';
-				$string .= '<td>' . $port_info->connector_type . '</td>';
-				$string .= '<td>' . $port_info->name . '</td>';
+				$string .= '<td style="border-left:1px solid black;">' .  htmlspecialchars($rack_info->name) . '</td>';
+				$string .= '<td>' .  htmlspecialchars($rack_id_and_elevation->elevation) . '</td>';
+				$string .= '<td>' .  htmlspecialchars($port_info->connector_type) . '</td>';
+				$string .= '<td>' .  htmlspecialchars($port_info->name) . '</td>';
 			}
 
 			$string .= '</tr>';
