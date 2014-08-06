@@ -8,7 +8,7 @@ function isAdmin(){
 					<div class="single-element">
 						<ul class="nav nav-stacked" align="left">
 							<?php if(isAdmin()) { echo '<li><a href="/admin.php">Admin</a></li>' . "\n"; } ?>
-							<li><a href="/search.php">Search</a></li>
+							<!-- <li><a href="/search.php">Search</a></li> -->
 							<li><a href="/reports/projects.php">Projects</a></li>
 							<li><a href="/reports/racks.php">Racks</a></li>
 							<li><a href="/reports/equipment.php">Equipment</a></li>

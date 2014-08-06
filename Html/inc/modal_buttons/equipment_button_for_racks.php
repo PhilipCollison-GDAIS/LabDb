@@ -140,15 +140,15 @@
 							<form role="form" method="post" action="" name="RackEquipmentModalForm">
 								<div class="form-group">
 									<label for="serial_num">Serial Number</label>
-									<input type="text" name="serial_num" class="form-control" id="serial_num" placeholder="Enter Serial Number" value="<?php echo htmlspecialchars($_POST['serial_num']); ?>"  maxlength="10" size ="10" autofocus="autofocus">
+									<input type="text" name="serial_num" class="form-control" id="serial_num" placeholder="Enter Serial Number" value="<?php echo htmlspecialchars($_POST['serial_num']); ?>" maxlength="10" size ="10" autofocus="autofocus">
 								</div>
 								<div class="form-group">
 									<label for="barcode">Barcode Number</label>
-									<input type="text" name="barcode" class="form-control" id="barcode" placeholder="Enter Barcode Number" value="<?php echo htmlspecialchars($_POST['barcode']); ?>"  maxlength="45" size="10">
+									<input type="text" name="barcode" class="form-control" id="barcode" placeholder="Enter Barcode Number" value="<?php echo htmlspecialchars($_POST['barcode']); ?>" maxlength="45" size="10">
 								</div>
 								<div class="form-group">
 									<label for="name">Name</label>
-									<input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" value="<?php echo htmlspecialchars($_POST['name']); ?>"  maxlength="45" size="10">
+									<input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" value="<?php echo htmlspecialchars($_POST['name']); ?>" maxlength="45" size="10">
 								</div>
 								<div class="form-group">
 									<label for="vendor_id">Vendor</label>
@@ -158,15 +158,15 @@
 								</div>
 								<div class="form-group">
 									<label for="model">Model</label>
-									<input type="text" name="model" class="form-control" id="model" placeholder="Enter Model" value="<?php echo htmlspecialchars($_POST['model']); ?>"  maxlength="10" size ="10">
+									<input type="text" name="model" class="form-control" id="model" placeholder="Enter Model" value="<?php echo htmlspecialchars($_POST['model']); ?>" maxlength="10" size ="10">
 								</div>
 								<div class="form-group">
 									<label for="elevation">Elevation</label>
-									<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php echo htmlspecialchars($_POST['elevation']); ?>"  maxlength="10" size="10">
+									<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php echo htmlspecialchars($_POST['elevation']); ?>" maxlength="10" size="10">
 								</div>
 								<div class="form-group">
 									<label for="GFE_id">GFE ID</label>
-									<input type="text" name="GFE_id" class="form-control" id="GFE_id" placeholder="Enter GFE ID" value="<?php echo htmlspecialchars($_POST['GFE_id']); ?>"  maxlength="10" size ="10">
+									<input type="text" name="GFE_id" class="form-control" id="GFE_id" placeholder="Enter GFE ID" value="<?php echo htmlspecialchars($_POST['GFE_id']); ?>" maxlength="10" size ="10">
 								</div>
 								<div class="form-group">
 									<label for="comment">Comments</label>

@@ -25,18 +25,25 @@ if (!isset($_GET['search'])) {
 
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 		<script type="text/javascript">
-
 		$(function() {
 			$(".search_button").click(function() {
-				var searchString 	= $('#search').val();
-				var data			= 'search=' + searchString;
+				// If no search is selected end function
+				if (!"<?php echo $_GET['search'] ?>") {
+					return false;
+				}
 
-				// getting the value that user typed
-				searchString	= $("#search_box").val();
-				// forming the queryString
-				data			+= '&item=' + searchString;
+				var data = {};
+				data["search"] = "<?php echo $_GET['search'] ?>";
 
-				data = {'a':'1', 'b':'2', 'c':'3'};
+				var array = ["equipment", "connection", "rack", "port", "vendor", "model", "serial_num", "connector_type", "gfe_id", "name", "project", "location", "max_power"];
+				var arrayLength = array.length;
+				for (var i = 0; i < arrayLength; i++) {
+					var key = array[i];
+					var value = $('#' + key).val();
+					if (value !== undefined && value !== "") {
+						data[key] = value;
+					}
+				}
 
 				// ajax call
 				$.ajax({
@@ -44,17 +51,39 @@ if (!isset($_GET['search'])) {
 					url: "do_search.php",
 					data: data,
 					beforeSend: function(html) { // this happens before actual call
-						$(".word").html(searchString);
 					},
 					success: function(html){ // this happens after we get results
 						$("#results").html('');
 						$("#results").append(html);
+
+						var table = $('#data-table').dataTable();
+						table.ajax.reload();
+
+						table = $('.data-table').dataTable();
+						table.ajax.reload();
+
+						table = $('#search-table').dataTable();
+						table.ajax.reload();
+
+						table = $('.search-table').dataTable();
+						table.ajax.reload();
+
+						table = $('#table').dataTable();
+						table.ajax.reload();
+
+						table = $('.table').dataTable();
+						table.ajax.reload();
+
+						// $('#data-table').dataTable();
+						// $('.data-table').dataTable();
+
+
+						var tableDataDivObj = document.getElementById("tableDataDiv");
 					}
 				});
 
 				return false;
 			});
-
 		});
 		</script>
 
@@ -94,21 +123,6 @@ if (!isset($_GET['search'])) {
 
 						<p>This will bring up all of your search fields. For example if you choose to search through Equipment then here will be search options for vendor, serial number, GFE_id, model, and ports.</p>
 
-						<?php } else if ($_GET['search'] === "equipment") { ?>
-
-						<p>Equipment: </p>
-<!--
-						<ul>
-							<li>Vendor</li>
-							<li>Rack</li>
-							<li>Model</li>
-							<li>Serial Number</li>
-							<li>Port Types</li>
-							<li>GFE ID</li>
-							<li>Name</li>
-							<li>Projects</li>
-						</ul>
- -->
 						<?php } else if ($_GET['search'] === "rack") { ?>
 
 						<p>Racks: </p>
@@ -121,15 +135,18 @@ if (!isset($_GET['search'])) {
 							<li>Max Power</li>
 						</ul>
  -->
-						<?php } else if ($_GET['search'] === "connection") { ?>
+						<?php } else if ($_GET['search'] === "equipment") { ?>
 
-						<p>Connections: </p>
+						<p>Equipment: </p>
 <!--
 						<ul>
-							<li>Equipment</li>
-							<li>Racks</li>
+							<li>Rack</li>
+							<li>Vendor</li>
+							<li>Model</li>
+							<li>Serial Number</li>
 							<li>Connection Type</li>
-							<li>Port</li>
+							<li>GFE ID</li>
+							<li>Name</li>
 							<li>Projects</li>
 						</ul>
  -->
@@ -138,11 +155,23 @@ if (!isset($_GET['search'])) {
 						<p>Ports: </p>
 <!--
 						<ul>
-							<li>Connections</li>
 							<li>Equipment</li>
+							<li>Connection</li>
 							<li>Racks</li>
 							<li>Connection Type</li>
 							<li>Name</li>
+						</ul>
+ -->
+						<?php } else if ($_GET['search'] === "connection") { ?>
+
+						<p>Connections: </p>
+<!--
+						<ul>
+							<li>Equipment</li>
+							<li>Racks</li>
+							<li>Port</li>
+							<li>Connection Type</li>
+							<li>Projects</li>
 						</ul>
  -->
 						<?php } else { ?>
@@ -150,24 +179,10 @@ if (!isset($_GET['search'])) {
 							<?php exit; ?>
 						<?php } ?>
 
-						<form method="post" action="/do_search.php">
+						<?php if (in_array($_GET['search'], array("rack", "equipment", "connection", "port"))) { ?>
+
+						<form method="post" action="">
 							<table class="search_table" width="50%">
-
-								<?php if (in_array($_GET['search'], array("rack", "port", "connection"))) { ?>
-								<!-- Row for equipment -->
-								<tr>
-									<td><label for="equipment">Equipment</label></td>
-									<td><input type="text" name="equipment" id="equipment" placeholder="Enter Equipment" maxlength="20" size ="20"></td>
-								</tr>
-								<?php } ?>
-
-								<?php if (in_array($_GET['search'], array("rack", "port"))) { ?>
-								<!-- Row for connection -->
-								<tr>
-									<td><label for="connection">Connection</label></td>
-									<td><input type="text" name="connection" id="connection" placeholder="Enter Connection" maxlength="20" size ="20"></td>
-								</tr>
-								<?php } ?>
 
 								<?php if (in_array($_GET['search'], array("equipment", "port", "connection"))) { ?>
 								<!-- Row for rack input -->
@@ -177,11 +192,27 @@ if (!isset($_GET['search'])) {
 								</tr>
 								<?php } ?>
 
+								<?php if (in_array($_GET['search'], array("rack", "port", "connection"))) { ?>
+								<!-- Row for equipment -->
+								<tr>
+									<td><label for="equipment">Equipment</label></td>
+									<td><input type="text" name="equipment" id="equipment" placeholder="Enter Equipment" maxlength="20" size ="20"></td>
+								</tr>
+								<?php } ?>
+
 								<?php if (in_array($_GET['search'], array("connection"))) { ?>
 								<!-- Row for port -->
 								<tr>
 									<td><label for="port">Port</label></td>
 									<td><input type="text" name="port" id="port" placeholder="Enter Port" maxlength="20" size ="20"></td>
+								</tr>
+								<?php } ?>
+
+								<?php if (in_array($_GET['search'], array("rack", "port"))) { ?>
+								<!-- Row for connection -->
+								<tr>
+									<td><label for="connection">Connection</label></td>
+									<td><input type="text" name="connection" id="connection" placeholder="Enter Connection" maxlength="20" size ="20"></td>
 								</tr>
 								<?php } ?>
 
@@ -262,15 +293,34 @@ if (!isset($_GET['search'])) {
 							<br>
 
 							<input type="submit" value="Submit" class="search_button">
+
 						</form>
 
-						<br>
-						<br>
-						<br>
+						<?php } ?>
 
-						<p>Results will appear in a table here, pagination optional.</p>
+						<br>
+						<br>
+						<br>
 
 						<p id="results" class="update"></p>
+
+						<?php        if (isset($_GET['search']) && $_GET['search'] === "rack") { ?>
+
+						<p>Racks: </p>
+
+						<?php } else if (isset($_GET['search']) && $_GET['search'] === "equipment") { ?>
+
+						<p>Equipment: </p>
+
+						<?php } else if (isset($_GET['search']) && $_GET['search'] === "port") { ?>
+
+						<p>Ports: </p>
+
+						<?php } else if (isset($_GET['search'] )&& $_GET['search'] === "connection") { ?>
+
+						<p>Connections: </p>
+
+						<?php } ?>
 
 					</div> <!--jumbotron-->
 				</div>

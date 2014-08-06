@@ -32,14 +32,16 @@ class ProjectsReport implements reportsInterface{
 
 		$row_resource = $pdo->query($query);
 
+		$string .= '<tbody>';
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->name) . '</a></td>';
-			$string .= '<td>' .  htmlspecialchars($row->conn_count) . '</td>';
-			$string .= '<td>' .  htmlspecialchars($row->equip_count) . '</td>';
-			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
+			$string .= '<td><a href="?id=' . htmlspecialchars($row->id) . '">' . htmlspecialchars($row->name) . '</a></td>';
+			$string .= '<td>' . htmlspecialchars($row->conn_count) . '</td>';
+			$string .= '<td>' . htmlspecialchars($row->equip_count) . '</td>';
+			$string .= '<td>' . htmlspecialchars($row->comment) . '</td>';
 			$string .= '</tr>';
 		}
+		$string .= '</tbody>';
 
 		$string .= '</table>';
 

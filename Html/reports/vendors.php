@@ -37,13 +37,15 @@ class VendorsReport implements reportsInterface{
 
 		$row_resource = $pdo->query($query);
 
+		$string .= '<tbody>';
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->vendor) . '</a></td>';
-			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
+			$string .= '<td><a href="?id=' . htmlspecialchars($row->id) . '">' . htmlspecialchars($row->vendor) . '</a></td>';
+			$string .= '<td>' . htmlspecialchars($row->comment) . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
 		}
+		$string .= '</tbody>';
 
 		$string .= '</table>';
 

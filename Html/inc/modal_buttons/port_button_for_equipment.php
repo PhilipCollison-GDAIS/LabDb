@@ -71,7 +71,7 @@
 
 								// Construct base query
 								$query = 'INSERT INTO ports (affiliated, equipment_id, name, connector_type_id, connector_gender) VALUES (?, ?, ?, ?, ?)';
-								for($i = $_POST['inputStartingNumber'] + 1 ; $i <= $_POST['inputEndingNumber']; $i = $i + 1){
+								for($i = $_POST['inputStartingNumber'] + 1; $i <= $_POST['inputEndingNumber']; $i = $i + 1){
 									$query .= ', (?, ?, ?, ?, ?)';
 								}
 
@@ -155,11 +155,11 @@
 
 								<div class="form-group">
 									<label>Create ports going from</label>
-									<input type="text" name="inputStartingNumber" id="inputStartingNumber" value="<?php echo htmlspecialchars($_POST['inputStartingNumber']) ; ?>" placeholder="start num" maxlength="3" size ="10">
+									<input type="text" name="inputStartingNumber" id="inputStartingNumber" value="<?php echo htmlspecialchars($_POST['inputStartingNumber']); ?>" placeholder="start num" maxlength="3" size="10">
 									<label>to</label>
-									<input type="text" name="inputEndingNumber" id="inputEndingNumber" value="<?php echo htmlspecialchars($_POST['inputEndingNumber']) ; ?>" placeholder="end num" maxlength="3" size ="10">
+									<input type="text" name="inputEndingNumber" id="inputEndingNumber" value="<?php echo htmlspecialchars($_POST['inputEndingNumber']); ?>" placeholder="end num" maxlength="3" size="10">
 									<label>with a prefix of</label>
-									<input type="text" name="inputPrefix" id="inputPrefix" value="<?php echo htmlspecialchars($_POST['inputPrefix']) ; ?>"placeholder="prefix" maxlength="10" size ="10">
+									<input type="text" name="inputPrefix" id="inputPrefix" value="<?php echo htmlspecialchars($_POST['inputPrefix']); ?>" placeholder="prefix" maxlength="10" size="10">
 									<label>.</label>
 								</div>
 

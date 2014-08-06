@@ -54,7 +54,9 @@ function getRoomOptions($id = NULL){
 
 	$string = '<option></option>';
 
-	$query = 'SELECT id, room_number FROM rooms';
+	$query = 'SELECT id, room_number, building_name
+			  FROM rooms
+			  ORDER BY building_name, room_number';
 
 	$row_resource = $pdo->query($query);
 
@@ -66,7 +68,7 @@ function getRoomOptions($id = NULL){
 			$string .= ' selected="selected"';
 		}
 		$string .= '>';
-		$string .= $row->room_number;
+		$string .= $row->room_number . ' ' . $row->building_name;
 		$string .= '</option>';
 	}
 

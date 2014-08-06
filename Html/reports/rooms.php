@@ -38,14 +38,16 @@ class RoomsReport implements reportsInterface{
 
 		$row_resource = $pdo->query($query);
 
+		$string .= '<tbody>';
 		while ($row = $row_resource->fetchObject()) {
 			$string .= '<tr>';
-			$string .= '<td><a href="?id=' .  htmlspecialchars($row->id) . '">' .  htmlspecialchars($row->room_number) . '</td>';
-			$string .= '<td>' .  htmlspecialchars($row->building_name) . '</td>';
-			$string .= '<td>' .  htmlspecialchars($row->comment) . '</td>';
+			$string .= '<td><a href="?id=' . htmlspecialchars($row->id) . '">' . htmlspecialchars($row->room_number) . '</td>';
+			$string .= '<td>' . htmlspecialchars($row->building_name) . '</td>';
+			$string .= '<td>' . htmlspecialchars($row->comment) . '</td>';
 			$string .= '<td><a href="#">Edit</a></td>';
 			$string .= '</tr>';
 		}
+		$string .= '</tbody>';
 
 		$string .= '</table>';
 

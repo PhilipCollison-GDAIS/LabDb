@@ -1,7 +1,8 @@
 
+/* Initialize all datatables */
 $(document).ready(function() {
 	var table = $('.data-table').DataTable({
-		// A complete list of all optins can be found at: http://www.datatables.net/reference/option/
+		// A complete list of options can be found at: http://www.datatables.net/reference/option/
 		"scrollY": 300,
 		"scrollCollapse": true,
 		"scrollX": true,
@@ -12,34 +13,47 @@ $(document).ready(function() {
 		"order": [], // No initial ordering
 		renderer: "bootstrap",
 		"info": false,
+		"autoWidth": false,
 		// "border-bottom": false,
-	});
-
-	$('.data-table tbody').on('click', 'tr', function() {
-		$(this).toggleClass('selected');
-
-		// disable and enable buttons based on number of selected rows
-		var selected = table.rows('.selected').data().length;
-		if(selected == 1){
-			$('.oneSelected').removeAttr('disabled'); //Enable
-		} else {
-			$('.oneSelected').attr('disabled', 'disabled'); //Disable
-		}
-
-		if(selected != 0){
-			$('.notNoneSelected').removeAttr('disabled'); //Enable
-		} else {
-			$('.notNoneSelected').attr('disabled', 'disabled'); //Disable
-		}
 	});
 });
 
-/* Append to the href the value of the first selceted row. */
-function addURL(element) {
+/* Append the value of the first selected row to the href and redirect user to this location */
+function redirectUser(element, url) {
 	$(element).attr('href', function() {
-		return this.href + $(this).closest("div.table-n-buttons").find("tr.selected").attr("value");
+		window.location.href = url + $(this).closest("div.table-n-buttons").find("tr.selected").attr("value");
 	});
 }
+
+$(function() {
+	$('.data-table tbody').on('click', 'tr', function() {
+
+		// do not select empty rows
+		if($(this).children('td.dataTables_empty').length){
+			return;
+		}
+
+		$(this).toggleClass('selected');
+
+		var div = $(this).closest('div.table-n-buttons');
+		var selectedCount = div.find('.selected').length;
+
+		/* Buttons with classes of "oneSelected" and "notNoneSelected" are
+			disabled and enabled based on number of selected rows */
+		if(selectedCount == 1){
+			div.find('button.oneSelected').removeAttr('disabled'); //Enable
+		} else {
+			div.find('button.oneSelected').attr('disabled', 'disabled'); //Disable
+		}
+
+		if(selectedCount != 0){
+			div.find('button.notNoneSelected').removeAttr('disabled'); //Enable
+		} else {
+			div.find('button.notNoneSelected').attr('disabled', 'disabled'); //Disable
+		}
+
+	});
+});
 
 $(function(){
 	$('button.delete-button').each(function() {
@@ -54,13 +68,15 @@ $(function(){
 		modal: true,
 
 		buttons: {
-			"OK": function() {
+			"OK": function(){
+				var modal = $(this);
+
 				var name = $(this).attr("name");
 
 				var values = new Array();
-				$('div.table-n-buttons[name="' + name + '"] .data-table tr.selected').each(function (index) {
-					values.push( $(this).attr("value") );
-				})
+				$('.table-n-buttons[name="' + name + '"] .data-table tr.selected').each(function() {
+					values.push($(this).attr("value"));
+				});
 
 				var data = {};
 
@@ -71,8 +87,11 @@ $(function(){
 				$.ajax({
 					type: "POST",
 					data: data,
-					success: function(html){
-						location.reload();
+					success: function(){
+						var table = new $.fn.dataTable.Api('.table-n-buttons[name="' + name + '"] .data-table');
+						table.rows(".selected").remove().draw();
+
+						modal.dialog("close");
 					}
 				});
 			},

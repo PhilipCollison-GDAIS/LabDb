@@ -82,29 +82,31 @@ class ConnectionsReports implements reportsInterface{
 				// Display first two columns
 				if ($is_first) {
 					$is_first = false;
-					$string .= '<tr value="' .  htmlspecialchars($row->id) . '">';
+					$string .= '<tbody>';
+					$string .= '<tr value="' . htmlspecialchars($row->id) . '">';
 					$string .= '<td>';
 					$string .=  htmlspecialchars($port_info->affiliated) === "E" ? 'Electrical' : 'Optical';
 					$string .= '</td>';
-					$string .= '<td>' .  htmlspecialchars($rack_info->room_number) . " " .   htmlspecialchars($rack_info->building_name) . '</td>';
+					$string .= '<td>' . htmlspecialchars($rack_info->room_number) . " " .   htmlspecialchars($rack_info->building_name) . '</td>';
 
 					//Retrieve project information
 					$connection_id = $row->id;
 					$project_info_stmt->execute();
 					$project_info = $project_info_stmt->fetchObject();
 					$string .= '<td>';
-					$string .=  $project_info ? '<a href="/reports/projects.php?id=' .  htmlspecialchars($project_info->project_id) . '">' .  htmlspecialchars($project_info->project_name) . '</a>' : "";
+					$string .=  $project_info ? '<a href="/reports/projects.php?id=' . htmlspecialchars($project_info->project_id) . '">' . htmlspecialchars($project_info->project_name) . '</a>' : "";
 					$string .= '</td>';
 				}
 
 				// Display information for current port
-				$string .= '<td style="border-left:1px solid black;">' .  htmlspecialchars($rack_info->name) . '</td>';
-				$string .= '<td>' .  htmlspecialchars($rack_id_and_elevation->elevation) . '</td>';
-				$string .= '<td>' .  htmlspecialchars($port_info->connector_type) . '</td>';
-				$string .= '<td>' .  htmlspecialchars($port_info->name) . '</td>';
+				$string .= '<td style="border-left:1px solid black;">' . htmlspecialchars($rack_info->name) . '</td>';
+				$string .= '<td>' . htmlspecialchars($rack_id_and_elevation->elevation) . '</td>';
+				$string .= '<td>' . htmlspecialchars($port_info->connector_type) . '</td>';
+				$string .= '<td>' . htmlspecialchars($port_info->name) . '</td>';
 			}
 
 			$string .= '</tr>';
+			$string .= '<tbody>';
 		}
 
 		$string .= '</table>';
@@ -112,7 +114,7 @@ class ConnectionsReports implements reportsInterface{
 		$string .= '<br>';
 
 		$string .= '<a href="/forms/connections.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
-		$string .= '<a onclick="addURL(this)" href="/forms/connections.php?edit_id="><button type="button" class="oneSelected btn btn-default btn-lg" disabled>Edit</button></a>';
+		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/connections.php?edit_id=\');" disabled>Edit</button>';
 		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" id="delete" disabled>Delete</button>';
 
 		$string .= '</div>';

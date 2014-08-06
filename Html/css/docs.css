@@ -4,11 +4,11 @@ li{
 
 td {
 	white-space: nowrap;
-	text-align: right;
+	text-align: left;
 }
 
 th {
-	text-align: right;
+	text-align: left;
 }
 
 textarea{
@@ -31,9 +31,9 @@ div.table-n-buttons button {
 	margin-right: 15px;
 }
 
+/*
 div.table-n-buttons {
 	border-radius: 10px;
-	padding: 15px;
 	display: block;
 	margin: 0 0 10px;
 	font-size: 13px;
@@ -42,6 +42,7 @@ div.table-n-buttons {
 	background-color: #ececec;
 	border: 1px solid #ccc;
 }
+*/
 
 .single-element{
 	position: relative;

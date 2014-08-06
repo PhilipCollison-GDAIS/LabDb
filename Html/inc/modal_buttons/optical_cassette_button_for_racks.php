@@ -132,7 +132,7 @@
 
 									// Construct base query
 									$query = 'INSERT INTO ports (affiliated, optical_cassette_id, name, connector_type_id, connector_gender) VALUES (?, ?, ?, ?, ?)';
-									for($i = 1 ; $i < $port_count; $i = $i + 1){
+									for($i = 1; $i < $port_count; $i = $i + 1){
 										$query .= ', (?, ?, ?, ?, ?)';
 									}
 
@@ -209,17 +209,17 @@
 
 								<div class="form-group">
 									<label for="name">Name</label>
-									<input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" value="<?php if(isset($_POST['name'])){ echo htmlspecialchars($_POST['name']);} ?>"  maxlength="10" size ="10">
+									<input type="text" name="name" class="form-control" id="name" placeholder="Enter Name" value="<?php echo htmlspecialchars($_POST['name']); ?>"  maxlength="10" size ="10">
 								</div>
 
 								<div class="form-group">
 									<label for="slot_count">Slot Count</label>
-									<input type="text" name="slot_count" class="form-control" id="slot_count" placeholder="Enter Slot Count" value="<?php if(isset($_POST['slot_count'])){ echo htmlspecialchars($_POST['slot_count']);} ?>"  maxlength="10" size ="10">
+									<input type="text" name="slot_count" class="form-control" id="slot_count" placeholder="Enter Slot Count" value="<?php echo htmlspecialchars($_POST['slot_count']); ?>"  maxlength="10" size ="10">
 								</div>
 
 								<div class="form-group">
 									<label for="elevation">Elevation</label>
-									<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php if(isset($_POST['elevation'])){ echo htmlspecialchars($_POST['elevation']);} ?>"  maxlength="10" size="10">
+									<input type="text" name="elevation" class="form-control" id="elevation" placeholder="Enter Elevation" value="<?php echo htmlspecialchars($_POST['elevation']); ?>"  maxlength="10" size="10">
 								</div>
 
 								<div class="form-group">
@@ -240,11 +240,11 @@
 
 								<div class="form-group">
 									<label>Create ports going from</label>
-									<input type="text" name="starting_num" id="starting_num" value="<?php echo htmlspecialchars($_POST['starting_num']) ; ?>" placeholder="start num" maxlength="3" size ="10">
+									<input type="text" name="starting_num" id="starting_num" value="<?php echo htmlspecialchars($_POST['starting_num']); ?>" placeholder="start num" maxlength="3" size ="10">
 									<label>to</label>
-									<input type="text" name="ending_num" id="ending_num" value="<?php echo htmlspecialchars($_POST['ending_num']) ; ?>" placeholder="end num" maxlength="3" size ="10">
+									<input type="text" name="ending_num" id="ending_num" value="<?php echo htmlspecialchars($_POST['ending_num']); ?>" placeholder="end num" maxlength="3" size ="10">
 									<label>with a prefix of</label>
-									<input type="text" name="prefix" id="prefix" value="<?php echo htmlspecialchars($_POST['prefix']) ; ?>"placeholder="prefix" maxlength="10" size ="10">
+									<input type="text" name="prefix" id="prefix" value="<?php echo htmlspecialchars($_POST['prefix']); ?>" placeholder="prefix" maxlength="10" size ="10">
 									<label>.</label>
 								</div>
 
