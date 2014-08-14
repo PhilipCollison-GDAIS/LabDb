@@ -57,6 +57,8 @@ class ConnectionsReports implements reportsInterface{
 									 WHERE project_connections.connection_id = :connection_id AND project_connections.project_id = projects.id');
 		$project_info_stmt->bindParam(':connection_id', $connection_id);
 
+		$string .= '<tbody>';
+
 		// Iterate through every connection
 		$row_resource = $pdo->query('SELECT id, port_id_1, port_id_2, comment FROM connections');
 		while ($row = $row_resource->fetchObject()) {
@@ -82,7 +84,6 @@ class ConnectionsReports implements reportsInterface{
 				// Display first two columns
 				if ($is_first) {
 					$is_first = false;
-					$string .= '<tbody>';
 					$string .= '<tr value="' . htmlspecialchars($row->id) . '">';
 					$string .= '<td>';
 					$string .=  htmlspecialchars($port_info->affiliated) === "E" ? 'Electrical' : 'Optical';
@@ -106,14 +107,15 @@ class ConnectionsReports implements reportsInterface{
 			}
 
 			$string .= '</tr>';
-			$string .= '<tbody>';
 		}
+
+		$string .= '</tbody>';
 
 		$string .= '</table>';
 
 		$string .= '<br>';
 
-		$string .= '<a href="/forms/connections.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
+		$string .= '<button type="button" class="btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/connections.php\');">Add</button>';
 		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/connections.php?edit_id=\');" disabled>Edit</button>';
 		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" id="delete" disabled>Delete</button>';
 

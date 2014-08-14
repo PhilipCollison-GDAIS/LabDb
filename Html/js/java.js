@@ -20,9 +20,11 @@ $(document).ready(function() {
 
 /* Append the value of the first selected row to the href and redirect user to this location */
 function redirectUser(element, url) {
-	$(element).attr('href', function() {
-		window.location.href = url + $(this).closest("div.table-n-buttons").find("tr.selected").attr("value");
-	});
+	if ($(element).hasClass('oneSelected')) {
+		window.location.href = url + $(element).closest("div.table-n-buttons").find("tr.selected").attr("value");
+	} else {
+		window.location.href = url;
+	}
 }
 
 $(function() {

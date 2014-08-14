@@ -3,23 +3,26 @@ require_once "/inc/connect.php";
 include "/inc/prototypes.php";
 
 class ProjectsForm implements formsInterface{
+	public function isInputValid(){
+		if(empty($_POST['inputProjectName'])) {
+			return "Please input a project name";
+		}
+
+		return true;
+	}
+
 	public function submit(){
 		global $pdo;
 
-		$name = $_POST['inputProjectName'];
-		$comment = $_POST['inputComment'];
+		$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
 
-		if(isset($_POST['insert']) /* && inputValidation */) {
-			$query = "INSERT INTO projects (name, comment) Values (:name, :comment)";
+		$wasSuccessful = $pdo->prepare($query)->execute(array(':name'=>$_POST['inputProjectName'], ':comment'=>$_POST['inputComment']));
 
-			$wasSuccessful = $pdo->prepare($query)->execute(array(':name'=>$name, ':comment'=>$comment));
-
-			if ($wasSuccessful) {
-				header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
-				exit;
-			} else {
-				// TODO: inform user
-			}
+		if ($wasSuccessful) {
+			header('Location: /reports/projects.php?id=' . $pdo->lastInsertId());
+			exit;
+		} else {
+			// TODO: inform user
 		}
 	}
 

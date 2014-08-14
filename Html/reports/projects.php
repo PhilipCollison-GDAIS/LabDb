@@ -14,7 +14,9 @@ class ProjectsReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table data-table">';
+		$string = '<div class="table-n-buttons" name="main-table-for-projects">';
+
+		$string .= '<table class="table data-table">';
 
 		$string .= '<thead>';
 		$string .= '<tr>';
@@ -47,7 +49,9 @@ class ProjectsReport implements reportsInterface{
 
 		$string .= '<br>';
 
-		$string .= '<a href="/forms/projects.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
+		$string .= '<button type="button" class="btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/projects.php\');">Add</button>';
+
+		$string .= '</div>';
 
 		return $string;
 	}

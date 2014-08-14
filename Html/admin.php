@@ -26,6 +26,13 @@
 
 						<br>
 
+						<p>Reports</p>
+
+						<p><a href="reports/rooms.php">Rooms</a></p>
+						<p><a href="reports/vendors.php">Vendors</a></p>
+
+						<br>
+
 						<p>Manage Backups</p>
 
 						<p><a href="#">Create Backup</a></p>
@@ -35,7 +42,7 @@
 
 						<p>phpMyAdmin</p>
 
-						<p><a href="#">Link</a></p>
+						<p><a href="http://10.10.214.104/phpmyadmin/">Link</a></p>
 
 					</div>
 				</div>

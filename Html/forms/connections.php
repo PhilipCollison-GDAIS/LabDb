@@ -1,25 +1,22 @@
 <?php
-	require_once "/inc/connect.php";
-	include "/inc/database.php";
-	global $pdo;
+require_once "/inc/connect.php";
+include "/inc/prototypes.php";
+include "/inc/database.php";
 
-	function isConnectionValid() {
+class ConnectionForm implements formsInterface{
+	public function isInputValid(){
 		// TODO:
 
 		return true;
 	}
 
-	if (!empty($_POST) && isConnectionValid() === true) {
+	public function submit(){
+		global $pdo;
 
 		try{
-
 			// Insert connection
 			$query = "INSERT INTO connections (port_id_1, port_id_2, comment) VALUES
 			(:port_id_1, :port_id_2, :comment)";
-
-			echo '<pre>';
-			var_dump($_POST);
-			echo '</pre>';
 
 			$q = $pdo->prepare($query);
 			$wasSuccessful = $q->execute(array(':port_id_1'=>$_POST['port_id_1'],
@@ -45,6 +42,7 @@
 				if($wasSuccessful){
 					// All was successful and redirect user
 					header('Location: /reports/connections.php?id=' . $lastInsertId);
+					echo $lastInsertId;
 					exit;
 				} else {
 					echo '<pre>';
@@ -70,67 +68,83 @@
 		} catch (Exception $e) {
 			echo 'Caught exception: ', $e->getMessage(), "\n";
 		}
-
 	}
- ?>
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<?php include "/inc/header.php" ?>
 
-		<title>Equipment</title>
-	</head>
+	public function getTitle(){
+		return 'Connection';
+	}
 
-	<body>
-		<div class="container">
+	public function getHeading(){
+		return 'Connection';
+	}
 
-			<?php include "/inc/navbar.php" ?>
+	public function getFormString(){
+		$string .= '<script type="text/javascript" src="/inc/port_select_for_connections/java.js"></script>';
 
-			<div class="row">
-				<?php include "/inc/sidebar.php" ?>
+		$string .= '<div class="row" style="margin-bottom: 25px;">';
 
-				<div class="col-md-10">
-					<div class="jumbotron">
+		$port_label = "Port 1";
+		$port_id = "port_id_1";
+		$port_name = "port_id_1";
+		$rack_label = "Rack 1";
+		$rack_id = "rack_id_1";
+		$rack_name = "rack_id_1";
+		$equipment_label = "Equipment 1";
+		$equipment_id = "equipment_id_1";
+		$equipment_name = "equipment_id_1";
 
-					<h1>Connections</h1>
+		ob_start();
+		include "/inc/port_select_for_connections/main_body.php";
+		$string .= trim(ob_get_clean());
 
-						<form role="form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+		$port_label = "Port 2";
+		$port_id = "port_id_2";
+		$port_name = "port_id_2";
+		$rack_label = "Rack 2";
+		$rack_id = "rack_id_2";
+		$rack_name = "rack_id_2";
+		$equipment_label = "Equipment 2";
+		$equipment_id = "equipment_id_2";
+		$equipment_name = "equipment_id_2";
 
-							<!-- TODO: create a way for users to choose ports -->
+		ob_start();
+		include "/inc/port_select_for_connections/main_body.php";
+		$string .= trim(ob_get_clean());
 
-							<div class="form-group">
-								<label for="port_id_1">Port 1</label>
-								<input type="text" name="port_id_1" id="port_id_1">
+		$string .= '</div>';
 
-								<label for="port_id_2">Port 2</label>
-								<input type="text" name="port_id_2" id="port_id_2">
-							</div>
+		$string .= '<div style="text-align:center">';
+		$string .= '<button class="btn btn-default btn-lg create-connection-button" disabled="disabled" style="margin:0 auto;" onclick="createConnection();">Create Connection</button>';
+		$string .= '</div>';
 
-							<br>
+		$string .= '<div class="update"></div>';
 
-							<div class="form-group">
-								<label for="project_id">Project (Optional)</label>
-								<select name="project_id" class="form-control">
-									<?php echo getProjectOptions(); ?>
-								</select>
-							</div>
+		// $string .= '<div class="form-group">';
+		// $string .= '<label for="project_id">Project (Optional)</label>';
+		// 	$string .= '<select name="project_id" class="form-control">';
+		// 		$string .= getProjectOptions($_POST['input_project_id']);
+		// 	$string .= '</select>';
+		// $string .= '</div>';
 
-							<div class="form-group">
-								<label for="coment">Comments</label>
-								<textarea name="comment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="0"><?php if(isset($comment)){ echo stripslashes($comment);} ?></textarea>
-							</div>
+		// $string .= '<div class="form-group">';
+		// 	$string .= '<label for="coment">Comments</label>';
+		// 	$string .= '<textarea name="comment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="0">' . stripslashes($comment) . '</textarea>';
+		// $string .= '</div>';
 
-							<button type="submit" class="btn btn-default">Create Connection</button>
-						</form>
+		return $string;
+	}
 
-					</div> <!--jumbotron-->
-				</div>
-				<div class="col-md-4"></div>
-			</div>
+	public function getEditString($id){
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
+	}
 
-		</div> <!-- /container -->
+	public function getCopyString($id){
+		echo '<script>window.location = "' . strtok($_SERVER['REQUEST_URI'], '?') . '";</script>';
+		exit;
+	}
+}
 
-		<?php include "inc/footer.php" ?>
+$form = new ConnectionForm();
 
-	</body>
-</html>
+include "/inc/forms.php";

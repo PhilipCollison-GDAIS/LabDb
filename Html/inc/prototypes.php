@@ -9,6 +9,7 @@ interface reportsInterface{
 
 interface formsInterface{
 	public function submit();
+	public function isInputValid();
 	public function getTitle();
 	public function getHeading();
 	public function getFormString();

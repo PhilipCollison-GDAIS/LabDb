@@ -3,23 +3,26 @@ require_once "/inc/connect.php";
 include "/inc/prototypes.php";
 
 class VendorsForm implements formsInterface{
+	public function isInputValid(){
+		if(empty($_POST['inputVendor'])) {
+			return "Please input a vendor";
+		}
+
+		return true;
+	}
+
 	public function submit(){
 		global $pdo;
 
-		$vendor = $_POST['inputVendor'];
-		$comment = $_POST['inputComment'];
+		$query = "INSERT INTO vendors (vendor, comment) Values (:vendor, :comment)";
 
-		if(isset($_POST['insert']) /* && inputValidation */) {
-			$query = "INSERT INTO vendors (vendor, comment) Values (:vendor, :comment)";
+		$wasSuccessful = $pdo->prepare($query)->execute(array(':vendor'=>$_POST['inputVendor'], ':comment'=>$_POST['inputComment']));
 
-			$wasSuccessful = $pdo->prepare($query)->execute(array(':vendor'=>$vendor, ':comment'=>$comment));
-
-			if ($wasSuccessful) {
-				header('Location: /reports/vendors.php');
-				exit;
-			} else {
-				// TODO: inform user
-			}
+		if ($wasSuccessful) {
+			header('Location: /reports/vendors.php');
+			exit;
+		} else {
+			return "Insertion was Unsuccessful: Error code is " . $q->errorCode();
 		}
 	}
 

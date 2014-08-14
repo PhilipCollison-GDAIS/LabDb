@@ -4,40 +4,66 @@ include "/inc/prototypes.php";
 include "/inc/database.php";
 
 class RacksForm implements formsInterface{
-	public function submit(){
-		global $pdo;
-
+	public function isInputValid(){
 		$name = $_POST['inputName'];
 		$old_name = $_POST['inputOldName'];
 		$room_id = $_POST['inputRoomID'];
 		$floor_location = $_POST['inputFloorLocation'];
 		$height = $_POST['inputHeight'];
 		$width_id = $_POST['inputWidthID'];
-		$depth_id =  $_POST['inputDepthID'];
-		$max_power =  $_POST['inputMaxPower'];
+		$depth_id = $_POST['inputDepthID'];
+		$max_power = $_POST['inputMaxPower'];
 		$comment = $_POST['inputComment'];
 
-		if(isset($_POST['insert']) /* && inputValidation */) {
-			$query = "INSERT INTO racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
-			(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
+		if (empty($_POST['inputName'])) {
+			return "Please input a name";
+		}
 
-			$q = $pdo->prepare($query);
-			$wasSuccessful = $q->execute(array(':name'=>$name,
-							  ':old_name'=>$old_name,
-							  ':room_id'=>$room_id,
-							  ':floor_location'=>$floor_location,
-							  ':height'=>$height,
-							  ':width_id'=>$width_id,
-							  ':depth_id'=>$depth_id,
-							  ':max_power'=>$max_power,
-							  ':comment'=>$comment));
+		if (empty($_POST['inputRoomID'])) {
+			return "Please choose a room number";
+		}
 
-			if($wasSuccessful) {
-				header("Location: /reports/racks.php?id=" . $pdo->lastInsertId());
-				exit;
-			} else {
-				// TODO: Alert user of error
-			}
+		if (empty($_POST['inputHeight'])) {
+			return "Please choose a height";
+		}
+
+		if (empty($_POST['inputWidthID'])) {
+			return "Please select a width";
+		}
+
+		if (empty($_POST['inputDepthID'])) {
+			return "Please select a depth";
+		}
+
+		if (empty($_POST['inputMaxPower'])) {
+			return "Please input a max power";
+		}
+
+		return true;
+	}
+
+	public function submit(){
+		global $pdo;
+
+		$query = "INSERT INTO racks (name, old_name, room_id, floor_location, height_ru, width_id, depth_id, max_power, comment) Values
+		(:name, :old_name, :room_id, :floor_location, :height, :width_id, :depth_id, :max_power, :comment)";
+
+		$q = $pdo->prepare($query);
+		$wasSuccessful = $q->execute(array(':name'=>$_POST['inputName'],
+						  ':old_name'=>$_POST['inputOldName'],
+						  ':room_id'=>$_POST['inputRoomID'],
+						  ':floor_location'=>$_POST['inputFloorLocation'],
+						  ':height'=>$_POST['inputHeight'],
+						  ':width_id'=>$_POST['inputWidthID'],
+						  ':depth_id'=>$_POST['inputDepthID'],
+						  ':max_power'=>$_POST['inputMaxPower'],
+						  ':comment'=>$_POST['inputComment']));
+
+		if($wasSuccessful) {
+			header("Location: /reports/racks.php?id=" . $pdo->lastInsertId());
+			exit;
+		} else {
+			return "Insertion was Unsuccessful: Error code is " . $q->errorCode();
 		}
 	}
 
@@ -56,8 +82,8 @@ class RacksForm implements formsInterface{
 		$floor_location = $_POST['inputFloorLocation'];
 		$height = $_POST['inputHeight'];
 		$width_id = $_POST['inputWidthID'];
-		$depth_id =  $_POST['inputDepthID'];
-		$max_power =  $_POST['inputMaxPower'];
+		$depth_id = $_POST['inputDepthID'];
+		$max_power = $_POST['inputMaxPower'];
 		$comment = $_POST['inputComment'];
 
 		$string .= '<form role="form" method="post" action="' . $_SERVER['PHP_SELF'] . '">';
@@ -86,7 +112,7 @@ class RacksForm implements formsInterface{
 
 		$string .= '<div class="form-group">';
 		$string .= '<label for="inputHeight">Height (ru)</label>';
-		$string .= '<input type="text" name="inputHeight" class="form-control" id="inputHeight" placeholder="Enter Height" value="' . htmlspecialchars($height_ru) . '" maxlength="10" size ="10">';
+		$string .= '<input type="text" name="inputHeight" class="form-control" id="inputHeight" placeholder="Enter Height" value="' . htmlspecialchars($height) . '" maxlength="10" size ="10">';
 		$string .= '</div>';
 
 		$string .= '<div class="form-group">';
@@ -104,7 +130,7 @@ class RacksForm implements formsInterface{
 		$string .= '</div>';
 
 		$string .= '<div class="form-group">';
-		$string .= '<label for="inputmax_power">Max Power</label>';
+		$string .= '<label for="inputMaxPower">Max Power</label>';
 		$string .= '<input type="text" name="inputMaxPower" class="form-control" id="inputMaxPower" placeholder="Enter Max Power" value="' . htmlspecialchars($max_power) . '" maxlength="10" size ="10">';
 		$string .= '</div>';
 
@@ -114,7 +140,7 @@ class RacksForm implements formsInterface{
 		$string .= '<textarea name="inputComment" class="form-control" id="inputComment" placeholder="Enter Optional Comments" cols="60" rows="4">' . stripslashes($comment) . '</textarea>';
 		$string .= '</div>';
 
-		$string .= '<button type="submit" name="insert" class="btn btn-default">Insert</button>';
+		$string .= '<button type="submit" class="btn btn-default">Insert</button>';
 
 		$string .= '</form>';
 

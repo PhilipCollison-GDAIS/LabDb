@@ -61,9 +61,7 @@ function getRoomOptions($id = NULL){
 	$row_resource = $pdo->query($query);
 
 	while ($row = $row_resource->fetchObject()) {
-		$string .= '<option value="';
-		$string .=  $row->id;
-		$string .= '"';
+		$string .= '<option value="' . $row->id . '"';
 		if(isset($id) && $id == $row->id){
 			$string .= ' selected="selected"';
 		}
@@ -101,7 +99,13 @@ function getRackOptions($id = NULL){
 	foreach ($room_info as $key => $info) {
 		$string .= '<optgroup label="' . $info['room_number'] . ', ' . $info['building_name'] . '">';
 		for ($i = 0; $i < count($rack_ids[$key]); $i = $i + 1) {
-			$string .= '<option value="' . $rack_ids[$key][$i] . '">' . $rack_names[$key][$i] . '</option>';
+			$string .= '<option value="' . $rack_ids[$key][$i] . '"';
+			if (isset($id) && $id == $rack_ids[$key][$i]) {
+				$string .= ' selected="selected"';
+			}
+			$string .= '>';
+			$string .= $rack_names[$key][$i];
+			$string .= '</option>';
 		}
 		$string .= '</optgroup>';
 	}
@@ -213,8 +217,8 @@ function isNaturalNumber($x) {
 	return !empty($x) && is_numeric($x) && $x > 0 && $x == round($x);
 }
 
-function isAlphaNumeric($x, $length) {
-	return !empty($x) && (!isset($length) || strlen($x) > $length) && ctype_alnum($x);
+function isAlphaNumeric($x, $length = -1) {
+	return !empty($x) && ($length == -1 || strlen($x) <= $length) && ctype_alnum($x);
 }
 
 function isInteger($input){

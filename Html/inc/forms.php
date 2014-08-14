@@ -1,4 +1,11 @@
-<?php $form->submit(); ?>
+<?php
+if (!empty($_POST)) {
+	$isInputValid = $form->isInputValid();
+	if ($isInputValid === true) {
+		$isInputValid = $form->submit();
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -21,6 +28,8 @@
 
 						<h1><?php echo $form->getHeading(); ?></h1>
 
+						<?php if (!empty($_POST) && $isInputValid !== true) { echo '<div><strong><font color="red" size="5">' . $isInputValid . '</font></strong></div><br>'; } ?>
+
 						<?php
 						if (empty($_GET)) {
 							echo $form->getFormString();
@@ -36,7 +45,6 @@
 
 					</div> <!--jumbotron-->
 				</div>
-				<div class="col-md-4"></div>
 			</div>
 
 		</div> <!-- /container -->

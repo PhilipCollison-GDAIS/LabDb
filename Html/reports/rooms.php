@@ -23,14 +23,16 @@ class RoomsReport implements reportsInterface{
 	public function getTableString(){
 		global $pdo;
 
-		$string = '<table class="table data-table">';
+		$string = '<div class="table-n-buttons" name="main-table-for-rooms">';
+
+		$string .= '<table class="table data-table">';
 
 		$string .= '<thead>';
 		$string .= '<tr>';
 		$string .= '<th>Room Number</th>';
 		$string .= '<th>Building Name</th>';
 		$string .= '<th>Comment</th>';
-		$string .= '<th><a href="/forms/rooms.php">Add Room</a></th>';
+		$string .= '<th></th>';
 		$string .= '</tr>';
 		$string .= '</thead>';
 
@@ -50,6 +52,13 @@ class RoomsReport implements reportsInterface{
 		$string .= '</tbody>';
 
 		$string .= '</table>';
+
+		$string .= '<br>';
+
+		$string .= '<button type="button" class="btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/rooms.php\');">Add</button>';
+		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/rooms.php?edit_id=\');" disabled>Edit</button>';
+
+		$string .= '</div>';
 
 		return $string;
 	}

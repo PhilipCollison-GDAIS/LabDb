@@ -33,7 +33,7 @@ class VendorsReport implements reportsInterface{
 		$string .= '</tr>';
 		$string .= '</thead>';
 
-		$query = 'SELECT id, vendor, comment FROM vendors';
+		$query = 'SELECT id, vendor, comment FROM vendors ORDER BY vendor';
 
 		$row_resource = $pdo->query($query);
 

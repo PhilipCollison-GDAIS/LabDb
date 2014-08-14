@@ -90,7 +90,7 @@ class EquipmentReport implements reportsInterface{
 
 		$string .= '<br>';
 
-		$string .= '<a href="/forms/equipment.php"><button type="button" class="btn btn-default btn-lg">Add</button></a>';
+		$string .= '<button type="button" class="btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/equipment.php\');">Add</button>';
 		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/equipment.php?edit_id=\');" disabled>Edit</button>';
 		$string .= '<button type="button" class="oneSelected btn btn-default btn-lg" onclick="redirectUser(this, \'/forms/equipment.php?copy_id=\');" disabled>Copy</button>';
 		$string .= '<button type="button" class="notNoneSelected btn btn-default btn-lg delete-button" disabled>Delete</button>';
