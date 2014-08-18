@@ -11,7 +11,7 @@ add
     DocumentRoot "C:/xampp/htdocs"
 </VirtualHost>
 
-<VirtualHost *:80>
+<VirtualHost *:8080>
     ServerName lab.domain
     ServerAlias www.lab.domain
     DocumentRoot "C:/Git/LabDb/Html"
